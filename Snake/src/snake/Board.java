@@ -2,6 +2,7 @@ package snake;
 
 import java.awt.*;
 import java.util.EnumMap;
+import java.util.Map;
 
 
 
@@ -21,6 +22,10 @@ public class Board {
         sides.put(Dir.RIGHT, new Side(new Color(0, 0, 0), this, Dir.RIGHT));
         sides.put(Dir.LEFT, new Side(new Color(0, 0, 0), this, Dir.LEFT));
         this.pos = pos;
+    }
+
+    public Map<Dir, Side> getSides(){
+        return sides;
     }
 
     public void draw(Graphics g) {

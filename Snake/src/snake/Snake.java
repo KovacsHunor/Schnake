@@ -30,7 +30,7 @@ public class Snake {
         g2d.setColor(pColor);
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
         g.drawImage(img, (pos.x + 1 + (board.getPos().x) * (Field.BOARD_SIZE + 3))
-                * Field.TILE_SIZE, ((pos.y + 1 + (board.getPos().y) * (Field.BOARD_SIZE + 3)) * Field.TILE_SIZE), null);
+                * Field.TILE_SIZE, ((pos.y + 1 + board.getPos().y * (Field.BOARD_SIZE + 3)) * Field.TILE_SIZE), null);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -66,20 +66,11 @@ public class Snake {
 
             board = pair.getBoard();
 
-            Point center = new Point(Field.BOARD_SIZE/2, Field.BOARD_SIZE/2);
+            Point newdir = DirUtil.getVector(pair.getDir());
+            newdir = new Point(-newdir.x, -newdir.y);
 
-            Point newdir = DirUtil.rotateRight(DirUtil.getVector(pair.getDir()), 2);
-            
-            Point relpos = DirUtil.subtract(pos, center);
-            int torotate = DirUtil.toRotate(dir, DirUtil.rotateRight(newdir, 2));
-            pos = DirUtil.rotateRight(relpos, torotate);
-            pos = DirUtil.subtract(pos, new Point(-center.x, -center.y));
-
-            //todo: refactor
-            if(Field.BOARD_SIZE %2 == 0){
-                pos.x--;
-                pos.y--;
-            }
+            int torotate = DirUtil.toRotate(dir, DirUtil.getVector(pair.getDir()));
+            pos = DirUtil.rotateRight(pos, torotate);
 
             dir = newdir;
         }

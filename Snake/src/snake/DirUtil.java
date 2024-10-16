@@ -34,15 +34,16 @@ public class DirUtil {
 
     public static Point rotateRight (Point vec, int n){
         for (int i = 0; i < n%4; i++) {
-            vec = new Point(-vec.y, vec.x);
+            vec = new Point(Field.BOARD_SIZE-1-vec.y, vec.x);
         }
         return vec;
     }
 
+    //csak egységvektorokra
     public static int toRotate (Point v1, Point v2){
         int c = 0;
         while(!v1.equals(v2)){
-            v1 = rotateRight(v1, 1);
+            v1 = new Point(-v1.y, v1.x);
             c++;
             if(c == 4) return -1; // todo:exception
         }
