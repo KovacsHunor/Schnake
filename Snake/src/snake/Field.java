@@ -7,7 +7,7 @@ import javax.swing.*;
 public class Field extends JPanel implements ActionListener, KeyListener {
     private static final int TICK = 10;
     private static final int SPEED = 100;
-    
+
     public static final int BOARD_SIZE = 8;
     public static final int FIELD_SIZE = 2;
     public static final int TILE_SIZE = 50;
@@ -30,6 +30,9 @@ public class Field extends JPanel implements ActionListener, KeyListener {
                 boards[i][j] = new Board(new Point(i, j));
             }
         }
+
+        boards[0][0].downSide.set(boards[0][1].upSide, new Color(100, 100, 100));
+        boards[0][1].upSide.set(boards[0][0].downSide, new Color(100, 100, 100));
 
         dTime = 0;
         timer = new Timer(TICK, this);

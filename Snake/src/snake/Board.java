@@ -11,17 +11,17 @@ enum Dir {
 }
 
 public class Board {
-    private Side upSide;
-    private Side downSide;
-    private Side leftSide;
-    private Side rigthSide;
+    public Side upSide;
+    public Side downSide;
+    public Side leftSide;
+    public Side rigthSide;
     private Point pos;
 
     public Board(Point pos) {
-        upSide = new Side(new Color(0, 0, 0));
-        downSide = new Side(new Color(0, 0, 0));
-        leftSide = new Side(new Color(0, 0, 0));
-        rigthSide = new Side(new Color(0, 0, 0));
+        upSide = new Side(new Color(0, 0, 0), this);
+        downSide = new Side(new Color(0, 0, 0), this);
+        leftSide = new Side(new Color(0, 0, 0), this);
+        rigthSide = new Side(new Color(0, 0, 0), this);
         this.pos = pos;
     }
 
@@ -30,22 +30,22 @@ public class Board {
         g.fillRect(
                 Field.TILE_SIZE * (1 + pos.x * (Field.BOARD_SIZE + 3)),
                 Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3)), Field.BOARD_SIZE * Field.TILE_SIZE,
-                Field.TILE_SIZE);
+                Field.TILE_SIZE/2);
         g.setColor(downSide.getColor());
         g.fillRect(
                 Field.TILE_SIZE * (1 + pos.x * (Field.BOARD_SIZE + 3)),
-                Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1),
+                Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1) + Field.TILE_SIZE/2,
                 Field.BOARD_SIZE * Field.TILE_SIZE,
-                Field.TILE_SIZE);
+                Field.TILE_SIZE/2);
 
         g.setColor(rigthSide.getColor());
         g.fillRect(
-            Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1),
-            Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE,
+            Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1) + Field.TILE_SIZE/2,
+            Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE/2,
             Field.BOARD_SIZE * Field.TILE_SIZE);
         g.setColor(leftSide.getColor());
         g.fillRect(Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3)),
-                Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE,
+                Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE/2,
                 Field.BOARD_SIZE * Field.TILE_SIZE);
 
         for (int row = 0; row < Field.BOARD_SIZE; row++) {
