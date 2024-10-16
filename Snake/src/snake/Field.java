@@ -31,8 +31,14 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         }
         
         
-        boards[0][0].getSide(Dir.DOWN).set(boards[0][1].getSide(Dir.LEFT), new Color(100, 100, 100));
-        boards[0][1].getSide(Dir.LEFT).set(boards[0][0].getSide(Dir.DOWN), new Color(100, 100, 100));
+        boards[0][0].getSide(Dir.DOWN).set(boards[0][1].getSide(Dir.UP), new Color(180, 40, 70));
+        boards[0][1].getSide(Dir.UP).set(boards[0][0].getSide(Dir.DOWN), new Color(180, 40, 70));
+        boards[0][0].getSide(Dir.LEFT).set(boards[0][1].getSide(Dir.RIGHT), new Color(50, 210, 20));
+        boards[0][1].getSide(Dir.RIGHT).set(boards[0][0].getSide(Dir.LEFT), new Color(50, 210, 20));
+        boards[0][0].getSide(Dir.UP).set(boards[0][1].getSide(Dir.DOWN), new Color(200, 190, 50));
+        boards[0][1].getSide(Dir.DOWN).set(boards[0][0].getSide(Dir.UP), new Color(200, 190, 50));
+        boards[0][0].getSide(Dir.RIGHT).set(boards[0][1].getSide(Dir.LEFT), new Color(60, 40, 190));
+        boards[0][1].getSide(Dir.LEFT).set(boards[0][0].getSide(Dir.RIGHT), new Color(60, 40, 190));
         
         player = new Snake(boards[0][0]);
 

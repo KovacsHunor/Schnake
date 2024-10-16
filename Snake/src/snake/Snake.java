@@ -51,6 +51,16 @@ public class Snake {
         pos.translate(dir.x, dir.y);
 
         if (pos.x < 0 || pos.x >= Field.BOARD_SIZE || pos.y < 0 || pos.y >= Field.BOARD_SIZE) {
+            
+            if(pos.x < 0 || pos.x >= Field.BOARD_SIZE){
+                pos.y = Field.BOARD_SIZE - pos.y - 1;
+            }
+            else{
+                pos.x = Field.BOARD_SIZE - pos.x - 1;
+            }
+            
+            pos = DirUtil.subtract(pos, dir);
+
             Side current = board.getSide(DirUtil.getDir(dir));
             Side pair = current.getPair();
 
@@ -58,7 +68,7 @@ public class Snake {
 
             Point newdir = DirUtil.rotateRight(DirUtil.getVector(pair.getDir()), 2);
             
-            Point relpos = DirUtil.subtract(DirUtil.subtract(pos, dir), new Point(Field.BOARD_SIZE/2, Field.BOARD_SIZE/2));
+            Point relpos = DirUtil.subtract(pos, new Point(Field.BOARD_SIZE/2, Field.BOARD_SIZE/2));
             int torotate = DirUtil.toRotate(dir, DirUtil.rotateRight(newdir, 2));
             pos = DirUtil.rotateRight(relpos, torotate);
             pos = DirUtil.subtract(pos, new Point(-Field.BOARD_SIZE/2, -Field.BOARD_SIZE/2));
