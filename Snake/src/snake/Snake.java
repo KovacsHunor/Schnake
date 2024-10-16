@@ -8,15 +8,17 @@ public class Snake {
     private BufferedImage img;
     private Graphics2D g2d;
 
+    private Board board;
     private Color pColor;
     private Point pos;
     private Point dir;
 
-    public Snake() {
+    public Snake(Board b) {
         img = new BufferedImage(Field.TILE_SIZE, Field.TILE_SIZE,
                 BufferedImage.TYPE_INT_RGB);
         g2d = img.createGraphics();
 
+        board = b;
         pColor = new Color(0, 0, 0);
         dir = new Point(1, 0);
         pos = new Point(0, 0);
@@ -27,7 +29,8 @@ public class Snake {
 
         g2d.setColor(pColor);
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-        g.drawImage(img, (pos.x+1) * Field.TILE_SIZE, (pos.y+1) * Field.TILE_SIZE, null);
+        g.drawImage(img, (pos.x + 1 + (board.getPos().x) * (Field.BOARD_SIZE + 3))
+                * Field.TILE_SIZE, ((pos.y + 1 + (board.getPos().y) * (Field.BOARD_SIZE + 3)) * Field.TILE_SIZE), null);
     }
 
     public void keyPressed(KeyEvent e) {

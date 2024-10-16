@@ -65,4 +65,8 @@ public class Board {
             }
         }
     }
+
+    Point getPos(){
+        return pos;
+    }
 }

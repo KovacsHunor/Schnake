@@ -22,7 +22,6 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         TILE_SIZE * (BOARD_SIZE * FIELD_SIZE + FIELD_SIZE * 3 - 1)));
         setBackground(new Color(30, 30, 30));
         
-        player = new Snake();
         
         boards = new Board[FIELD_SIZE][FIELD_SIZE];
         for (int i = 0; i < boards.length; i++) {
@@ -30,9 +29,12 @@ public class Field extends JPanel implements ActionListener, KeyListener {
                 boards[i][j] = new Board(new Point(i, j));
             }
         }
-
+        
+        
         boards[0][0].downSide.set(boards[0][1].upSide, new Color(100, 100, 100));
         boards[0][1].upSide.set(boards[0][0].downSide, new Color(100, 100, 100));
+        
+        player = new Snake(boards[1][1]);
 
         dTime = 0;
         timer = new Timer(TICK, this);
