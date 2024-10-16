@@ -8,7 +8,7 @@ public class Field extends JPanel implements ActionListener, KeyListener {
     private static final int TICK = 10;
     private static final int SPEED = 100;
 
-    public static final int BOARD_SIZE = 8;
+    public static final int BOARD_SIZE = 7;
     public static final int FIELD_SIZE = 2;
     public static final int TILE_SIZE = 50;
 
@@ -31,10 +31,10 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         }
         
         
-        boards[0][0].downSide.set(boards[0][1].upSide, new Color(100, 100, 100));
-        boards[0][1].upSide.set(boards[0][0].downSide, new Color(100, 100, 100));
+        boards[0][0].getSide(Dir.DOWN).set(boards[0][1].getSide(Dir.LEFT), new Color(100, 100, 100));
+        boards[0][1].getSide(Dir.LEFT).set(boards[0][0].getSide(Dir.DOWN), new Color(100, 100, 100));
         
-        player = new Snake(boards[1][1]);
+        player = new Snake(boards[0][0]);
 
         dTime = 0;
         timer = new Timer(TICK, this);

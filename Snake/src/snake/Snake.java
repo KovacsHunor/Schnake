@@ -20,7 +20,7 @@ public class Snake {
 
         board = b;
         pColor = new Color(0, 0, 0);
-        dir = new Point(1, 0);
+        dir = new Point(0, 1);
         pos = new Point(0, 0);
     }
 
@@ -50,15 +50,20 @@ public class Snake {
     public void move() {
         pos.translate(dir.x, dir.y);
 
-        if (pos.x < 0) {
-            pos.x = 0;
-        } else if (pos.x >= Field.BOARD_SIZE) {
-            pos.x = Field.BOARD_SIZE - 1;
-        }
-        if (pos.y < 0) {
-            pos.y = 0;
-        } else if (pos.y >= Field.BOARD_SIZE) {
-            pos.y = Field.BOARD_SIZE - 1;
+        if (pos.x < 0 || pos.x >= Field.BOARD_SIZE || pos.y < 0 || pos.y >= Field.BOARD_SIZE) {
+            Side current = board.getSide(DirUtil.getDir(dir));
+            Side pair = current.getPair();
+
+            board = pair.getBoard();
+
+            Point newdir = DirUtil.rotateRight(DirUtil.getVector(pair.getDir()), 2);
+            
+            Point relpos = DirUtil.subtract(DirUtil.subtract(pos, dir), new Point(Field.BOARD_SIZE/2, Field.BOARD_SIZE/2));
+            int torotate = DirUtil.toRotate(dir, DirUtil.rotateRight(newdir, 2));
+            pos = DirUtil.rotateRight(relpos, torotate);
+            pos = DirUtil.subtract(pos, new Point(-Field.BOARD_SIZE/2, -Field.BOARD_SIZE/2));
+
+            dir = newdir;
         }
     }
 

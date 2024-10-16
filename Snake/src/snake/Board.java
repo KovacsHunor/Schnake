@@ -3,47 +3,45 @@ package snake;
 import java.awt.*;
 import java.util.EnumMap;
 
-enum Dir {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-}
+
 
 public class Board {
-    public Side upSide;
-    public Side downSide;
-    public Side leftSide;
-    public Side rigthSide;
     private Point pos;
+    private EnumMap<Dir, Side> sides;
+
+    public Side getSide(Dir d){
+        return sides.get(d);
+    }
 
     public Board(Point pos) {
-        upSide = new Side(new Color(0, 0, 0), this);
-        downSide = new Side(new Color(0, 0, 0), this);
-        leftSide = new Side(new Color(0, 0, 0), this);
-        rigthSide = new Side(new Color(0, 0, 0), this);
+        sides = new EnumMap<>(Dir.class); 
+
+        sides.put(Dir.UP, new Side(new Color(0, 0, 0), this, Dir.UP));
+        sides.put(Dir.DOWN, new Side(new Color(0, 0, 0), this, Dir.DOWN));
+        sides.put(Dir.RIGHT, new Side(new Color(0, 0, 0), this, Dir.RIGHT));
+        sides.put(Dir.LEFT, new Side(new Color(0, 0, 0), this, Dir.LEFT));
         this.pos = pos;
     }
 
     public void draw(Graphics g) {
-        g.setColor(upSide.getColor());
+        g.setColor(sides.get(Dir.UP).getColor());
         g.fillRect(
                 Field.TILE_SIZE * (1 + pos.x * (Field.BOARD_SIZE + 3)),
                 Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3)), Field.BOARD_SIZE * Field.TILE_SIZE,
                 Field.TILE_SIZE/2);
-        g.setColor(downSide.getColor());
+        g.setColor(sides.get(Dir.DOWN).getColor());
         g.fillRect(
                 Field.TILE_SIZE * (1 + pos.x * (Field.BOARD_SIZE + 3)),
                 Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1) + Field.TILE_SIZE/2,
                 Field.BOARD_SIZE * Field.TILE_SIZE,
                 Field.TILE_SIZE/2);
 
-        g.setColor(rigthSide.getColor());
+        g.setColor(sides.get(Dir.RIGHT).getColor());
         g.fillRect(
             Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1) + Field.TILE_SIZE/2,
             Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE/2,
             Field.BOARD_SIZE * Field.TILE_SIZE);
-        g.setColor(leftSide.getColor());
+        g.setColor(sides.get(Dir.LEFT).getColor());
         g.fillRect(Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3)),
                 Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE/2,
                 Field.BOARD_SIZE * Field.TILE_SIZE);
