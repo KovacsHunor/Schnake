@@ -7,19 +7,30 @@ import javax.swing.*;
 public class Field extends JPanel implements ActionListener, KeyListener {
     private static final int TICK = 10;
     private static final int SPEED = 100;
+
+    public static final int OFFSET = 1;
+    public static final int BOARD_SIZE = 8;
+    public static final int FIELD_SIZE = 2;
     public static final int TILE_SIZE = 50;
-    public static final int ROWS = 19;
-    public static final int COLUMNS = 19;
 
     private int dTime;
     private Timer timer;
     private Snake player;
 
+    private Board[][] boards = new Board[FIELD_SIZE][FIELD_SIZE];
+
     public Field() {
-        setPreferredSize(new Dimension(TILE_SIZE * COLUMNS, TILE_SIZE * ROWS));
+        setPreferredSize(new Dimension(TILE_SIZE * (BOARD_SIZE * FIELD_SIZE + FIELD_SIZE * 3 - 1),
+        TILE_SIZE * (BOARD_SIZE * FIELD_SIZE + FIELD_SIZE * 3 - 1)));
         setBackground(new Color(30, 30, 30));
 
         player = new Snake();
+
+        for (int i = 0; i < boards.length; i++) {
+            for (int j = 0; j < boards[i].length; j++) {
+                boards[i][j] = new Board(new Point(i, j));
+            }
+        }
 
         dTime = 0;
         timer = new Timer(TICK, this);
@@ -38,8 +49,12 @@ public class Field extends JPanel implements ActionListener, KeyListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        drawBackground(g);
-        player.draw(g, this);
+        for (Board[] row : boards) {
+            for (Board board : row) {
+                board.draw(g);
+            }
+        }
+        player.draw(g);
     }
 
     @Override
@@ -55,22 +70,5 @@ public class Field extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // must be defined - KeyListener interface
-    }
-
-    private void drawBackground(Graphics g) {
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLUMNS; col++) {
-                if ((row + col) % 2 == 1) {
-                    g.setColor(new Color(60, 60, 60));
-                } else {
-                    g.setColor(new Color(50, 50, 50));
-                }
-                g.fillRect(
-                        col * TILE_SIZE,
-                        row * TILE_SIZE,
-                        TILE_SIZE,
-                        TILE_SIZE);
-            }
-        }
     }
 }

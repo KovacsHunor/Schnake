@@ -19,15 +19,15 @@ public class Snake {
 
         pColor = new Color(0, 0, 0);
         dir = new Point(1, 0);
-        pos = new Point(Field.COLUMNS / 2, Field.ROWS / 2);
+        pos = new Point(0, 0);
     }
 
-    public void draw(Graphics g, ImageObserver observer) {
+    public void draw(Graphics g) {
         pColor = new Color(255, 89, 94);
 
         g2d.setColor(pColor);
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-        g.drawImage(img, pos.x * Field.TILE_SIZE, pos.y * Field.TILE_SIZE, observer);
+        g.drawImage(img, (pos.x+Field.OFFSET) * Field.TILE_SIZE, (pos.y+Field.OFFSET) * Field.TILE_SIZE, null);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -49,13 +49,13 @@ public class Snake {
 
         if (pos.x < 0) {
             pos.x = 0;
-        } else if (pos.x >= Field.COLUMNS) {
-            pos.x = Field.COLUMNS - 1;
+        } else if (pos.x >= Field.BOARD_SIZE) {
+            pos.x = Field.BOARD_SIZE - 1;
         }
         if (pos.y < 0) {
             pos.y = 0;
-        } else if (pos.y >= Field.ROWS) {
-            pos.y = Field.ROWS - 1;
+        } else if (pos.y >= Field.BOARD_SIZE) {
+            pos.y = Field.BOARD_SIZE - 1;
         }
     }
 
