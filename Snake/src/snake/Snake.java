@@ -27,7 +27,7 @@ public class Snake {
 
         g2d.setColor(pColor);
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-        g.drawImage(img, (pos.x+Field.OFFSET) * Field.TILE_SIZE, (pos.y+Field.OFFSET) * Field.TILE_SIZE, null);
+        g.drawImage(img, (pos.x+1) * Field.TILE_SIZE, (pos.y+1) * Field.TILE_SIZE, null);
     }
 
     public void keyPressed(KeyEvent e) {

@@ -3,6 +3,13 @@ import java.awt.*;
 
 
 public class Side {
-    private Point dir;
     private Color color;
+
+    public Side(Color c){
+        color = c;
+    }
+
+    public Color getColor(){
+        return color;
+    }
 }
