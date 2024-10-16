@@ -6,10 +6,10 @@ import javax.swing.*;
 
 public class Field extends JPanel implements ActionListener, KeyListener {
     private static final int TICK = 10;
-    private static final int SPEED = 100;
-
-    public static final int BOARD_SIZE = 7;
+    private static final int SPEED = 120;
+   
     public static final int FIELD_SIZE = 2;
+    public static final int BOARD_SIZE = 15/FIELD_SIZE;
     public static final int TILE_SIZE = 50;
 
     private int dTime;

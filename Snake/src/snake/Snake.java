@@ -66,12 +66,20 @@ public class Snake {
 
             board = pair.getBoard();
 
+            Point center = new Point(Field.BOARD_SIZE/2, Field.BOARD_SIZE/2);
+
             Point newdir = DirUtil.rotateRight(DirUtil.getVector(pair.getDir()), 2);
             
-            Point relpos = DirUtil.subtract(pos, new Point(Field.BOARD_SIZE/2, Field.BOARD_SIZE/2));
+            Point relpos = DirUtil.subtract(pos, center);
             int torotate = DirUtil.toRotate(dir, DirUtil.rotateRight(newdir, 2));
             pos = DirUtil.rotateRight(relpos, torotate);
-            pos = DirUtil.subtract(pos, new Point(-Field.BOARD_SIZE/2, -Field.BOARD_SIZE/2));
+            pos = DirUtil.subtract(pos, new Point(-center.x, -center.y));
+
+            //todo: refactor
+            if(Field.BOARD_SIZE %2 == 0){
+                pos.x--;
+                pos.y--;
+            }
 
             dir = newdir;
         }
