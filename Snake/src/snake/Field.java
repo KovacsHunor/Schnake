@@ -10,44 +10,46 @@ import java.util.Random;
 public class Field extends JPanel implements ActionListener, KeyListener {
     private static final int TICK = 10;
     private static final int SPEED = 400;
-   
+
     public static final int FIELD_SIZE = 2;
     public static final int BOARD_SIZE = 8;
     public static final int TILE_SIZE = 50;
-    
+
     private Random rnd;
     private int dTime;
     private Timer timer;
     private Snake player;
     private Board[][] boards;
-    
+
     public Field() {
         setPreferredSize(new Dimension(TILE_SIZE * (FIELD_SIZE * (BOARD_SIZE + 3) - 1),
-        TILE_SIZE * (FIELD_SIZE * (BOARD_SIZE + 3) - 1)));
+                TILE_SIZE * (FIELD_SIZE * (BOARD_SIZE + 3) - 1)));
         setBackground(new Color(30, 30, 30));
         rnd = new Random();
-        
+
         List<Side> sideShuffle = new ArrayList<>();
 
         boards = new Board[FIELD_SIZE][FIELD_SIZE];
         for (int i = 0; i < boards.length; i++) {
             for (int j = 0; j < boards[i].length; j++) {
-                boards[i][j] = new Board(new Point(i, j));
-
-                for (Side side : boards[i][j].getSides().values()) {
-                    sideShuffle.add(side);
-                }
+                boards[i][j] = new Board(new Vector(i, j));
             }
         }
 
-        sideShuffle.sort((a, b)->rnd.nextInt());
-
-        for (int i = 0; i < sideShuffle.size(); i+=2) {
-            Color c = new Color(rnd.nextInt(255), rnd.nextInt(255), rnd.nextInt(255));
-            sideShuffle.get(i).set(sideShuffle.get(i+1), c);
-            sideShuffle.get(i+1).set(sideShuffle.get(i), c);
+        for (Board[] row : boards) {
+            for (Board board : row) {
+                sideShuffle.addAll(board.getSides().values());
+            }
         }
-        
+
+        sideShuffle.sort((a, b) -> rnd.nextInt());
+
+        for (int i = 0; i < sideShuffle.size(); i += 2) {
+            Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            sideShuffle.get(i).set(sideShuffle.get(i + 1), c);
+            sideShuffle.get(i + 1).set(sideShuffle.get(i), c);
+        }
+
         player = new Snake(boards[0][0]);
 
         dTime = 0;

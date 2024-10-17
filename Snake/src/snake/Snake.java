@@ -10,8 +10,8 @@ public class Snake {
 
     private Board board;
     private Color pColor;
-    private Point pos;
-    private Point dir;
+    private Vector pos;
+    private Vector dir;
 
     public Snake(Board b) {
         img = new BufferedImage(Field.TILE_SIZE, Field.TILE_SIZE,
@@ -20,8 +20,8 @@ public class Snake {
 
         board = b;
         pColor = new Color(0, 0, 0);
-        dir = new Point(0, 1);
-        pos = new Point(0, 0);
+        dir = new Vector(0, 1);
+        pos = new Vector(0, 0);
     }
 
     public void draw(Graphics g) {
@@ -37,13 +37,13 @@ public class Snake {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_UP && dir.y != 1) {
-            dir = new Point(0, -1);
+            dir = new Vector(0, -1);
         } else if (key == KeyEvent.VK_DOWN && dir.y != -1) {
-            dir = new Point(0, 1);
+            dir = new Vector(0, 1);
         } else if (key == KeyEvent.VK_RIGHT && dir.x != -1) {
-            dir = new Point(1, 0);
+            dir = new Vector(1, 0);
         } else if (key == KeyEvent.VK_LEFT && dir.x != 1) {
-            dir = new Point(-1, 0);
+            dir = new Vector(-1, 0);
         }
     }
 
@@ -59,20 +59,19 @@ public class Snake {
                 pos.x = Field.BOARD_SIZE - pos.x - 1;
             }
             
-            pos = DirUtil.subtract(pos, dir);
+            pos.sub(dir);
 
             Side current = board.getSide(DirUtil.getDir(dir));
             Side pair = current.getPair();
 
             board = pair.getBoard();
 
-            Point newdir = DirUtil.getVector(pair.getDir());
-            newdir = new Point(-newdir.x, -newdir.y);
+            Vector newdir = DirUtil.getVector(pair.getDir());
 
-            int torotate = DirUtil.toRotate(dir, DirUtil.getVector(pair.getDir()));
-            pos = DirUtil.rotateRight(pos, torotate);
+            int torotate = newdir.toRotate(dir);
+            pos.rotateInSquare(Field.BOARD_SIZE, torotate);
 
-            dir = newdir;
+            dir = newdir.negated();
         }
     }
 
