@@ -34,16 +34,32 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         for (int i = 0; i < boards.length; i++) {
             for (int j = 0; j < boards[i].length; j++) {
                 boards[i][j] = new Board(new Vector(i, j));
+                boardShuffle.add(boards[i][j]);
+                sideShuffle.addAll(boards[i][j].getSides().values());
             }
         }
-
-        for (Board[] row : boards) {
-            for (Board board : row) {
-                sideShuffle.addAll(board.getSides().values());
-            }
-        }
-
         sideShuffle.sort((a, b) -> rnd.nextInt());
+        boardShuffle.sort((a, b) -> rnd.nextInt());
+
+        
+
+
+        int dirIndex1 = rnd.nextInt(4);
+        int dirIndex2 = rnd.nextInt(4);
+        for (int i = 1; i < boardShuffle.size(); i++) {
+            Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+
+            while(dirIndex1 == dirIndex2){
+                dirIndex1 = rnd.nextInt(4);
+            }
+            dirIndex2 = rnd.nextInt(4);
+
+            Side s1 = boardShuffle.get(i-1).getSide(Dir.values()[dirIndex1]);
+            Side s2 = boardShuffle.get(i).getSide(Dir.values()[dirIndex2]);
+            Side.connect(s1, s2, c);
+            sideShuffle.remove(s1);
+            sideShuffle.remove(s2);
+        }
 
         for (int i = 0; i < sideShuffle.size(); i += 2) {
             Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
