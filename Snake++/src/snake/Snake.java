@@ -3,37 +3,44 @@ package snake;
 import java.awt.event.KeyEvent;
 import java.awt.*;
 import java.awt.image.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Snake {
-    private BufferedImage img;
-    private Graphics2D g2d;
+    private BufferedImage img = new BufferedImage(Util.TILE_SIZE, Util.TILE_SIZE,
+            BufferedImage.TYPE_INT_RGB);
+    private Graphics2D g2d = img.createGraphics();
 
     private Board board;
-    private Color pColor;
-    private Vector pos;
-    private Vector dir;
+    private Color color = new Color(0, 0, 0);
+    private Vector pos = new Vector(0, 0);
+    private Vector dir = new Vector(0, 1);
 
-    public Snake(Board b) {
-        img = new BufferedImage(Field.TILE_SIZE, Field.TILE_SIZE,
-                BufferedImage.TYPE_INT_RGB);
-        g2d = img.createGraphics();
+    private List<Node> nodes = new LinkedList<>();
 
+    public Snake(Board b, Color c) {
         board = b;
-        pColor = new Color(0, 0, 0);
-        dir = new Vector(0, 1);
-        pos = new Vector(0, 0);
+        color = c;
+        nodes.add(new Node(board, pos));
+    }
+
+    public void grow() {
+        nodes.add(new Node(nodes.get(nodes.size() - 1)));
     }
 
     public void draw(Graphics g) {
-        pColor = new Color(255, 89, 94);
-
-        g2d.setColor(pColor);
+        g2d.setColor(color);
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-        g.drawImage(img, (pos.x + 1 + (board.getPos().x) * (Field.BOARD_SIZE + 3))
-                * Field.TILE_SIZE, ((pos.y + 1 + board.getPos().y * (Field.BOARD_SIZE + 3)) * Field.TILE_SIZE), null);
+        for (Node node : nodes) {
+            g.drawImage(img, (node.getPos().x + 1 + (node.getBoard().getPos().x) * (Util.BOARD_SIZE + 3))
+                    * Util.TILE_SIZE,
+                    ((node.getPos().y + 1 + node.getBoard().getPos().y * (Util.BOARD_SIZE + 3)) * Util.TILE_SIZE),
+                    null);
+        }
+
     }
 
-    public void keyPressed(KeyEvent e) {
+    public boolean keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_UP && dir.y != 1) {
@@ -45,38 +52,52 @@ public class Snake {
         } else if (key == KeyEvent.VK_LEFT && dir.x != 1) {
             dir = new Vector(-1, 0);
         }
+        else{
+            return false;
+        }
+        return true;
     }
 
     public void move() {
         pos.translate(dir.x, dir.y);
 
-        if (pos.x < 0 || pos.x >= Field.BOARD_SIZE || pos.y < 0 || pos.y >= Field.BOARD_SIZE) {
-            
-            if(pos.x < 0 || pos.x >= Field.BOARD_SIZE){
-                pos.y = Field.BOARD_SIZE - pos.y - 1;
+        if (pos.x < 0 || pos.x >= Util.BOARD_SIZE || pos.y < 0 || pos.y >= Util.BOARD_SIZE) {
+
+            if (pos.x < 0 || pos.x >= Util.BOARD_SIZE) {
+                pos.y = Util.BOARD_SIZE - pos.y - 1;
+            } else {
+                pos.x = Util.BOARD_SIZE - pos.x - 1;
             }
-            else{
-                pos.x = Field.BOARD_SIZE - pos.x - 1;
-            }
-            
+
             pos.sub(dir);
 
-            Side current = board.getSide(DirUtil.getDir(dir));
+            Side current = board.getSide(Util.getDir(dir));
             Side pair = current.getPair();
 
             board = pair.getBoard();
 
-            Vector newdir = DirUtil.getVector(pair.getDir());
+            Vector newdir = Util.getVector(pair.getDir());
 
             int torotate = newdir.toRotate(dir);
-            pos.rotateInSquare(Field.BOARD_SIZE, torotate);
+            pos.rotateInSquare(Util.BOARD_SIZE, torotate);
 
             dir = newdir.negated();
         }
+
+        for (int i = nodes.size() - 1; i > 0; i--) {
+            nodes.get(i).setPos(nodes.get(i - 1).getPos());
+            nodes.get(i).setBoard(nodes.get(i - 1).getBoard());
+        }
+        nodes.get(0).setPos(pos);
+        nodes.get(0).setBoard(board);
     }
 
-    public Point getPos() {
+    public Vector getPos() {
         return pos;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
 }

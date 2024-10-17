@@ -4,18 +4,16 @@ import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
 
-
-
 public class Board {
     private Point pos;
     private EnumMap<Dir, Side> sides;
 
-    public Side getSide(Dir d){
+    public Side getSide(Dir d) {
         return sides.get(d);
     }
 
     public Board(Point pos) {
-        sides = new EnumMap<>(Dir.class); 
+        sides = new EnumMap<>(Dir.class);
 
         sides.put(Dir.UP, new Side(new Color(0, 0, 0), this, Dir.UP));
         sides.put(Dir.DOWN, new Side(new Color(0, 0, 0), this, Dir.DOWN));
@@ -24,52 +22,54 @@ public class Board {
         this.pos = pos;
     }
 
-    public Map<Dir, Side> getSides(){
+    public Map<Dir, Side> getSides() {
         return sides;
     }
 
     public void draw(Graphics g) {
+        //  draw the teleporter sides
         g.setColor(sides.get(Dir.UP).getColor());
         g.fillRect(
-                Field.TILE_SIZE * (1 + pos.x * (Field.BOARD_SIZE + 3)),
-                Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3)), Field.BOARD_SIZE * Field.TILE_SIZE,
-                Field.TILE_SIZE/2);
+                Util.TILE_SIZE * (1 + pos.x * (Util.BOARD_SIZE + 3)),
+                Util.TILE_SIZE * (pos.y * (Util.BOARD_SIZE + 3)), Util.BOARD_SIZE * Util.TILE_SIZE,
+                Util.TILE_SIZE / 2);
         g.setColor(sides.get(Dir.DOWN).getColor());
         g.fillRect(
-                Field.TILE_SIZE * (1 + pos.x * (Field.BOARD_SIZE + 3)),
-                Field.TILE_SIZE * (pos.y * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1) + Field.TILE_SIZE/2,
-                Field.BOARD_SIZE * Field.TILE_SIZE,
-                Field.TILE_SIZE/2);
+                Util.TILE_SIZE * (1 + pos.x * (Util.BOARD_SIZE + 3)),
+                Util.TILE_SIZE * (pos.y * (Util.BOARD_SIZE + 3) + Util.BOARD_SIZE + 1) + Util.TILE_SIZE / 2,
+                Util.BOARD_SIZE * Util.TILE_SIZE,
+                Util.TILE_SIZE / 2);
 
         g.setColor(sides.get(Dir.RIGHT).getColor());
         g.fillRect(
-            Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3) + Field.BOARD_SIZE + 1) + Field.TILE_SIZE/2,
-            Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE/2,
-            Field.BOARD_SIZE * Field.TILE_SIZE);
+                Util.TILE_SIZE * (pos.x * (Util.BOARD_SIZE + 3) + Util.BOARD_SIZE + 1) + Util.TILE_SIZE / 2,
+                Util.TILE_SIZE * (1 + pos.y * (Util.BOARD_SIZE + 3)), Util.TILE_SIZE / 2,
+                Util.BOARD_SIZE * Util.TILE_SIZE);
         g.setColor(sides.get(Dir.LEFT).getColor());
-        g.fillRect(Field.TILE_SIZE * (pos.x * (Field.BOARD_SIZE + 3)),
-                Field.TILE_SIZE * (1 + pos.y * (Field.BOARD_SIZE + 3)), Field.TILE_SIZE/2,
-                Field.BOARD_SIZE * Field.TILE_SIZE);
+        g.fillRect(Util.TILE_SIZE * (pos.x * (Util.BOARD_SIZE + 3)),
+                Util.TILE_SIZE * (1 + pos.y * (Util.BOARD_SIZE + 3)), Util.TILE_SIZE / 2,
+                Util.BOARD_SIZE * Util.TILE_SIZE);
 
-        for (int row = 0; row < Field.BOARD_SIZE; row++) {
-            for (int col = 0; col < Field.BOARD_SIZE; col++) {
+        // draw the checkered grid
+        for (int row = 0; row < Util.BOARD_SIZE; row++) {
+            for (int col = 0; col < Util.BOARD_SIZE; col++) {
                 if ((row + col) % 2 == 1) {
                     g.setColor(new Color(60, 60, 60));
                 } else {
                     g.setColor(new Color(50, 50, 50));
                 }
                 g.fillRect(
-                        (col + 1) * Field.TILE_SIZE
-                                + (pos.x) * (Field.BOARD_SIZE * Field.TILE_SIZE + 3 * Field.TILE_SIZE),
-                        (row + 1) * Field.TILE_SIZE
-                                + (pos.y) * (Field.BOARD_SIZE * Field.TILE_SIZE + 3 * Field.TILE_SIZE),
-                        Field.TILE_SIZE,
-                        Field.TILE_SIZE);
+                        (col + 1) * Util.TILE_SIZE
+                                + (pos.x) * (Util.BOARD_SIZE * Util.TILE_SIZE + 3 * Util.TILE_SIZE),
+                        (row + 1) * Util.TILE_SIZE
+                                + (pos.y) * (Util.BOARD_SIZE * Util.TILE_SIZE + 3 * Util.TILE_SIZE),
+                        Util.TILE_SIZE,
+                        Util.TILE_SIZE);
             }
         }
     }
 
-    Point getPos(){
+    public Point getPos() {
         return pos;
     }
 }

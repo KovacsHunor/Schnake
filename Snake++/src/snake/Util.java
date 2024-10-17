@@ -11,24 +11,30 @@ enum Dir {
     RIGHT
 }
 
-public class DirUtil {
-    protected static final Map<Vector, Dir> vectorDir;
-    protected static final Map<Dir, Vector> dirVector;
+public class Util {
+    public static final int TICK = 10;
+    public static final int SPEED = 5;
+
+    public static final int FIELD_SIZE = 2;
+    public static final int BOARD_SIZE = 8;
+    public static final int TILE_SIZE = 40;
+
+    protected static final Map<Vector, Dir> vectorDir = new HashMap<>();
+    protected static final Map<Dir, Vector> dirVector = new EnumMap<>(Dir.class);
+
     static{
-        vectorDir = new HashMap<>();
         vectorDir.put(new Vector(0, -1), Dir.UP);
         vectorDir.put(new Vector(0, 1), Dir.DOWN);
         vectorDir.put(new Vector(1, 0), Dir.RIGHT);
         vectorDir.put(new Vector(-1, 0), Dir.LEFT);
 
-        dirVector = new EnumMap<>(Dir.class);
         dirVector.put(Dir.UP, new Vector(0, -1));
         dirVector.put(Dir.DOWN, new Vector(0, 1));
         dirVector.put(Dir.RIGHT, new Vector(1, 0));
         dirVector.put(Dir.LEFT, new Vector(-1, 0));
     }
     
-    DirUtil(){}
+    Util(){}
 
     public static Vector getVector(Dir d){
         return new Vector(dirVector.get(d));
