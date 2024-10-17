@@ -14,6 +14,11 @@ public class Side {
         dir = d;
     }
 
+    public static void connect(Side s1, Side s2, Color c){
+        s1.set(s2, c);
+        s2.set(s1, c);
+    } 
+
     public Color getColor(){
         return color;
     }
@@ -30,7 +35,7 @@ public class Side {
         return board;
     }
 
-    public void set(Side s2, Color c){
+    private void set(Side s2, Color c){
         pair = s2;
         color = c;
     }

@@ -28,6 +28,7 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         rnd = new Random();
 
         List<Side> sideShuffle = new ArrayList<>();
+        List<Board> boardShuffle = new ArrayList<>();
 
         boards = new Board[FIELD_SIZE][FIELD_SIZE];
         for (int i = 0; i < boards.length; i++) {
@@ -46,8 +47,7 @@ public class Field extends JPanel implements ActionListener, KeyListener {
 
         for (int i = 0; i < sideShuffle.size(); i += 2) {
             Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            sideShuffle.get(i).set(sideShuffle.get(i + 1), c);
-            sideShuffle.get(i + 1).set(sideShuffle.get(i), c);
+            Side.connect(sideShuffle.get(i), sideShuffle.get(i+1), c);
         }
 
         player = new Snake(boards[0][0]);
