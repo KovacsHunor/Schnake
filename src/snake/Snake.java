@@ -1,27 +1,36 @@
 package snake;
 
-import java.awt.event.KeyEvent;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
-    private BufferedImage img = new BufferedImage(Util.TILE_SIZE, Util.TILE_SIZE,
+    private final BufferedImage img = new BufferedImage(Util.TILE_SIZE, Util.TILE_SIZE,
             BufferedImage.TYPE_INT_RGB);
-    private Graphics2D g2d = img.createGraphics();
+    private final Graphics2D g2d = img.createGraphics();
 
     private Board board;
     private Color color = new Color(0, 0, 0);
-    private Vector pos = new Vector(0, 0);
+    private final Vector pos = new Vector(0, 0);
     private Vector dir = new Vector(0, 1);
 
-    private List<Node> nodes = new LinkedList<>();
+    private final List<Node> nodes = new LinkedList<>();
 
     public Snake(Board b, Color c) {
         board = b;
         color = c;
         nodes.add(new Node(board, pos));
+    }
+
+    public boolean checkDeath() {
+        for (int i = 4; i < nodes.size(); i++) {
+            if (nodes.get(i).getPos().equals(pos) && nodes.get(i).getBoard().equals(board)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void grow() {
@@ -51,8 +60,7 @@ public class Snake {
             dir = new Vector(1, 0);
         } else if (key == KeyEvent.VK_LEFT && dir.x != 1) {
             dir = new Vector(-1, 0);
-        }
-        else{
+        } else {
             return false;
         }
         return true;

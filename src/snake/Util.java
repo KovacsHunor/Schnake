@@ -1,15 +1,6 @@
 package snake;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-
-enum Dir {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-}
+import java.util.*;
 
 public class Util {
     public static final int TICK = 10;
@@ -19,8 +10,10 @@ public class Util {
     public static final int BOARD_SIZE = 8;
     public static final int TILE_SIZE = 40;
 
-    protected static final Map<Vector, Dir> vectorDir = new HashMap<>();
-    protected static final Map<Dir, Vector> dirVector = new EnumMap<>(Dir.class);
+    private static final Map<Vector, Dir> vectorDir = new HashMap<>();
+    private static final Map<Dir, Vector> dirVector = new EnumMap<>(Dir.class);
+
+    private Util(){}
 
     static{
         vectorDir.put(new Vector(0, -1), Dir.UP);
@@ -34,8 +27,6 @@ public class Util {
         dirVector.put(Dir.LEFT, new Vector(-1, 0));
     }
     
-    Util(){}
-
     public static Vector getVector(Dir d){
         return new Vector(dirVector.get(d));
     }

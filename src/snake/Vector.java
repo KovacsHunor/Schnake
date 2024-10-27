@@ -15,6 +15,10 @@ public class Vector extends Point{
         y += p.y;
     }
 
+    public Vector sum(Point p){
+        return new Vector(x+p.x, y+p.y);
+    }
+
     public void sub(Point p){
         x -= p.x;
         y -= p.y;

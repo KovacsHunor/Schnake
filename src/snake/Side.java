@@ -5,8 +5,8 @@ import java.awt.*;
 public class Side {
     private Color color;
     private Side pair;
-    private Board board;
-    private Dir dir;
+    private final Board board;
+    private final Dir dir;
 
     public Side(Color c, Board b, Dir d){
         color = c;

@@ -1,15 +1,13 @@
 package snake;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
 import fruit.Fruit;
 import fruit.NormalFruit;
-
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.*;
 
 public class Field extends JPanel implements ActionListener, KeyListener {
     private boolean action = false;
@@ -76,6 +74,9 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         if (dTime == 0) {
             action = false;
             player.move();
+            if (player.checkDeath()) {
+                //TODO
+            }
             if (fruit.getPos().equals(player.getPos()) && fruit.getBoard().equals(player.getBoard())) {
                 fruit.eatenBy(player);
                 fruit = new NormalFruit(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)],
