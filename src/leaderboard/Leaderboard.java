@@ -1,6 +1,5 @@
 package leaderboard;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,6 +7,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import menu.Menu;
 import snake.Main;
 
 public class Leaderboard extends JPanel{
@@ -22,8 +23,7 @@ public class Leaderboard extends JPanel{
 
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) Main.window.getLayout();
-                cardLayout.show(Main.window, "Menu");
+                Main.init(new Menu());
             }
         });
 

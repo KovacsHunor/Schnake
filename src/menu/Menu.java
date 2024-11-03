@@ -20,15 +20,11 @@ public class Menu extends JPanel {
 
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) Main.window.getLayout();
-                cardLayout.show(Main.window, "Game");
-                Main.getGame().startTimer();
-                Main.getGame().requestFocusInWindow();
+                Main.init(new snake.Field());
             }
         });
         button2.addActionListener(ae -> {
-            CardLayout cardLayout = (CardLayout) Main.window.getLayout();
-            cardLayout.show(Main.window, "Leaderboard");
+            Main.init(new leaderboard.Leaderboard());
         });
         button3.addActionListener(ae -> System.exit(0));
 

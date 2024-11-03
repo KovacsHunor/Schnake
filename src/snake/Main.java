@@ -1,52 +1,31 @@
 package snake;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.event.HierarchyEvent;
-
+import java.awt.event.KeyListener;
 import javax.swing.*;
-import leaderboard.Leaderboard;
 import menu.Menu;
 
 public class Main {
-    public static JPanel window;
-    private static Menu menu;
-    private static Leaderboard leaderboard;
-    private static Field game;
+    private static JFrame frame;
 
-    private static void displayGUI() {
-        JFrame frame = new JFrame("Schnake");
+    public static void init(JPanel panel) {
+        if(frame != null){
+            frame.dispose();
+        }
+        frame = new JFrame("Schnake");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        window = new JPanel();
-        window.setLayout(new CardLayout());
-
-        menu = new Menu();
-        leaderboard = new Leaderboard();
-        game = new Field();
-
-        window.addKeyListener(game);
-
-        window.add(menu, "Menu");
-        window.add(leaderboard, "Leaderboard");
-        window.add(game, "Game");
-
-        frame.addKeyListener(game);
-        frame.getContentPane().add(window, BorderLayout.CENTER);
+        try{
+            frame.addKeyListener((KeyListener) panel);
+        }catch(Exception e){
+            
+        }
+        
+        frame.add(panel);
         frame.pack();
-        frame.setLocationByPlatform(true);
+        frame.setLocationRelativeTo(panel);
         frame.setVisible(true);
     }
 
-    public static Field getGame(){
-        return game;
-    }
-
     public static void main(String... args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                displayGUI();
-            }
-        });
+        init(new Menu());
     }
 }

@@ -63,6 +63,7 @@ public class Field extends JPanel implements ActionListener, KeyListener {
             Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
+        timer.start();
     }
 
     public void startTimer(){
