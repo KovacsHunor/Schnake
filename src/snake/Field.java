@@ -71,39 +71,21 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         timer.start();
     }
 
-    private  List<Color> distributedColors(int n){
-        int range = 1000;
+    private List<Color> distributedColors(int n) {
         List<Color> palette = new ArrayList<>();
-        
-        int r;
-        int g;
-        int b;
-        for (int i = 0; i < n; i++) {
 
-            int pos = range/n*i + rnd.nextInt(range/n/3);
-            int lower = 66;
-            int upper = 245;
+        float h = 0;
+        float s;
+        float b;
+        for (int i = 1; i <= n; i++) {
+            
 
-            if(pos < range/6) r = upper;
-            else if(pos < 2*range/6) r = upper - pos%(range/6);
-            else if(pos < 4*range/6) r = lower;
-            else if(pos < 5*range/6) r = lower + pos%(range/6);
-            else r = upper;
+            h += rnd.nextFloat(0.02f, (float) 2*i/n);
+            s = rnd.nextFloat(0.33f, 1);
+            b = rnd.nextFloat(0.33f, 1);
 
-            if(pos < range/6) g = lower+pos;
-            else if(pos < 1.7*range/6) g = upper;
-            else if(pos < 3.1*range/6) g = upper - pos%(range/6);
-            else g = lower;
-
-            if(pos < 2*range/6) b = lower;
-            else if(pos < 3*range/6) b = lower + pos%(range/6);
-            else if(pos < 5*range/6) b = upper;
-            else b = upper - pos%(range/6);
-
-
-            palette.add(new Color(r, g, b));
+            palette.add(Color.getHSBColor(h, s, b));
         }
-
 
         return palette;
     }
