@@ -44,8 +44,11 @@ public class Field extends JPanel implements ActionListener, KeyListener {
 
         int dirIndex1 = rnd.nextInt(4);
         int dirIndex2 = rnd.nextInt(4);
+
+        List<Color> colors = distributedColors(sideShuffle.size());
         for (int i = 1; i < boardShuffle.size(); i++) {
-            Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            Color c = colors.getFirst();
+            colors.removeFirst();
 
             while (dirIndex1 == dirIndex2) {
                 dirIndex1 = rnd.nextInt(4);
@@ -60,17 +63,56 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         }
 
         for (int i = 0; i < sideShuffle.size(); i += 2) {
-            Color c = new Color(rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            Color c = colors.getFirst();
+            colors.removeFirst();
+
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
         timer.start();
     }
 
-    public void startTimer(){
+    private  List<Color> distributedColors(int n){
+        int range = 1000;
+        List<Color> palette = new ArrayList<>();
+        
+        int r;
+        int g;
+        int b;
+        for (int i = 0; i < n; i++) {
+
+            int pos = range/n*i + rnd.nextInt(range/n/3);
+            int lower = 66;
+            int upper = 245;
+
+            if(pos < range/6) r = upper;
+            else if(pos < 2*range/6) r = upper - pos%(range/6);
+            else if(pos < 4*range/6) r = lower;
+            else if(pos < 5*range/6) r = lower + pos%(range/6);
+            else r = upper;
+
+            if(pos < range/6) g = lower+pos;
+            else if(pos < 1.7*range/6) g = upper;
+            else if(pos < 3.1*range/6) g = upper - pos%(range/6);
+            else g = lower;
+
+            if(pos < 2*range/6) b = lower;
+            else if(pos < 3*range/6) b = lower + pos%(range/6);
+            else if(pos < 5*range/6) b = upper;
+            else b = upper - pos%(range/6);
+
+
+            palette.add(new Color(r, g, b));
+        }
+
+
+        return palette;
+    }
+
+    public void startTimer() {
         timer.start();
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timer.stop();
     }
 
