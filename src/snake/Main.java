@@ -6,6 +6,7 @@ import menu.Menu;
 
 public class Main {
     private static JFrame frame;
+    private static String username = "sample_username";
 
     public static void init(JPanel panel) {
         if(frame != null){
@@ -23,6 +24,14 @@ public class Main {
         frame.pack();
         frame.setLocationRelativeTo(panel);
         frame.setVisible(true);
+    }
+
+    public static void setUsername(String name){
+        username = name;
+    }
+
+    public static String getUsername(){
+        return username;
     }
 
     public static void main(String... args) {
