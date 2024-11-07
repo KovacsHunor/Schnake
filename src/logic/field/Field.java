@@ -13,7 +13,7 @@ import logic.util.Dir;
 import logic.util.Util;
 import logic.util.Vector;
 
-public class Field extends JPanel implements ActionListener, KeyListener {
+public class Field extends JPanel implements ActionListener {
     private boolean action = false;
     private Random rnd = new Random();
     private int dTime = 0;
@@ -72,7 +72,23 @@ public class Field extends JPanel implements ActionListener, KeyListener {
 
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
+
+        setKeyBindings();
         timer.start();
+    }
+
+    private void setKeyBindings(){
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");
+        getActionMap().put("up", upButton());
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "down");
+        getActionMap().put("down", downButton());
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "left");
+        getActionMap().put("left", leftButton());
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "right");
+        getActionMap().put("right", rightButton());
     }
 
     private List<Color> distributedColors(int n) {
@@ -82,9 +98,8 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         float s;
         float b;
         for (int i = 1; i <= n; i++) {
-            
 
-            h += rnd.nextFloat(0.02f, (float) 2*i/n);
+            h += (float) i / n;
             s = rnd.nextFloat(0.33f, 1);
             b = rnd.nextFloat(0.33f, 1);
 
@@ -132,20 +147,47 @@ public class Field extends JPanel implements ActionListener, KeyListener {
         player.draw(g);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // must be defined - KeyListener interface
+    private Action upButton() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player.getDir().y != 1) {
+                    player.setDir(new Vector(0, -1));
+                }
+            }
+        };
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (!action) {
-            action = player.keyPressed(e);
-        }
+    private Action downButton() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player.getDir().y != -1) {
+                    player.setDir(new Vector(0, 1));
+                }
+            }
+        };
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        // must be defined - KeyListener interface
+    private Action leftButton() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player.getDir().x != 1) {
+                    player.setDir(new Vector(-1, 0));
+                }
+            }
+        };
+    }
+
+    private Action rightButton() {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (player.getDir().x != -1) {
+                    player.setDir(new Vector(1, 0));
+                }
+            }
+        };
     }
 }

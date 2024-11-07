@@ -1,11 +1,9 @@
 package logic.snake;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.*;
 import java.util.LinkedList;
 import java.util.List;
-
 import logic.field.Board;
 import logic.field.Side;
 import logic.util.Util;
@@ -54,23 +52,6 @@ public class Snake {
 
     }
 
-    public boolean keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_UP && dir.y != 1) {
-            dir = new Vector(0, -1);
-        } else if (key == KeyEvent.VK_DOWN && dir.y != -1) {
-            dir = new Vector(0, 1);
-        } else if (key == KeyEvent.VK_RIGHT && dir.x != -1) {
-            dir = new Vector(1, 0);
-        } else if (key == KeyEvent.VK_LEFT && dir.x != 1) {
-            dir = new Vector(-1, 0);
-        } else {
-            return false;
-        }
-        return true;
-    }
-
     public void move() {
         pos.translate(dir.x, dir.y);
 
@@ -111,6 +92,14 @@ public class Snake {
 
     public Board getBoard() {
         return board;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
+
+    public void setDir(Vector v) {
+        dir = v;
     }
 
 }

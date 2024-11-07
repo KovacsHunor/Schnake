@@ -1,5 +1,6 @@
 package gui.menu;
 
+import gui.game.Game;
 import gui.leaderboard.Leaderboard;
 import java.awt.*;
 import javax.swing.*;
@@ -33,14 +34,14 @@ public class Menu extends JPanel {
         JButton button2 = new JButton("Leaderboard");
         JButton button3 = new JButton("Exit");
         
-        button1.addActionListener(ae -> Main.init(new logic.field.Field()));
+        button1.addActionListener(ae -> Main.init(new Game()));
         button2.addActionListener(ae -> Main.init(new Leaderboard()));
         button3.addActionListener(ae -> System.exit(0));
         
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        add(upper);
+        add(upper, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
