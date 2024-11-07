@@ -1,4 +1,4 @@
-package snake;
+package logic.field;
 
 import fruit.Fruit;
 import fruit.NormalFruit;
@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.*;
+import logic.snake.Snake;
+import logic.util.Dir;
+import logic.util.Util;
+import logic.util.Vector;
 
 public class Field extends JPanel implements ActionListener, KeyListener {
     private boolean action = false;

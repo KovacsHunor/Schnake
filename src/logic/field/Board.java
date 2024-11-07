@@ -1,14 +1,14 @@
-package snake;
+package logic.field;
 
 import java.awt.*;
 import java.util.EnumMap;
 import java.util.Map;
+import logic.util.Dir;
+import logic.util.Util;
 
 public class Board {
     private final Point pos;
     private final EnumMap<Dir, Side> sides;
-    private Object[][] grid;
-
     public Board(Point pos) {
         sides = new EnumMap<>(Dir.class);
 
@@ -16,8 +16,6 @@ public class Board {
         sides.put(Dir.DOWN, new Side(new Color(0, 0, 0), this, Dir.DOWN));
         sides.put(Dir.RIGHT, new Side(new Color(0, 0, 0), this, Dir.RIGHT));
         sides.put(Dir.LEFT, new Side(new Color(0, 0, 0), this, Dir.LEFT));
-
-        grid = new Object[Util.BOARD_SIZE][Util.BOARD_SIZE];
 
         this.pos = pos;
     }

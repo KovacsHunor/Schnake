@@ -1,4 +1,7 @@
-package snake;
+package logic.snake;
+
+import logic.field.Board;
+import logic.util.Vector;
 
 public class Node {
     private Vector pos;

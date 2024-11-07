@@ -1,11 +1,10 @@
 package fruit;
 
 import java.awt.*;
-
-import snake.Board;
-import snake.Util;
-import snake.Snake;
-import snake.Vector;
+import logic.field.Board;
+import logic.snake.Snake;
+import logic.util.Util;
+import logic.util.Vector;
 
 public abstract class Fruit {
     protected Color color;
@@ -31,11 +30,11 @@ public abstract class Fruit {
                 Util.TILE_SIZE);
     }
 
-    public Vector getPos(){
+    public Vector getPos() {
         return pos;
     }
 
-    public Board getBoard(){
+    public Board getBoard() {
         return board;
     }
 }

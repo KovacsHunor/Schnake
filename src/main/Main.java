@@ -1,8 +1,9 @@
-package snake;
+package main;
 
+
+import gui.menu.Menu;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import menu.Menu;
 
 public class Main {
     private static JFrame frame;

@@ -1,4 +1,4 @@
-package snake;
+package logic.util;
 
 public enum Dir {
     UP,

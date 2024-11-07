@@ -1,4 +1,4 @@
-package snake;
+package logic.util;
 import java.awt.Point;
 
 public class Vector extends Point{

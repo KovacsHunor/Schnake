@@ -1,10 +1,15 @@
-package snake;
+package logic.snake;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.*;
 import java.util.LinkedList;
 import java.util.List;
+
+import logic.field.Board;
+import logic.field.Side;
+import logic.util.Util;
+import logic.util.Vector;
 
 public class Snake {
     private final BufferedImage img = new BufferedImage(Util.TILE_SIZE, Util.TILE_SIZE,

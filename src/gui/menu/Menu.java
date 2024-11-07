@@ -1,8 +1,9 @@
-package menu;
+package gui.menu;
 
+import gui.leaderboard.Leaderboard;
 import java.awt.*;
 import javax.swing.*;
-import snake.Main;
+import main.Main;
 
 public class Menu extends JPanel {
     public Menu() {
@@ -32,8 +33,8 @@ public class Menu extends JPanel {
         JButton button2 = new JButton("Leaderboard");
         JButton button3 = new JButton("Exit");
         
-        button1.addActionListener(ae -> Main.init(new snake.Field()));
-        button2.addActionListener(ae -> Main.init(new leaderboard.Leaderboard()));
+        button1.addActionListener(ae -> Main.init(new logic.field.Field()));
+        button2.addActionListener(ae -> Main.init(new Leaderboard()));
         button3.addActionListener(ae -> System.exit(0));
         
         gbc.gridx = 0;

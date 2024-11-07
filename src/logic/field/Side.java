@@ -1,5 +1,6 @@
-package snake;
+package logic.field;
 import java.awt.*;
+import logic.util.Dir;
 
 
 public class Side {
