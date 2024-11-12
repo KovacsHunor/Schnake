@@ -17,12 +17,18 @@ import logic.util.Util;
 import logic.util.Vector;
 
 public class Field extends JPanel implements ActionListener, Resettable {
+
     private Random rnd = new Random();
     private int dTime = 0;
     private Timer timer = new Timer(Util.TICK, this);
     private Fruit fruit;
     private Board[][] boards = new Board[Util.FIELD_SIZE][Util.FIELD_SIZE];
     private Snake player;
+    private Game game;
+
+    public void updatePoint(){
+        game.setPointLabel(player.getSize()-1);
+    }
 
     private void init() {
         List<Side> sideShuffle = new ArrayList<>();
@@ -36,6 +42,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
             }
         }
         player = new Snake(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)], new Color(255, 89, 94));
+        updatePoint();
 
         sideShuffle.sort((a, b) -> rnd.nextInt());
         boardShuffle.sort((a, b) -> rnd.nextInt());
@@ -74,7 +81,8 @@ public class Field extends JPanel implements ActionListener, Resettable {
         timer.restart();
     }
 
-    public Field() {
+    public Field(Game game) {
+        this.game = game;
         setPreferredSize(new Dimension(Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1),
                 Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1)));
 
@@ -134,6 +142,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
             }
             if (fruit.getPos().equals(player.getPos()) && fruit.getBoard().equals(player.getBoard())) {
                 fruit.eatenBy(player);
+                updatePoint();
                 fruit = new NormalFruit(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)],
                         new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE)), new Color(0, 255, 0));
             }

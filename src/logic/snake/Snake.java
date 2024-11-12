@@ -10,6 +10,7 @@ import logic.util.Util;
 import logic.util.Vector;
 
 public class Snake {
+
     private final BufferedImage img = new BufferedImage(Util.TILE_SIZE, Util.TILE_SIZE,
             BufferedImage.TYPE_INT_RGB);
     private final Graphics2D g2d = img.createGraphics();
@@ -18,6 +19,7 @@ public class Snake {
     private Color color = new Color(0, 0, 0);
     private final Vector pos = new Vector(0, 0);
     private Vector dir = new Vector(0, 1);
+    private int point = 0;
 
     private final List<Node> nodes = new LinkedList<>();
 
@@ -25,6 +27,14 @@ public class Snake {
         board = b;
         color = c;
         nodes.add(new Node(board, pos));
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int newPoint) {
+        point = newPoint;
     }
 
     public boolean checkDeath() {
@@ -88,6 +98,10 @@ public class Snake {
 
     public Vector getPos() {
         return pos;
+    }
+
+    public int getSize() {
+        return nodes.size();
     }
 
     public Board getBoard() {

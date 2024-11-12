@@ -9,11 +9,13 @@ import javax.swing.JPanel;
 import main.Main;
 
 public class Game extends JPanel {
+    JLabel pointLabel = new JLabel("0");
+
     public Game() {
         setName("Game");
         setLayout(new GridBagLayout());
 
-        Field field = new Field();
+        Field field = new Field(this);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -25,7 +27,7 @@ public class Game extends JPanel {
             Main.switchTo("menu");
             field.reset();
         });
-        JLabel pointLabel = new JLabel("0");
+        
 
         upper.add(menuButton);
         upper.add(pointLabel);
@@ -42,5 +44,9 @@ public class Game extends JPanel {
         add(lower, gbc);
 
         setVisible(true);
+    }
+
+    public void setPointLabel(int point){
+        pointLabel.setText("" + point);
     }
 }
