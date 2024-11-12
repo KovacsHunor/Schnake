@@ -1,6 +1,5 @@
 package gui.leaderboard;
 
-import gui.menu.Menu;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,7 +17,7 @@ public class Leaderboard extends JPanel {
 
         JButton button1 = new JButton("Menu");
 
-        button1.addActionListener(ae -> Main.init(new Menu()));
+        button1.addActionListener(ae -> Main.switchTo("menu"));
 
         gbc.gridx = 0;
         gbc.gridy = 0;

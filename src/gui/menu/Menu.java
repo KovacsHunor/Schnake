@@ -1,12 +1,10 @@
 package gui.menu;
 
-import gui.game.Game;
-import gui.leaderboard.Leaderboard;
 import java.awt.*;
 import javax.swing.*;
 import main.Main;
 
-public class Menu extends JPanel {
+public class Menu extends JPanel{
     public Menu() {
         setName("Menu");
         setLayout(new GridBagLayout());
@@ -34,8 +32,8 @@ public class Menu extends JPanel {
         JButton button2 = new JButton("Leaderboard");
         JButton button3 = new JButton("Exit");
         
-        button1.addActionListener(ae -> Main.init(new Game()));
-        button2.addActionListener(ae -> Main.init(new Leaderboard()));
+        button1.addActionListener(ae -> Main.switchTo("game"));
+        button2.addActionListener(ae -> Main.switchTo("leaderboard"));
         button3.addActionListener(ae -> System.exit(0));
         
         gbc.gridx = 0;

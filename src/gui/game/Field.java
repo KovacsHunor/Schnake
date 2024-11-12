@@ -1,20 +1,22 @@
-package logic.field;
+package gui.game;
 
 import fruit.Fruit;
 import fruit.NormalFruit;
+import gui.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.*;
+import logic.field.Board;
+import logic.field.Side;
 import logic.snake.Snake;
 import logic.util.Dir;
 import logic.util.Util;
 import logic.util.Vector;
 
-public class Field extends JPanel implements ActionListener {
-    private boolean action = false;
+public class Field extends JPanel implements ActionListener, Resettable {
     private Random rnd = new Random();
     private int dTime = 0;
     private Timer timer = new Timer(Util.TICK, this);
@@ -22,13 +24,9 @@ public class Field extends JPanel implements ActionListener {
     private Board[][] boards = new Board[Util.FIELD_SIZE][Util.FIELD_SIZE];
     private Snake player;
 
-    public Field() {
+    private void init() {
         List<Side> sideShuffle = new ArrayList<>();
         List<Board> boardShuffle = new ArrayList<>();
-
-        setPreferredSize(new Dimension(Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1),
-                Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1)));
-        setBackground(new Color(30, 30, 30));
 
         for (int i = 0; i < boards.length; i++) {
             for (int j = 0; j < boards[i].length; j++) {
@@ -73,11 +71,20 @@ public class Field extends JPanel implements ActionListener {
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
 
-        setKeyBindings();
-        timer.start();
+        timer.restart();
     }
 
-    private void setKeyBindings(){
+    public Field() {
+        setPreferredSize(new Dimension(Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1),
+                Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1)));
+
+        setBackground(new Color(30, 30, 30));
+        setKeyBindings();
+
+        init();
+    }
+
+    private void setKeyBindings() {
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");
         getActionMap().put("up", upButton());
 
@@ -121,7 +128,6 @@ public class Field extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         dTime = (dTime + 1) % ((1000 / Util.SPEED) / Util.TICK);
         if (dTime == 0) {
-            action = false;
             player.move();
             if (player.checkDeath()) {
                 //TODO
@@ -189,5 +195,10 @@ public class Field extends JPanel implements ActionListener {
                 }
             }
         };
+    }
+
+    @Override
+    public void reset() {
+        init();
     }
 }
