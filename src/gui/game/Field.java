@@ -3,6 +3,7 @@ package gui.game;
 import fruit.Fruit;
 import fruit.NormalFruit;
 import gui.*;
+import gui.views.Game;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import logic.snake.Snake;
 import logic.util.Dir;
 import logic.util.Util;
 import logic.util.Vector;
+import main.Main;
 
 public class Field extends JPanel implements ActionListener, Resettable {
 
@@ -27,7 +29,8 @@ public class Field extends JPanel implements ActionListener, Resettable {
     private Game game;
 
     public void updatePoint(){
-        game.setPointLabel(player.getSize()-1);
+        player.setPoint(player.getSize()-1);
+        game.setPointLabel(player.getPoint());
     }
 
     private void init() {
@@ -79,6 +82,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         }
 
         timer.restart();
+        stopTimer();
     }
 
     public Field(Game game) {
@@ -138,7 +142,8 @@ public class Field extends JPanel implements ActionListener, Resettable {
         if (dTime == 0) {
             player.move();
             if (player.checkDeath()) {
-                //TODO
+                Main.toDeathScreen(player.getPoint());
+                reset();
             }
             if (fruit.getPos().equals(player.getPos()) && fruit.getBoard().equals(player.getBoard())) {
                 fruit.eatenBy(player);
@@ -166,7 +171,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (player.getDir().y != 1) {
+                if (player.getOriginalDir().y != 1) {
                     player.setDir(new Vector(0, -1));
                 }
             }
@@ -177,7 +182,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (player.getDir().y != -1) {
+                if (player.getOriginalDir().y != -1) {
                     player.setDir(new Vector(0, 1));
                 }
             }
@@ -188,7 +193,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (player.getDir().x != 1) {
+                if (player.getOriginalDir().x != 1) {
                     player.setDir(new Vector(-1, 0));
                 }
             }
@@ -199,7 +204,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (player.getDir().x != -1) {
+                if (player.getOriginalDir().x != -1) {
                     player.setDir(new Vector(1, 0));
                 }
             }
@@ -209,5 +214,9 @@ public class Field extends JPanel implements ActionListener, Resettable {
     @Override
     public void reset() {
         init();
+    }
+
+    public void start(){
+        startTimer();
     }
 }

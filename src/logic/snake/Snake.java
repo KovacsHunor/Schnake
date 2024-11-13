@@ -18,6 +18,7 @@ public class Snake {
     private Board board;
     private Color color = new Color(0, 0, 0);
     private final Vector pos = new Vector(0, 0);
+    private Vector originalDir = new Vector(0, 1);
     private Vector dir = new Vector(0, 1);
     private int point = 0;
 
@@ -63,6 +64,7 @@ public class Snake {
     }
 
     public void move() {
+        
         pos.translate(dir.x, dir.y);
 
         if (pos.x < 0 || pos.x >= Util.BOARD_SIZE || pos.y < 0 || pos.y >= Util.BOARD_SIZE) {
@@ -94,6 +96,8 @@ public class Snake {
         }
         nodes.get(0).setPos(pos);
         nodes.get(0).setBoard(board);
+
+        originalDir = dir;
     }
 
     public Vector getPos() {
@@ -110,6 +114,10 @@ public class Snake {
 
     public Vector getDir() {
         return dir;
+    }
+
+    public Vector getOriginalDir() {
+        return originalDir;
     }
 
     public void setDir(Vector v) {
