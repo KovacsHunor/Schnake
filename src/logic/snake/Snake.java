@@ -39,7 +39,7 @@ public class Snake {
     }
 
     public boolean checkDeath() {
-        for (int i = 4; i < nodes.size(); i++) {
+        for (int i = 1; i < nodes.size(); i++) {
             if (nodes.get(i).getPos().equals(pos) && nodes.get(i).getBoard().equals(board)) {
                 return true;
             }

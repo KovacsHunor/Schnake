@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import static logic.util.Util.buttonFont;
 import main.Main;
 
 public class Game extends JPanel implements Resettable{
@@ -29,13 +30,13 @@ public class Game extends JPanel implements Resettable{
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 
         JButton menuButton = new JButton("Menu");
-        menuButton.setFont(new Font("Serif", Font.PLAIN, 18));
+        menuButton.setFont(buttonFont);
         menuButton.addActionListener(ae -> {
             Main.switchTo("menu");
             field.reset();
         });
 
-        pointLabel.setFont(new Font("Serif", Font.BOLD, 32));
+        pointLabel.setFont(new Font("Serif", Font.BOLD, 64));
 
         left.add(menuButton);
         pointLabel.setAlignmentX(CENTER_ALIGNMENT);

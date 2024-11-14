@@ -28,8 +28,8 @@ public class Field extends JPanel implements ActionListener, Resettable {
     private Snake player;
     private Game game;
 
-    public void updatePoint(){
-        player.setPoint(player.getSize()-1);
+    public void updatePoint() {
+        player.setPoint(player.getSize() - 1);
         game.setPointLabel(player.getPoint());
     }
 
@@ -47,12 +47,12 @@ public class Field extends JPanel implements ActionListener, Resettable {
         player = new Snake(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)], new Color(255, 89, 94));
         updatePoint();
 
+        newFruit();
+
         sideShuffle.sort((a, b) -> rnd.nextInt());
         boardShuffle.sort((a, b) -> rnd.nextInt());
 
-        fruit = new NormalFruit(boardShuffle.get(0),
-                new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE)),
-                new Color(0, 255, 0));
+
 
         int dirIndex1 = rnd.nextInt(4);
         int dirIndex2 = rnd.nextInt(4);
@@ -96,17 +96,36 @@ public class Field extends JPanel implements ActionListener, Resettable {
         init();
     }
 
+    private void newFruit(){
+        int fruitCount = 1;
+        int ran = rnd.nextInt(fruitCount);
+
+        switch (ran) {
+            case 0:
+                fruit = new NormalFruit(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)],
+                new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE)),
+                new Color(0, 255, 0));
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }
+
     private void setKeyBindings() {
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("W"), "up");
         getActionMap().put("up", upButton());
 
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "down");
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("S"), "down");
         getActionMap().put("down", downButton());
 
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "left");
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("A"), "left");
         getActionMap().put("left", leftButton());
 
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "right");
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("D"), "right");
         getActionMap().put("right", rightButton());
     }
 
@@ -148,8 +167,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
             if (fruit.getPos().equals(player.getPos()) && fruit.getBoard().equals(player.getBoard())) {
                 fruit.eatenBy(player);
                 updatePoint();
-                fruit = new NormalFruit(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)],
-                        new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE)), new Color(0, 255, 0));
+                newFruit();
             }
         }
         repaint();
@@ -216,7 +234,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         init();
     }
 
-    public void start(){
+    public void start() {
         startTimer();
     }
 }

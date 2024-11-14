@@ -5,25 +5,32 @@ import gui.views.Game;
 import gui.views.Leaderboard;
 import gui.views.Menu;
 import java.awt.CardLayout;
+import java.util.List;
 import javax.swing.*;
+import logic.leaderboard.HighscoreIO;
+import logic.leaderboard.User;
 
 public class Main {
 
     private static JFrame frame;
     private static JPanel main;
-    private static String username = "sample_username";
+    private static User user;
 
     private static Menu menu;
     private static Game game;
     private static Leaderboard leaderboard;
     private static DeathScreen deathScreen;
+    private static List<User> highscoreList;
 
     public static void init() {
         try {
-
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception ignored) {
         }
+        
+        user = new User();
+        highscoreList = HighscoreIO.readHighscores();
+        setUser(user.getUsername());
 
         main = new JPanel(new CardLayout());
         
@@ -51,12 +58,8 @@ public class Main {
         cl.show(main, name);
     }
 
-    public static void setUsername(String name) {
-        username = name;
-    }
-
-    public static String getUsername() {
-        return username;
+    public static User getUser() {
+        return user;
     }
 
     public static void main(String... args) {
@@ -64,13 +67,38 @@ public class Main {
     }
     
     public static void toDeathScreen(int point){
+        boolean isHighScore = point > user.getHighscore();
+        if (isHighScore) {
+            user.setHighscore(point);
+            HighscoreIO.saveHighscores(highscoreList);
+        }
+        deathScreen.setHighscoreNotification(isHighScore);
         deathScreen.setScoreLabel("" + point);
         switchTo("deathScreen");
     }
 
-    public static void switchToGame() {
+    public static void toGame() {
         game.reset();
         game.start();
         switchTo("game");
+    }
+
+    public static void toLeaderBoard() {
+        switchTo("leaderboard");
+    }
+
+    public static void setUser(String text) {
+        for (User u : highscoreList) {
+            if(u.getUsername().equals(text)){
+                user = u;
+                return;
+            }
+        }
+        user = new User(text);
+        highscoreList.add(user);
+    }
+
+    public static List<User> getHighscoreList(){
+        return highscoreList;
     }
 }
