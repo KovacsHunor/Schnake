@@ -61,10 +61,6 @@ public class Vector extends Point{
         while(!p.equals(this)){
             p = p.rotated(1);
             c++;
-            if(c == 4){
-                System.out.println("not a rotated version");
-                return -1;
-            } // todo:exception
         }
         return c;
     }

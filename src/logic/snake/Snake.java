@@ -1,7 +1,6 @@
 package logic.snake;
 
 import java.awt.*;
-import java.awt.image.*;
 import java.util.LinkedList;
 import java.util.List;
 import logic.field.Board;
@@ -10,24 +9,31 @@ import logic.util.Util;
 import logic.util.Vector;
 
 public class Snake {
-
-    private final BufferedImage img = new BufferedImage(Util.TILE_SIZE, Util.TILE_SIZE,
-            BufferedImage.TYPE_INT_RGB);
-    private final Graphics2D g2d = img.createGraphics();
-
     private Board board;
     private Color color = new Color(0, 0, 0);
-    private final Vector pos = new Vector(0, 0);
+    private Vector pos = new Vector(0, 0);
     private Vector originalDir = new Vector(0, 1);
     private Vector dir = new Vector(0, 1);
     private int point = 0;
 
+    private boolean deathFlag = false;
+
     private final List<Node> nodes = new LinkedList<>();
+
+    public void kill() {
+        deathFlag = true;
+    }
 
     public Snake(Board b, Color c) {
         board = b;
         color = c;
-        nodes.add(new Node(board, pos));
+        Node node = new Node(board, new Vector(pos), color);
+        nodes.add(node);
+        board.setGrid(pos, node);
+    }
+
+    public void setPos(Vector newPos) {
+        pos = newPos;
     }
 
     public int getPoint() {
@@ -39,32 +45,20 @@ public class Snake {
     }
 
     public boolean checkDeath() {
-        for (int i = 1; i < nodes.size(); i++) {
-            if (nodes.get(i).getPos().equals(pos) && nodes.get(i).getBoard().equals(board)) {
-                return true;
-            }
-        }
-        return false;
+        return deathFlag;
     }
 
     public void grow() {
-        nodes.add(new Node(nodes.get(nodes.size() - 1)));
+        Node node = new Node(nodes.get(nodes.size() - 1));
+        nodes.add(node);
+        board.setGrid(pos, node);
     }
 
-    public void draw(Graphics g) {
-        g2d.setColor(color);
-        g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-        for (Node node : nodes) {
-            g.drawImage(img, (node.getPos().x + 1 + (node.getBoard().getPos().x) * (Util.BOARD_SIZE + 3))
-                    * Util.TILE_SIZE,
-                    ((node.getPos().y + 1 + node.getBoard().getPos().y * (Util.BOARD_SIZE + 3)) * Util.TILE_SIZE),
-                    null);
-        }
-
+    public void setBoard(Board b) {
+        board = b;
     }
 
-    public void move() {
-        
+    public void posUpdate() {
         pos.translate(dir.x, dir.y);
 
         if (pos.x < 0 || pos.x >= Util.BOARD_SIZE || pos.y < 0 || pos.y >= Util.BOARD_SIZE) {
@@ -89,15 +83,28 @@ public class Snake {
 
             dir = newdir.negated();
         }
+    }
 
+    public void move() {
+
+        Node node = nodes.get(nodes.size() - 1);
+        node.getBoard().setGrid(node.getPos(), null);
         for (int i = nodes.size() - 1; i > 0; i--) {
-            nodes.get(i).setPos(nodes.get(i - 1).getPos());
-            nodes.get(i).setBoard(nodes.get(i - 1).getBoard());
+            node = nodes.get(i);
+            node.setPos(nodes.get(i - 1).getPos());
+            node.setBoard(nodes.get(i - 1).getBoard());
+            node.getBoard().setGrid(node.getPos(), node);
         }
-        nodes.get(0).setPos(pos);
-        nodes.get(0).setBoard(board);
+        node = nodes.get(0);
+        node.setPos(pos);
+        node.setBoard(board);
+        node.getBoard().setGrid(node.getPos(), node);
 
         originalDir = dir;
+    }
+
+    public List<Node> getNodes() {
+        return nodes;
     }
 
     public Vector getPos() {

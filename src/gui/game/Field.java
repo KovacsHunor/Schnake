@@ -1,7 +1,5 @@
 package gui.game;
 
-import fruit.Fruit;
-import fruit.NormalFruit;
 import gui.*;
 import gui.views.Game;
 import java.awt.*;
@@ -11,7 +9,12 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.*;
 import logic.field.Board;
+import logic.field.GridObject;
 import logic.field.Side;
+import logic.fruit.Fruit;
+import logic.fruit.NormalFruit;
+import logic.fruit.ShuffleFruit;
+import logic.fruit.TeleportFruit;
 import logic.snake.Snake;
 import logic.util.Dir;
 import logic.util.Util;
@@ -20,39 +23,31 @@ import main.Main;
 
 public class Field extends JPanel implements ActionListener, Resettable {
 
-    private Random rnd = new Random();
+    private final Random rnd = new Random();
+    private final Timer timer = new Timer(Util.TICK, this);
+    private final Board[][] boards = new Board[Util.FIELD_SIZE][Util.FIELD_SIZE];
+    private final Game game;
+
     private int dTime = 0;
-    private Timer timer = new Timer(Util.TICK, this);
-    private Fruit fruit;
-    private Board[][] boards = new Board[Util.FIELD_SIZE][Util.FIELD_SIZE];
     private Snake player;
-    private Game game;
 
     public void updatePoint() {
-        player.setPoint(player.getSize() - 1);
         game.setPointLabel(player.getPoint());
     }
 
-    private void init() {
+    public void shuffleSides() {
         List<Side> sideShuffle = new ArrayList<>();
         List<Board> boardShuffle = new ArrayList<>();
 
-        for (int i = 0; i < boards.length; i++) {
-            for (int j = 0; j < boards[i].length; j++) {
-                boards[i][j] = new Board(new Vector(i, j));
-                boardShuffle.add(boards[i][j]);
-                sideShuffle.addAll(boards[i][j].getSides().values());
+        for (Board[] boardArray : boards) {
+            for (Board board : boardArray) {
+                boardShuffle.add(board);
+                sideShuffle.addAll(board.getSides().values());
             }
         }
-        player = new Snake(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)], new Color(255, 89, 94));
-        updatePoint();
-
-        newFruit();
 
         sideShuffle.sort((a, b) -> rnd.nextInt());
         boardShuffle.sort((a, b) -> rnd.nextInt());
-
-
 
         int dirIndex1 = rnd.nextInt(4);
         int dirIndex2 = rnd.nextInt(4);
@@ -77,9 +72,23 @@ public class Field extends JPanel implements ActionListener, Resettable {
         for (int i = 0; i < sideShuffle.size(); i += 2) {
             Color c = colors.getFirst();
             colors.removeFirst();
-
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
+
+        player.setBoard(boards[player.getBoard().getPos().x][player.getBoard().getPos().y]);
+    }
+
+    private void init() {
+        for (int i = 0; i < boards.length; i++) {
+            for (int j = 0; j < boards[i].length; j++) {
+                boards[i][j] = new Board(new Vector(i, j));
+            }
+        }
+
+        player = new Snake(boards[0][0], new Color(255, 89, 94));
+
+        shuffleSides();
+        newFruit();
 
         timer.restart();
         stopTimer();
@@ -96,19 +105,30 @@ public class Field extends JPanel implements ActionListener, Resettable {
         init();
     }
 
-    private void newFruit(){
-        int fruitCount = 1;
-        int ran = rnd.nextInt(fruitCount);
+    public void newFruit() {
+        double ran = rnd.nextDouble();
+        Fruit fruit;
+        Board board = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
+        Vector pos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
 
-        switch (ran) {
-            case 0:
-                fruit = new NormalFruit(boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)],
-                new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE)),
-                new Color(0, 255, 0));
-                break;
-            default:
-                throw new AssertionError();
+        if (ran <= 0.7) {
+            fruit = new NormalFruit(board, pos);
+        } else if (ran <= 0.9) {
+            Board teleBoard = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
+            Vector telePos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+
+            TeleportFruit pair = new TeleportFruit(teleBoard, telePos);
+            fruit = new TeleportFruit(board, pos);
+            ((TeleportFruit) fruit).setPair(pair);
+            pair.setPair(fruit);
+
+            teleBoard.setGrid(telePos, pair);
+
+        } else {
+            fruit = new ShuffleFruit(board, pos);
         }
+
+        board.setGrid(pos, fruit);
     }
 
     private void setKeyBindings() {
@@ -159,16 +179,17 @@ public class Field extends JPanel implements ActionListener, Resettable {
     public void actionPerformed(ActionEvent e) {
         dTime = (dTime + 1) % ((1000 / Util.SPEED) / Util.TICK);
         if (dTime == 0) {
+            player.posUpdate();
+            GridObject go =  player.getBoard().getGridAt(player.getPos());
+            if(go != null){
+                player.getBoard().getGridAt(player.getPos()).steppedOn(this, player);
+            }
             player.move();
             if (player.checkDeath()) {
                 Main.toDeathScreen(player.getPoint());
                 reset();
             }
-            if (fruit.getPos().equals(player.getPos()) && fruit.getBoard().equals(player.getBoard())) {
-                fruit.eatenBy(player);
-                updatePoint();
-                newFruit();
-            }
+            updatePoint();
         }
         repaint();
     }
@@ -181,8 +202,6 @@ public class Field extends JPanel implements ActionListener, Resettable {
                 board.draw(g);
             }
         }
-        fruit.draw(g);
-        player.draw(g);
     }
 
     private Action upButton() {
