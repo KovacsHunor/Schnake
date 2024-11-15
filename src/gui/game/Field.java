@@ -108,21 +108,29 @@ public class Field extends JPanel implements ActionListener, Resettable {
     public void newFruit() {
         double ran = rnd.nextDouble();
         Fruit fruit;
-        Board board = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
-        Vector pos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+        Board board;
+        Vector pos;
+        do {
+            board = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
+            pos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+        } while (board.getGridAt(pos) != null);
 
-        if (ran <= 0.7) {
+        if (ran <= 0.75) {
             fruit = new NormalFruit(board, pos);
         } else if (ran <= 0.9) {
-            Board teleBoard = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
-            Vector telePos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+            TeleportFruit pair = new TeleportFruit(board, pos);
+            board.setGrid(pos, pair);
 
-            TeleportFruit pair = new TeleportFruit(teleBoard, telePos);
+            do {
+                board = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
+                pos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+            } while (board.getGridAt(pos) != null);
+
             fruit = new TeleportFruit(board, pos);
             ((TeleportFruit) fruit).setPair(pair);
             pair.setPair(fruit);
 
-            teleBoard.setGrid(telePos, pair);
+            
 
         } else {
             fruit = new ShuffleFruit(board, pos);
@@ -167,24 +175,18 @@ public class Field extends JPanel implements ActionListener, Resettable {
         return palette;
     }
 
-    public void startTimer() {
-        timer.start();
-    }
-
-    public void stopTimer() {
-        timer.stop();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         dTime = (dTime + 1) % ((1000 / Util.SPEED) / Util.TICK);
         if (dTime == 0) {
             player.posUpdate();
-            GridObject go =  player.getBoard().getGridAt(player.getPos());
-            if(go != null){
-                player.getBoard().getGridAt(player.getPos()).steppedOn(this, player);
-            }
+            GridObject go = player.getBoard().getGridAt(player.getPos());
             player.move();
+
+            if (go != null) {
+                go.steppedOn(this, player);
+            }
+
             if (player.checkDeath()) {
                 Main.toDeathScreen(player.getPoint());
                 reset();
@@ -251,6 +253,14 @@ public class Field extends JPanel implements ActionListener, Resettable {
     @Override
     public void reset() {
         init();
+    }
+
+    public void startTimer() {
+        timer.start();
+    }
+
+    public void stopTimer() {
+        timer.stop();
     }
 
     public void start() {

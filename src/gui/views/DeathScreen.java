@@ -7,7 +7,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import static logic.util.Util.buttonFont;
+import static logic.util.Util.BUTTON_FONT;
 import main.Main;
 
 public class DeathScreen extends JPanel {
@@ -33,9 +33,9 @@ public class DeathScreen extends JPanel {
         newRecord.setVisible(false);
         
         JButton button1 = new JButton("Again");
-        button1.setFont(buttonFont);
+        button1.setFont(BUTTON_FONT);
         JButton button2 = new JButton("Menu");
-        button2.setFont(buttonFont);
+        button2.setFont(BUTTON_FONT);
         
         button1.addActionListener(ae -> Main.toGame());
         button2.addActionListener(ae -> Main.switchTo("menu"));

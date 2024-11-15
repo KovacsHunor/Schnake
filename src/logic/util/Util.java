@@ -11,7 +11,7 @@ public class Util {
     public static final int BOARD_SIZE = 8;
     public static final int TILE_SIZE = 1000/(Math.max(FIELD_SIZE, 2)*(BOARD_SIZE+2));
 
-    public static final Font buttonFont = new Font("Serif", Font.PLAIN, 32);
+    public static final Font BUTTON_FONT = new Font("Serif", Font.PLAIN, 32);
 
     private static final Map<Vector, Dir> vectorDir = new HashMap<>();
     private static final Map<Dir, Vector> dirVector = new EnumMap<>(Dir.class);

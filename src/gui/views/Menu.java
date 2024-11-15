@@ -2,7 +2,7 @@ package gui.views;
 
 import java.awt.*;
 import javax.swing.*;
-import static logic.util.Util.buttonFont;
+import static logic.util.Util.BUTTON_FONT;
 import main.Main;
 
 public class Menu extends JPanel{
@@ -12,15 +12,15 @@ public class Menu extends JPanel{
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JTextField input = new JTextField(20);
-        input.setFont(buttonFont);
+        input.setFont(BUTTON_FONT);
 
         JPanel upper = new JPanel();
 
         JLabel usernameLabel = new JLabel(Main.getUser().getUsername());
-        usernameLabel.setFont(buttonFont);
+        usernameLabel.setFont(BUTTON_FONT);
 
         JButton okButton = new JButton("Set username");
-        okButton.setFont(buttonFont);
+        okButton.setFont(BUTTON_FONT);
         okButton.addActionListener((var ae) -> {
             String text = input.getText();
             if(!text.equals("") && !text.contains(",")){
@@ -35,11 +35,11 @@ public class Menu extends JPanel{
 
         
         JButton button1 = new JButton("Play");
-        button1.setFont(buttonFont);
+        button1.setFont(BUTTON_FONT);
         JButton button2 = new JButton("Leaderboard");
-        button2.setFont(buttonFont);
+        button2.setFont(BUTTON_FONT);
         JButton button3 = new JButton("Exit");
-        button3.setFont(buttonFont);
+        button3.setFont(BUTTON_FONT);
         
         button1.addActionListener(ae -> Main.toGame());
         button2.addActionListener(ae -> Main.toLeaderBoard());

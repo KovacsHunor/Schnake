@@ -8,7 +8,7 @@ import logic.snake.Snake;
 import logic.util.Util;
 import logic.util.Vector;
 
-public class TeleportFruit extends Fruit {
+public class TeleportFruit extends Fruit{
 
     private Fruit pair;
 
@@ -18,9 +18,19 @@ public class TeleportFruit extends Fruit {
 
     @Override
     public void eaten(Field f, Snake s) {
-        super.eaten(f, s);
         s.setBoard(pair.getBoard());
         s.setPos(pair.getPos());
+        super.eaten(f, s);
+    }
+
+    @Override
+    public void destroy() {
+        if(board.getGridAt(pos) != null && board.getGridAt(pos).equals(this)){
+            board.setGrid(pos, null);
+        }
+        if(pair.getBoard().getGridAt(pair.getPos()) != null && pair.getBoard().getGridAt(pair.getPos()).equals(pair)){
+            pair.getBoard().setGrid(pair.getPos(), null);
+        }
     }
 
     @Override
@@ -48,4 +58,6 @@ public class TeleportFruit extends Fruit {
     protected int getValue() {
         return 2;
     }
+
+
 }

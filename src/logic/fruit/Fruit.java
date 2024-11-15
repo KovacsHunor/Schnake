@@ -9,8 +9,6 @@ import logic.util.Util;
 import logic.util.Vector;
 
 public abstract class Fruit extends GridObject{
-    protected Board board;
-    protected Vector pos;
 
     protected Fruit(Board b, Vector p) {
         board = b;        
@@ -18,13 +16,14 @@ public abstract class Fruit extends GridObject{
     }
 
     public void eaten(Field f, Snake s){
+        s.grow();
         s.setPoint(s.getPoint() + getValue());
-        board.setGrid(pos, null);
         f.newFruit();
     }
 
     @Override
     public void steppedOn(Field f, Snake s) {
+        destroy();
         eaten(f, s);
     }
 
@@ -40,12 +39,4 @@ public abstract class Fruit extends GridObject{
     }
 
     protected abstract int getValue();
-
-    public Vector getPos() {
-        return pos;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
 import logic.leaderboard.HighscoreData;
-import static logic.util.Util.buttonFont;
+import static logic.util.Util.BUTTON_FONT;
 import main.Main;
 
 public class Leaderboard extends JPanel {
@@ -46,7 +46,7 @@ public class Leaderboard extends JPanel {
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 
         JButton menuButton = new JButton("Menu");
-        menuButton.setFont(buttonFont);
+        menuButton.setFont(BUTTON_FONT);
         menuButton.addActionListener(ae -> Main.switchTo("menu"));
 
         left.add(menuButton);

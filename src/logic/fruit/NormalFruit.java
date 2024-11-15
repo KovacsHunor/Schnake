@@ -14,7 +14,6 @@ public class NormalFruit extends Fruit{
     @Override
     public void eaten(Field f, Snake s){
         super.eaten(f, s);
-        s.grow();
     }
 
     @Override
