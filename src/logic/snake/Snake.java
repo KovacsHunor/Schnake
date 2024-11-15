@@ -9,8 +9,9 @@ import logic.util.Util;
 import logic.util.Vector;
 
 public class Snake {
+
     private Board board;
-    private Color color = new Color(0, 0, 0);
+    private final Color color;
     private Vector pos = new Vector(0, 0);
     private Vector originalDir = new Vector(0, 1);
     private Vector dir = new Vector(0, 1);
@@ -49,9 +50,8 @@ public class Snake {
     }
 
     public void grow() {
-        Node node = new Node(nodes.get(nodes.size() - 1));
-        nodes.add(node);
-        board.setGrid(pos, node);
+        Node endNode = new Node(nodes.get(nodes.size() - 1));
+        nodes.add(endNode);
     }
 
     public void setBoard(Board b) {
@@ -75,7 +75,6 @@ public class Snake {
             Side pair = current.getPair();
 
             board = pair.getBoard();
-
             Vector newdir = Util.getVector(pair.getDir());
 
             int torotate = newdir.toRotate(dir);
@@ -86,7 +85,6 @@ public class Snake {
     }
 
     public void move() {
-
         Node node = nodes.get(nodes.size() - 1);
         node.getBoard().setGrid(node.getPos(), null);
         for (int i = nodes.size() - 1; i > 0; i--) {

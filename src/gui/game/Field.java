@@ -201,7 +201,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         super.paintComponent(g);
         for (Board[] row : boards) {
             for (Board board : row) {
-                board.draw(g);
+                board.draw(g, this);
             }
         }
     }

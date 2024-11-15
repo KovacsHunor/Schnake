@@ -7,8 +7,6 @@ import logic.field.GridObject;
 import logic.util.Vector;
 
 public class Node extends GridObject{
-    private Vector pos;
-    private Board board;
     private final Color color;
     public Node(Board b, Vector p, Color c){
         board = b;
@@ -22,16 +20,8 @@ public class Node extends GridObject{
         color = n.color;
     }
 
-    public Vector getPos(){
-        return pos;
-    }
-
     public void setPos(Vector p){
         pos = new Vector(p);
-    }
-
-    public Board getBoard(){
-        return board;
     }
 
     public void setBoard(Board b) {
