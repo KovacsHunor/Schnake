@@ -18,7 +18,7 @@ public class Board {
     private final Point pos;
     private final EnumMap<Dir, Side> sides;
 
-    private final GridObject[][] grid = new GridObject[Utils.BOARD_SIZE][Utils.BOARD_SIZE];
+    private final GridTile[][] grid = new GridTile[Utils.BOARD_SIZE][Utils.BOARD_SIZE];
     private static final MyPolygon[] sidePolygons = new MyPolygon[2];
 
     static {
@@ -39,6 +39,13 @@ public class Board {
     }
 
     public Board(Point pos) {
+        for (GridTile[] gridTiles : grid) {
+            for (int i = 0; i < gridTiles.length; i++) {
+                gridTiles[i] = new GridTile();
+            }
+        }
+
+
         sides = new EnumMap<>(Dir.class);
 
         sides.put(Dir.UP, new Side(new Color(0, 0, 0), this, Dir.UP));
@@ -50,11 +57,16 @@ public class Board {
     }
 
     public GridObject getGridAt(Vector v) {
-        return grid[v.x][v.y];
+        return grid[v.x][v.y].upper();
     }
 
     public void setGrid(Vector v, GridObject go) {
-        grid[v.x][v.y] = go;
+        if(go == null){
+            grid[v.x][v.y].removeFirst();
+        }
+        else{
+            grid[v.x][v.y].add(go);
+        }
     }
 
     public Side getSide(Dir d) {
@@ -122,8 +134,9 @@ public class Board {
         // draw the checkered grid
         for (int row = 0; row < Utils.BOARD_SIZE; row++) {
             for (int col = 0; col < Utils.BOARD_SIZE; col++) {
-                if (grid[col][row] != null) {
-                    g2d.setColor(grid[col][row].getColor());
+                if (!grid[col][row].isEmpty()) {
+                    GridObject go = grid[col][row].upper();
+                    g2d.setColor(go.getColor());
                 } else {
                     if ((row + col) % 2 == 1) {
                         g2d.setColor(new Color(60, 60, 60));
