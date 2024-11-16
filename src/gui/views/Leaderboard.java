@@ -10,20 +10,32 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
 import logic.leaderboard.HighscoreData;
+import logic.leaderboard.HighscoreIO;
 import logic.util.Utils;
 import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
-public class Leaderboard extends JPanel {
+public final class Leaderboard extends JPanel {
 
-    HighscoreData data;
-    JTable table;
+    private final HighscoreData data = new HighscoreData(HighscoreIO.readHighscores());
+    private final JTable table = new JTable(data);
+    private final TableRowSorter<HighscoreData> sorter;
+
+    public HighscoreData getData() {
+        return data;
+    }
+
+    public void sort(){
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+        sorter.allRowsChanged();
+        sorter.setSortKeys(sortKeys);
+    }
 
     public Leaderboard() {
+        sorter = new TableRowSorter<>(data);
         setLayout(new GridBagLayout());
-        data = new HighscoreData(Main.getHighscoreList());
-        table = new JTable(data);
-        TableRowSorter<HighscoreData> sorter = new TableRowSorter<>(data);
+        
         table.setRowSorter(sorter);
         table.setFillsViewportHeight(true);
 
@@ -32,11 +44,7 @@ public class Leaderboard extends JPanel {
         table.setRowHeight(32);
         table.setCellSelectionEnabled(false);
         table.setFocusable(false);
-
-        List<RowSorter.SortKey> sortKeys
-                = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
-        sorter.setSortKeys(sortKeys);
+        
 
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -77,5 +85,7 @@ public class Leaderboard extends JPanel {
             c.setForeground(Utils.FOREGROUND_COLOR);
             c.setBackground(Utils.BACKGROUND_COLOR);
         }
+
+        sort();
     }
 }

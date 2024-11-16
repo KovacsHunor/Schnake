@@ -14,26 +14,21 @@ public class Main {
 
     private static JFrame frame;
     private static JPanel main;
-    private static User user;
+    private static User user = new User();
 
     private static Menu menu;
     private static Game game;
     private static Leaderboard leaderboard;
     private static DeathScreen deathScreen;
-    private static List<User> highscoreList;
 
     public static void init() {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception ignored) {
         }
-        
-        user = new User();
-        highscoreList = HighscoreIO.readHighscores();
-        setUser(user.getUsername());
 
         main = new JPanel(new CardLayout());
-        
+
         menu = new Menu();
         game = new Game();
         leaderboard = new Leaderboard();
@@ -51,6 +46,8 @@ public class Main {
         frame.pack();
         frame.setLocationRelativeTo(main);
         frame.setVisible(true);
+
+        setUser(user.getUsername());
     }
 
     public static void switchTo(String name) {
@@ -65,12 +62,13 @@ public class Main {
     public static void main(String... args) {
         init();
     }
-    
-    public static void toDeathScreen(int point){
+
+    public static void toDeathScreen(int point) {
         boolean isHighScore = point > user.getHighscore();
         if (isHighScore) {
             user.setHighscore(point);
-            HighscoreIO.saveHighscores(highscoreList);
+            leaderboard.sort();
+            HighscoreIO.saveHighscores(leaderboard.getData().getList());
         }
         deathScreen.setHighscoreNotification(isHighScore);
         deathScreen.setScoreLabel("" + point);
@@ -88,17 +86,15 @@ public class Main {
     }
 
     public static void setUser(String text) {
-        for (User u : highscoreList) {
-            if(u.getUsername().equals(text)){
+        List<User> list = leaderboard.getData().getList();
+        for (User u : list) {
+            if (u.getUsername().equals(text)) {
                 user = u;
                 return;
             }
         }
         user = new User(text);
-        highscoreList.add(user);
-    }
-
-    public static List<User> getHighscoreList(){
-        return highscoreList;
+        list.add(user);
+        leaderboard.getData().fireTableRowsInserted(list.size() - 1, list.size() - 1);
     }
 }

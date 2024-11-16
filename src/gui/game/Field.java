@@ -113,11 +113,11 @@ public class Field extends JPanel implements ActionListener, Resettable {
             pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
         } while (!board.getTile(pos).isEmpty());
 
-        //0.7, 0.8, 1
+        //0.7, 0.85, 1
 
         if (ran <= 0.7) {
             fruit = new NormalFruit(board, pos);
-        } else if (ran <= 0.8) {
+        } else if (ran <= 0.85) {
             TeleportFruit pair = new TeleportFruit(board, pos);
             board.putOnTile(pos, pair);
 

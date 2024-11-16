@@ -12,6 +12,10 @@ public class HighscoreData extends AbstractTableModel {
         this.users = users;
     }
 
+    public List<User> getList(){
+        return users;
+    }
+
     @Override
     public int getColumnCount() {
         return 2;
@@ -35,6 +39,17 @@ public class HighscoreData extends AbstractTableModel {
     }
 
     @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex){
+            case 0:
+                return String.class;
+            default:
+                return Integer.class;
+
+        }
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         User user = users.get(rowIndex);
         return switch (columnIndex) {
@@ -49,6 +64,10 @@ public class HighscoreData extends AbstractTableModel {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public void addUser(User user){
+        users.add(user);
     }
 
 }
