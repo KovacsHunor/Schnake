@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.*;
 import logic.field.Board;
-import logic.field.GridObject;
+import logic.field.GridTile;
 import logic.field.Side;
 import logic.fruit.Fruit;
 import logic.fruit.NormalFruit;
@@ -111,20 +111,20 @@ public class Field extends JPanel implements ActionListener, Resettable {
         do {
             board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
             pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
-        } while (board.getGridAt(pos) != null);
+        } while (!board.getTile(pos).isEmpty());
 
-        //0.6, 0.75, 0.9
+        //0.7, 0.8, 1
 
-        if (ran <= 0.6) {
+        if (ran <= 0.7) {
             fruit = new NormalFruit(board, pos);
-        } else if (ran <= 0.75) {
+        } else if (ran <= 0.8) {
             TeleportFruit pair = new TeleportFruit(board, pos);
-            board.setGrid(pos, pair);
+            board.putOnTile(pos, pair);
 
             do {
                 board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
                 pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
-            } while (board.getGridAt(pos) != null);
+            } while (!board.getTile(pos).isEmpty());
 
             fruit = new TeleportFruit(board, pos);
             ((TeleportFruit) fruit).setPair(pair);
@@ -136,7 +136,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
             fruit = new ShuffleFruit(board, pos);
         }
 
-        board.setGrid(pos, fruit);
+        board.putOnTile(pos, fruit);
     }
 
     private void setKeyBindings() {
@@ -160,7 +160,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
     private List<Color> distributedColors(int n) {
         List<Color> palette = new ArrayList<>();
         float offset = 1.0f/(2*n)*player.getPoint()/5;
-        float h = 0;
+        float h;
         float s;
         float b;
         for (int i = 0; i < n; i++) {
@@ -181,12 +181,10 @@ public class Field extends JPanel implements ActionListener, Resettable {
         dTime = (dTime + 1) % ((1000 / Utils.SPEED) / Utils.TICK);
         if (dTime == 0) {
             player.posUpdate();
-            GridObject go = player.getBoard().getGridAt(player.getPos());
             player.move();
 
-            if (go != null) {
-                go.steppedOn(this, player);
-            }
+            GridTile gt = player.getBoard().getTile((player.getPos()));
+            gt.steppedOn(this, player);
 
             if (player.checkDeath()) {
                 Main.toDeathScreen(player.getPoint());

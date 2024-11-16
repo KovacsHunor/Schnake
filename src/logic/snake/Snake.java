@@ -30,7 +30,7 @@ public class Snake {
         color = c;
         Node node = new Node(board, new Vector(pos), color);
         nodes.add(node);
-        board.setGrid(pos, node);
+        board.putOnTile(pos, node);
     }
 
     public void setPos(Vector newPos) {
@@ -85,18 +85,20 @@ public class Snake {
     }
 
     public void move() {
-        Node node = nodes.get(nodes.size() - 1);
-        node.getBoard().setGrid(node.getPos(), null);
+        Node node;
         for (int i = nodes.size() - 1; i > 0; i--) {
             node = nodes.get(i);
+            node.getBoard().getTile(node.getPos()).remove(node);
+
             node.setPos(nodes.get(i - 1).getPos());
             node.setBoard(nodes.get(i - 1).getBoard());
-            node.getBoard().setGrid(node.getPos(), node);
+            node.getBoard().getTile(node.getPos()).put(node);
         }
         node = nodes.get(0);
+        node.getBoard().getTile(node.getPos()).remove(node);
         node.setPos(pos);
         node.setBoard(board);
-        node.getBoard().setGrid(node.getPos(), node);
+        node.getBoard().getTile(node.getPos()).put(node);
 
         originalDir = dir;
     }

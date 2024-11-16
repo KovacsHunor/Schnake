@@ -25,12 +25,8 @@ public class TeleportFruit extends Fruit{
 
     @Override
     public void destroy() {
-        if(board.getGridAt(pos) != null && board.getGridAt(pos).equals(this)){
-            board.setGrid(pos, null);
-        }
-        if(pair.getBoard().getGridAt(pair.getPos()) != null && pair.getBoard().getGridAt(pair.getPos()).equals(pair)){
-            pair.getBoard().setGrid(pair.getPos(), null);
-        }
+        getBoard().getTile(getPos()).remove(this);
+        pair.getBoard().getTile(pair.getPos()).remove(pair);
     }
 
     @Override

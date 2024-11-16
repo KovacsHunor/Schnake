@@ -14,9 +14,7 @@ public class GridObject {
     }
 
     public void destroy() {
-        if(board.getGridAt(pos).equals(this)){
-            board.setGrid(pos, null);
-        }
+        getBoard().getTile(getPos()).remove(this);
     }
 
     public Color getColor(){

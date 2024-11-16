@@ -25,17 +25,19 @@ public class Board {
         int offset = (int) (0.433f * Utils.TILE_SIZE);
         int trix = ((Utils.BOARD_SIZE) * Utils.TILE_SIZE);
 
-        sidePolygons[0] = new MyPolygon(
+        MyPolygon arrow = new MyPolygon(
                 new int[]{0, trix - offset, trix, trix - offset, 0, offset},
                 new int[]{0, 0, Utils.TILE_SIZE / 4, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 4},
                 6
         );
+        sidePolygons[0] = arrow;
 
-        sidePolygons[1] = new MyPolygon(
+        MyPolygon rectangle = new MyPolygon(
                 new int[]{0, trix, trix, 0},
-                new int[]{0, 0, Utils.TILE_SIZE/2, Utils.TILE_SIZE/2},
+                new int[]{0, 0, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 2},
                 4
         );
+        sidePolygons[1] = rectangle;
     }
 
     public Board(Point pos) {
@@ -44,7 +46,6 @@ public class Board {
                 gridTiles[i] = new GridTile();
             }
         }
-
 
         sides = new EnumMap<>(Dir.class);
 
@@ -56,17 +57,12 @@ public class Board {
         this.pos = pos;
     }
 
-    public GridObject getGridAt(Vector v) {
-        return grid[v.x][v.y].upper();
+    public GridTile getTile(Vector v) {
+        return grid[v.x][v.y];
     }
 
-    public void setGrid(Vector v, GridObject go) {
-        if(go == null){
-            grid[v.x][v.y].removeFirst();
-        }
-        else{
-            grid[v.x][v.y].add(go);
-        }
+    public void putOnTile(Vector v, GridObject go) {
+        grid[v.x][v.y].put(go);
     }
 
     public Side getSide(Dir d) {
