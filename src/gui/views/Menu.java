@@ -2,7 +2,7 @@ package gui.views;
 
 import java.awt.*;
 import javax.swing.*;
-import static logic.util.Util.BUTTON_FONT;
+import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
 public class Menu extends JPanel{

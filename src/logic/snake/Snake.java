@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import logic.field.Board;
 import logic.field.Side;
-import logic.util.Util;
+import logic.util.Utils;
 import logic.util.Vector;
 
 public class Snake {
@@ -61,24 +61,24 @@ public class Snake {
     public void posUpdate() {
         pos.translate(dir.x, dir.y);
 
-        if (pos.x < 0 || pos.x >= Util.BOARD_SIZE || pos.y < 0 || pos.y >= Util.BOARD_SIZE) {
+        if (pos.x < 0 || pos.x >= Utils.BOARD_SIZE || pos.y < 0 || pos.y >= Utils.BOARD_SIZE) {
 
-            if (pos.x < 0 || pos.x >= Util.BOARD_SIZE) {
-                pos.y = Util.BOARD_SIZE - pos.y - 1;
+            if (pos.x < 0 || pos.x >= Utils.BOARD_SIZE) {
+                pos.y = Utils.BOARD_SIZE - pos.y - 1;
             } else {
-                pos.x = Util.BOARD_SIZE - pos.x - 1;
+                pos.x = Utils.BOARD_SIZE - pos.x - 1;
             }
 
             pos.sub(dir);
 
-            Side current = board.getSide(Util.getDir(dir));
+            Side current = board.getSide(Utils.getDir(dir));
             Side pair = current.getPair();
 
             board = pair.getBoard();
-            Vector newdir = Util.getVector(pair.getDir());
+            Vector newdir = Utils.getVector(pair.getDir());
 
             int torotate = newdir.toRotate(dir);
-            pos.rotateInSquare(Util.BOARD_SIZE, torotate);
+            pos.rotateInSquare(Utils.BOARD_SIZE, torotate);
 
             dir = newdir.negated();
         }

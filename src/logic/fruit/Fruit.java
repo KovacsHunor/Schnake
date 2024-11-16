@@ -5,7 +5,7 @@ import java.awt.*;
 import logic.field.Board;
 import logic.field.GridObject;
 import logic.snake.Snake;
-import logic.util.Util;
+import logic.util.Utils;
 import logic.util.Vector;
 
 public abstract class Fruit extends GridObject{
@@ -30,12 +30,12 @@ public abstract class Fruit extends GridObject{
     public void draw(Graphics g) {
         g.setColor(getColor());
         g.fillRect(
-                (pos.x + 1 + (board.getPos().x) * (Util.BOARD_SIZE + 3))
-                        * Util.TILE_SIZE,
-                (pos.y + 1 + (board.getPos().y) * (Util.BOARD_SIZE + 3))
-                        * Util.TILE_SIZE,
-                Util.TILE_SIZE,
-                Util.TILE_SIZE);
+                (pos.x + 1 + (board.getPos().x) * (Utils.BOARD_SIZE + 3))
+                        * Utils.TILE_SIZE,
+                (pos.y + 1 + (board.getPos().y) * (Utils.BOARD_SIZE + 3))
+                        * Utils.TILE_SIZE,
+                Utils.TILE_SIZE,
+                Utils.TILE_SIZE);
     }
 
     protected abstract int getValue();

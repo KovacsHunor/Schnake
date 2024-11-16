@@ -10,14 +10,18 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import static logic.util.Util.BUTTON_FONT;
+import logic.util.Utils;
+import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
 public class Game extends JPanel implements Resettable{
     private Field field;
-    private JLabel pointLabel = new JLabel("0");
+    private final JLabel pointLabel = new JLabel("0");
 
     public Game() {
+        setBackground(Utils.BACKGROUND_COLOR);
+        setForeground(Utils.FOREGROUND_COLOR);
+
         setLayout(new GridBagLayout());
 
         field = new Field(this);
@@ -26,10 +30,16 @@ public class Game extends JPanel implements Resettable{
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JPanel left = new JPanel();
+        left.setBackground(Utils.BACKGROUND_COLOR);
+        left.setForeground(Utils.FOREGROUND_COLOR);
         JPanel right = new JPanel();
+        right.setBackground(Utils.BACKGROUND_COLOR);
+        right.setForeground(Utils.FOREGROUND_COLOR);
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 
         JButton menuButton = new JButton("Menu");
+        menuButton.setBackground(Utils.BACKGROUND_COLOR);
+        menuButton.setForeground(Utils.FOREGROUND_COLOR);
         menuButton.setFont(BUTTON_FONT);
         menuButton.addActionListener(ae -> {
             Main.switchTo("menu");
@@ -37,6 +47,8 @@ public class Game extends JPanel implements Resettable{
         });
 
         pointLabel.setFont(new Font("Serif", Font.BOLD, 64));
+        pointLabel.setBackground(Utils.BACKGROUND_COLOR);
+        pointLabel.setForeground(Utils.FOREGROUND_COLOR);
 
         left.add(menuButton);
         pointLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -50,8 +62,6 @@ public class Game extends JPanel implements Resettable{
         gbc.gridx = 1;
         gbc.gridy = 0;
         add(right, gbc);
-
-        setVisible(true);
     }
 
     public void setPointLabel(int point){

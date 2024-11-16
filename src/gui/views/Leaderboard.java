@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
 import logic.leaderboard.HighscoreData;
-import static logic.util.Util.BUTTON_FONT;
+import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
 public class Leaderboard extends JPanel {

@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import logic.field.Board;
 import logic.snake.Snake;
-import logic.util.Util;
+import logic.util.Utils;
 import logic.util.Vector;
 
 public class TeleportFruit extends Fruit{
@@ -37,12 +37,12 @@ public class TeleportFruit extends Fruit{
     public void draw(Graphics g) {
         super.draw(g);
         g.fillRect(
-                (pair.getPos().x + 1 + (pair.getBoard().getPos().x) * (Util.BOARD_SIZE + 3))
-                * Util.TILE_SIZE,
-                (pair.getPos().y + 1 + (pair.getBoard().getPos().y) * (Util.BOARD_SIZE + 3))
-                * Util.TILE_SIZE,
-                Util.TILE_SIZE,
-                Util.TILE_SIZE);
+                (pair.getPos().x + 1 + (pair.getBoard().getPos().x) * (Utils.BOARD_SIZE + 3))
+                * Utils.TILE_SIZE,
+                (pair.getPos().y + 1 + (pair.getBoard().getPos().y) * (Utils.BOARD_SIZE + 3))
+                * Utils.TILE_SIZE,
+                Utils.TILE_SIZE,
+                Utils.TILE_SIZE);
     }
 
     public void setPair(Fruit pair) {

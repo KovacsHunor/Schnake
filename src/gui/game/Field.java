@@ -17,15 +17,16 @@ import logic.fruit.ShuffleFruit;
 import logic.fruit.TeleportFruit;
 import logic.snake.Snake;
 import logic.util.Dir;
-import logic.util.Util;
+import logic.util.MyPolygon;
+import logic.util.Utils;
 import logic.util.Vector;
 import main.Main;
 
 public class Field extends JPanel implements ActionListener, Resettable {
 
     private final Random rnd = new Random();
-    private final Timer timer = new Timer(Util.TICK, this);
-    private final Board[][] boards = new Board[Util.FIELD_SIZE][Util.FIELD_SIZE];
+    private final Timer timer = new Timer(Utils.TICK, this);
+    private final Board[][] boards = new Board[Utils.FIELD_SIZE][Utils.FIELD_SIZE];
     private final Game game;
 
     private int dTime = 0;
@@ -85,6 +86,8 @@ public class Field extends JPanel implements ActionListener, Resettable {
             }
         }
 
+        MyPolygon.init();
+
         player = new Snake(boards[0][0], new Color(255, 89, 94));
 
         shuffleSides();
@@ -96,10 +99,8 @@ public class Field extends JPanel implements ActionListener, Resettable {
 
     public Field(Game game) {
         this.game = game;
-        setPreferredSize(new Dimension(Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1),
-                Util.TILE_SIZE * (Util.FIELD_SIZE * (Util.BOARD_SIZE + 3) - 1)));
-
-        setBackground(new Color(30, 30, 30));
+        setPreferredSize(new Dimension(Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1),
+                Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1)));
         setKeyBindings();
 
         init();
@@ -111,19 +112,21 @@ public class Field extends JPanel implements ActionListener, Resettable {
         Board board;
         Vector pos;
         do {
-            board = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
-            pos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+            board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
+            pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
         } while (board.getGridAt(pos) != null);
 
-        if (ran <= 0.75) {
+        //0.6, 0.75, 0.9
+
+        if (ran <= 0.6) {
             fruit = new NormalFruit(board, pos);
-        } else if (ran <= 0.9) {
+        } else if (ran <= 0.75) {
             TeleportFruit pair = new TeleportFruit(board, pos);
             board.setGrid(pos, pair);
 
             do {
-                board = boards[rnd.nextInt(Util.FIELD_SIZE)][rnd.nextInt(Util.FIELD_SIZE)];
-                pos = new Vector(rnd.nextInt(Util.BOARD_SIZE), rnd.nextInt(Util.BOARD_SIZE));
+                board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
+                pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
             } while (board.getGridAt(pos) != null);
 
             fruit = new TeleportFruit(board, pos);
@@ -159,25 +162,28 @@ public class Field extends JPanel implements ActionListener, Resettable {
 
     private List<Color> distributedColors(int n) {
         List<Color> palette = new ArrayList<>();
-
+        float offset = 1.0f/(2*n)*player.getPoint()/5;
         float h = 0;
         float s;
         float b;
-        for (int i = 1; i <= n; i++) {
-
-            h += (float) i / n;
-            s = rnd.nextFloat(0.33f, 1);
-            b = rnd.nextFloat(0.33f, 1);
+        System.out.println("#################################");
+        for (int i = 0; i < n; i++) {
+            double x = ((double)i/n + offset) - (int)((double)i/n + offset);
+            h = (float)(6.2016 * (0.0911254 *x*x*x*x*x - 0.107401 *x*x*x*x - 0.281072 *x*x*x + 0.408596 *x*x + 0.15 *x));
+            System.out.println(x + "->" +h+"\n");
+            s = 0.5f+(i%3)*0.25f;
+            b = 1.0f-((i+2)%3)*0.25f;
 
             palette.add(Color.getHSBColor(h, s, b));
         }
+        System.out.println("#################################");
 
         return palette;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        dTime = (dTime + 1) % ((1000 / Util.SPEED) / Util.TICK);
+        dTime = (dTime + 1) % ((1000 / Utils.SPEED) / Utils.TICK);
         if (dTime == 0) {
             player.posUpdate();
             GridObject go = player.getBoard().getGridAt(player.getPos());

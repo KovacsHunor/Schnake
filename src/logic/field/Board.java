@@ -6,18 +6,18 @@ import java.awt.image.ImageObserver;
 import java.util.EnumMap;
 import java.util.Map;
 import logic.util.Dir;
-import logic.util.Util;
+import logic.util.Utils;
 import logic.util.Vector;
 
 public class Board {
 
-    private BufferedImage img = new BufferedImage(Util.BOARD_SIZE * Util.TILE_SIZE + 3 * Util.TILE_SIZE, Util.BOARD_SIZE * Util.TILE_SIZE + 3 * Util.TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage img = new BufferedImage(Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE, Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE, BufferedImage.TYPE_INT_RGB);
     private Graphics2D g2d = img.createGraphics();
 
     private final Point pos;
     private final EnumMap<Dir, Side> sides;
 
-    private final GridObject[][] grid = new GridObject[Util.BOARD_SIZE][Util.BOARD_SIZE];
+    private final GridObject[][] grid = new GridObject[Utils.BOARD_SIZE][Utils.BOARD_SIZE];
 
     public Board(Point pos) {
         sides = new EnumMap<>(Dir.class);
@@ -46,33 +46,41 @@ public class Board {
         return sides;
     }
 
-    public void draw(Graphics g, ImageObserver observer) {
+    public void drawSides() {
+
         //  draw the teleporter sides
         g2d.setColor(sides.get(Dir.UP).getColor());
         g2d.fillRect(
-                Util.TILE_SIZE * (1),
-                0, Util.BOARD_SIZE * Util.TILE_SIZE,
-                Util.TILE_SIZE / 2);
+                Utils.TILE_SIZE,
+                0, Utils.BOARD_SIZE * Utils.TILE_SIZE,
+                Utils.TILE_SIZE / 2);
         g2d.setColor(sides.get(Dir.DOWN).getColor());
         g2d.fillRect(
-                Util.TILE_SIZE * (1),
-                Util.TILE_SIZE * (Util.BOARD_SIZE + 1) + Util.TILE_SIZE / 2,
-                Util.BOARD_SIZE * Util.TILE_SIZE,
-                Util.TILE_SIZE / 2);
+                Utils.TILE_SIZE,
+                Utils.TILE_SIZE * (Utils.BOARD_SIZE + 1) + Utils.TILE_SIZE / 2,
+                Utils.BOARD_SIZE * Utils.TILE_SIZE,
+                Utils.TILE_SIZE / 2);
 
         g2d.setColor(sides.get(Dir.RIGHT).getColor());
         g2d.fillRect(
-                Util.TILE_SIZE * (Util.BOARD_SIZE + 1) + Util.TILE_SIZE / 2,
-                Util.TILE_SIZE * (1), Util.TILE_SIZE / 2,
-                Util.BOARD_SIZE * Util.TILE_SIZE);
+                Utils.TILE_SIZE * (Utils.BOARD_SIZE + 1) + Utils.TILE_SIZE / 2,
+                Utils.TILE_SIZE, Utils.TILE_SIZE / 2,
+                Utils.BOARD_SIZE * Utils.TILE_SIZE);
         g2d.setColor(sides.get(Dir.LEFT).getColor());
         g2d.fillRect(0,
-                Util.TILE_SIZE * (1), Util.TILE_SIZE / 2,
-                Util.BOARD_SIZE * Util.TILE_SIZE);
+                Utils.TILE_SIZE, Utils.TILE_SIZE / 2,
+                Utils.BOARD_SIZE * Utils.TILE_SIZE);
+    }
+
+    public void draw(Graphics g, ImageObserver observer) {
+        g2d.setColor(Utils.BACKGROUND_COLOR);
+        g2d.fillRect(0, 0, Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE, Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE);
+
+        drawSides();
 
         // draw the checkered grid
-        for (int row = 0; row < Util.BOARD_SIZE; row++) {
-            for (int col = 0; col < Util.BOARD_SIZE; col++) {
+        for (int row = 0; row < Utils.BOARD_SIZE; row++) {
+            for (int col = 0; col < Utils.BOARD_SIZE; col++) {
                 if (grid[col][row] != null) {
                     g2d.setColor(grid[col][row].getColor());
                 } else {
@@ -84,15 +92,15 @@ public class Board {
                 }
 
                 g2d.fillRect(
-                        (col + 1) * Util.TILE_SIZE,
-                        (row + 1) * Util.TILE_SIZE,
-                        Util.TILE_SIZE,
-                        Util.TILE_SIZE);
+                        (col + 1) * Utils.TILE_SIZE,
+                        (row + 1) * Utils.TILE_SIZE,
+                        Utils.TILE_SIZE,
+                        Utils.TILE_SIZE);
             }
         }
 
-        g.drawImage(img, (pos.x) * (Util.BOARD_SIZE * Util.TILE_SIZE + 3 * Util.TILE_SIZE),
-                (pos.y) * (Util.BOARD_SIZE * Util.TILE_SIZE + 3 * Util.TILE_SIZE), observer);
+        g.drawImage(img, (pos.x) * (Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE),
+                (pos.y) * (Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE), observer);
     }
 
     public Point getPos() {

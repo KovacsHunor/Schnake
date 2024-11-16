@@ -1,22 +1,25 @@
 package logic.util;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.*;
 
-public class Util {
+public class Utils {
     public static final int TICK = 10;
     public static final int SPEED = 5;
 
     public static final int FIELD_SIZE = 2;
-    public static final int BOARD_SIZE = 8;
+    public static final int BOARD_SIZE = 6;
     public static final int TILE_SIZE = 1000/(Math.max(FIELD_SIZE, 2)*(BOARD_SIZE+2));
 
     public static final Font BUTTON_FONT = new Font("Serif", Font.PLAIN, 32);
+    public static final Color BACKGROUND_COLOR = new Color(0x202029);
+    public static final Color FOREGROUND_COLOR = new Color(0xB0B0B0);
 
     private static final Map<Vector, Dir> vectorDir = new HashMap<>();
     private static final Map<Dir, Vector> dirVector = new EnumMap<>(Dir.class);
 
-    private Util(){}
+    private Utils(){}
 
     static{
         vectorDir.put(new Vector(0, -1), Dir.UP);
