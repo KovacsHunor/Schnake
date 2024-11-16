@@ -2,6 +2,7 @@ package gui.views;
 
 import java.awt.*;
 import javax.swing.*;
+import logic.util.Utils;
 import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
@@ -62,5 +63,16 @@ public class Menu extends JPanel{
         gbc.gridx = 0;
         gbc.gridy = 3;
         add(button3, gbc);
+
+        for (Component c : upper.getComponents()) {
+            c.setForeground(Utils.FOREGROUND_COLOR);
+            c.setBackground(Utils.BACKGROUND_COLOR);
+        }
+        for (Component c : getComponents()) {
+            setForeground(Utils.FOREGROUND_COLOR);
+            setBackground(Utils.BACKGROUND_COLOR);
+            c.setForeground(Utils.FOREGROUND_COLOR);
+            c.setBackground(Utils.BACKGROUND_COLOR);
+        }
     }
 }

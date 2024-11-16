@@ -1,5 +1,6 @@
 package gui.views;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
 import logic.leaderboard.HighscoreData;
+import logic.util.Utils;
 import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
@@ -61,6 +63,19 @@ public class Leaderboard extends JPanel {
         gbc.gridy = 0;
         add(right, gbc);
 
-        setVisible(true);
+        for (Component c : left.getComponents()) {
+            c.setForeground(Utils.FOREGROUND_COLOR);
+            c.setBackground(Utils.BACKGROUND_COLOR);
+        }
+        for (Component c : right.getComponents()) {
+            c.setForeground(Utils.FOREGROUND_COLOR);
+            c.setBackground(Utils.BACKGROUND_COLOR);
+        }
+        for (Component c : getComponents()) {
+            setForeground(Utils.FOREGROUND_COLOR);
+            setBackground(Utils.BACKGROUND_COLOR);
+            c.setForeground(Utils.FOREGROUND_COLOR);
+            c.setBackground(Utils.BACKGROUND_COLOR);
+        }
     }
 }

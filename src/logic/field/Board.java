@@ -6,6 +6,7 @@ import java.awt.image.ImageObserver;
 import java.util.EnumMap;
 import java.util.Map;
 import logic.util.Dir;
+import logic.util.MyPolygon;
 import logic.util.Utils;
 import logic.util.Vector;
 
@@ -18,6 +19,24 @@ public class Board {
     private final EnumMap<Dir, Side> sides;
 
     private final GridObject[][] grid = new GridObject[Utils.BOARD_SIZE][Utils.BOARD_SIZE];
+    private static final MyPolygon[] sidePolygons = new MyPolygon[2];
+
+    static {
+        int offset = (int) (0.433f * Utils.TILE_SIZE);
+        int trix = ((Utils.BOARD_SIZE) * Utils.TILE_SIZE);
+
+        sidePolygons[0] = new MyPolygon(
+                new int[]{0, trix - offset, trix, trix - offset, 0, offset},
+                new int[]{0, 0, Utils.TILE_SIZE / 4, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 4},
+                6
+        );
+
+        sidePolygons[1] = new MyPolygon(
+                new int[]{0, trix, trix, 0},
+                new int[]{0, 0, Utils.TILE_SIZE/2, Utils.TILE_SIZE/2},
+                4
+        );
+    }
 
     public Board(Point pos) {
         sides = new EnumMap<>(Dir.class);
@@ -49,27 +68,49 @@ public class Board {
     public void drawSides() {
 
         //  draw the teleporter sides
-        g2d.setColor(sides.get(Dir.UP).getColor());
-        g2d.fillRect(
-                Utils.TILE_SIZE,
-                0, Utils.BOARD_SIZE * Utils.TILE_SIZE,
-                Utils.TILE_SIZE / 2);
-        g2d.setColor(sides.get(Dir.DOWN).getColor());
-        g2d.fillRect(
-                Utils.TILE_SIZE,
-                Utils.TILE_SIZE * (Utils.BOARD_SIZE + 1) + Utils.TILE_SIZE / 2,
-                Utils.BOARD_SIZE * Utils.TILE_SIZE,
-                Utils.TILE_SIZE / 2);
+        Side side;
+        Vector translation;
 
-        g2d.setColor(sides.get(Dir.RIGHT).getColor());
-        g2d.fillRect(
-                Utils.TILE_SIZE * (Utils.BOARD_SIZE + 1) + Utils.TILE_SIZE / 2,
-                Utils.TILE_SIZE, Utils.TILE_SIZE / 2,
-                Utils.BOARD_SIZE * Utils.TILE_SIZE);
-        g2d.setColor(sides.get(Dir.LEFT).getColor());
-        g2d.fillRect(0,
-                Utils.TILE_SIZE, Utils.TILE_SIZE / 2,
-                Utils.BOARD_SIZE * Utils.TILE_SIZE);
+        side = sides.get(Dir.UP);
+        MyPolygon polygon = sidePolygons[0];
+
+        g2d.setColor(side.getColor());
+        if (side.getOrientation()) {
+            g2d.fillPolygon(polygon.translate(new Vector(Utils.TILE_SIZE, 0)));
+        } else {
+            g2d.fillPolygon(polygon.mirrorH().translate(new Vector(Utils.TILE_SIZE * (1 + Utils.BOARD_SIZE), 0)));
+        }
+
+        side = sides.get(Dir.DOWN);
+        g2d.setColor(side.getColor());
+        if (side.getOrientation()) {
+            translation = new Vector(Utils.TILE_SIZE * (1 + Utils.BOARD_SIZE), (int) ((Utils.BOARD_SIZE + 1.5) * Utils.TILE_SIZE));
+            g2d.fillPolygon(polygon.mirrorH().translate(translation));
+        } else {
+            translation = new Vector(Utils.TILE_SIZE, (int) ((1.5 + Utils.BOARD_SIZE) * Utils.TILE_SIZE));
+            g2d.fillPolygon(polygon.translate(translation));
+        }
+
+        side = sides.get(Dir.LEFT);
+        g2d.setColor(side.getColor());
+        if (side.getOrientation()) {
+            translation = new Vector(0, ((Utils.BOARD_SIZE + 1) * Utils.TILE_SIZE));
+            g2d.fillPolygon(polygon.mirrorH().rotate().translate(translation));
+        } else {
+            translation = new Vector(0, Utils.TILE_SIZE);
+            g2d.fillPolygon(polygon.rotate().translate(translation));
+
+        }
+
+        side = sides.get(Dir.RIGHT);
+        g2d.setColor(side.getColor());
+        if (side.getOrientation()) {
+            translation = new Vector((int) (Utils.TILE_SIZE * (1.5 + Utils.BOARD_SIZE)), Utils.TILE_SIZE);
+            g2d.fillPolygon(polygon.rotate().translate(translation));
+        } else {
+            translation = new Vector((int) (Utils.TILE_SIZE * (1.5 + Utils.BOARD_SIZE)), ((Utils.BOARD_SIZE + 1) * Utils.TILE_SIZE));
+            g2d.fillPolygon(polygon.mirrorH().rotate().translate(translation));
+        }
     }
 
     public void draw(Graphics g, ImageObserver observer) {

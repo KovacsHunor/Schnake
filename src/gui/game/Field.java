@@ -17,7 +17,6 @@ import logic.fruit.ShuffleFruit;
 import logic.fruit.TeleportFruit;
 import logic.snake.Snake;
 import logic.util.Dir;
-import logic.util.MyPolygon;
 import logic.util.Utils;
 import logic.util.Vector;
 import main.Main;
@@ -85,8 +84,6 @@ public class Field extends JPanel implements ActionListener, Resettable {
                 boards[i][j] = new Board(new Vector(i, j));
             }
         }
-
-        MyPolygon.init();
 
         player = new Snake(boards[0][0], new Color(255, 89, 94));
 
@@ -166,17 +163,15 @@ public class Field extends JPanel implements ActionListener, Resettable {
         float h = 0;
         float s;
         float b;
-        System.out.println("#################################");
         for (int i = 0; i < n; i++) {
             double x = ((double)i/n + offset) - (int)((double)i/n + offset);
+            //function for colors distinct to the human eye
             h = (float)(6.2016 * (0.0911254 *x*x*x*x*x - 0.107401 *x*x*x*x - 0.281072 *x*x*x + 0.408596 *x*x + 0.15 *x));
-            System.out.println(x + "->" +h+"\n");
             s = 0.5f+(i%3)*0.25f;
             b = 1.0f-((i+2)%3)*0.25f;
 
             palette.add(Color.getHSBColor(h, s, b));
         }
-        System.out.println("#################################");
 
         return palette;
     }
