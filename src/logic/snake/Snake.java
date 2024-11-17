@@ -58,7 +58,7 @@ public class Snake {
         board = b;
     }
 
-    public void posUpdate() {
+    private void posUpdate() {
         pos.translate(dir.x, dir.y);
 
         if (pos.x < 0 || pos.x >= Utils.BOARD_SIZE || pos.y < 0 || pos.y >= Utils.BOARD_SIZE) {
@@ -85,6 +85,8 @@ public class Snake {
     }
 
     public void move() {
+        posUpdate();
+
         Node node;
         for (int i = nodes.size() - 1; i > 0; i--) {
             node = nodes.get(i);

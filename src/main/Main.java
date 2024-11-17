@@ -13,7 +13,7 @@ import logic.leaderboard.User;
 public class Main {
 
     private static JFrame frame;
-    private static JPanel main;
+    private static JPanel deck;
     private static User user = new User();
 
     private static Menu menu;
@@ -24,35 +24,35 @@ public class Main {
     public static void init() {
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception ignored) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ignored) {
         }
 
-        main = new JPanel(new CardLayout());
+        deck = new JPanel(new CardLayout());
 
         menu = new Menu();
         game = new Game();
         leaderboard = new Leaderboard();
         deathScreen = new DeathScreen();
 
-        main.add(menu, "menu");
-        main.add(game, "game");
-        main.add(leaderboard, "leaderboard");
-        main.add(deathScreen, "deathScreen");
+        deck.add(menu, "menu");
+        deck.add(game, "game");
+        deck.add(leaderboard, "leaderboard");
+        deck.add(deathScreen, "deathScreen");
 
         frame = new JFrame("Schnake");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        frame.add(main);
+        frame.add(deck);
         frame.pack();
-        frame.setLocationRelativeTo(main);
+        frame.setLocationRelativeTo(deck);
         frame.setVisible(true);
 
         setUser(user.getUsername());
     }
 
     public static void switchTo(String name) {
-        CardLayout cl = (CardLayout) (main.getLayout());
-        cl.show(main, name);
+        CardLayout cl = (CardLayout) (deck.getLayout());
+        cl.show(deck, name);
     }
 
     public static User getUser() {

@@ -1,10 +1,10 @@
 package gui.game;
 
-import gui.*;
 import gui.views.Game;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import javax.swing.*;
@@ -12,16 +12,13 @@ import logic.field.Board;
 import logic.field.GridTile;
 import logic.field.Side;
 import logic.fruit.Fruit;
-import logic.fruit.NormalFruit;
-import logic.fruit.ShuffleFruit;
-import logic.fruit.TeleportFruit;
 import logic.snake.Snake;
 import logic.util.Dir;
 import logic.util.Utils;
 import logic.util.Vector;
 import main.Main;
 
-public class Field extends JPanel implements ActionListener, Resettable {
+public class Field extends JPanel implements ActionListener {
 
     private final Random rnd = new Random();
     private final Timer timer = new Timer(Utils.TICK, this);
@@ -45,14 +42,14 @@ public class Field extends JPanel implements ActionListener, Resettable {
                 sideShuffle.addAll(board.getSides().values());
             }
         }
-
-        sideShuffle.sort((a, b) -> rnd.nextInt());
-        boardShuffle.sort((a, b) -> rnd.nextInt());
+        Collections.shuffle(sideShuffle);
+        Collections.shuffle(boardShuffle);
 
         int dirIndex1 = rnd.nextInt(4);
         int dirIndex2 = rnd.nextInt(4);
 
         List<Color> colors = distributedColors(sideShuffle.size());
+
         for (int i = 1; i < boardShuffle.size(); i++) {
             Color c = colors.getFirst();
             colors.removeFirst();
@@ -65,6 +62,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
             Side s1 = boardShuffle.get(i - 1).getSide(Dir.values()[dirIndex1]);
             Side s2 = boardShuffle.get(i).getSide(Dir.values()[dirIndex2]);
             Side.connect(s1, s2, c);
+            
             sideShuffle.remove(s1);
             sideShuffle.remove(s2);
         }
@@ -88,7 +86,7 @@ public class Field extends JPanel implements ActionListener, Resettable {
         player = new Snake(boards[0][0], new Color(255, 89, 94));
 
         shuffleSides();
-        newFruit();
+        Fruit.newFruit(boards);
 
         timer.restart();
         stopTimer();
@@ -101,42 +99,6 @@ public class Field extends JPanel implements ActionListener, Resettable {
         setKeyBindings();
 
         init();
-    }
-
-    public void newFruit() {
-        double ran = rnd.nextDouble();
-        Fruit fruit;
-        Board board;
-        Vector pos;
-        do {
-            board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
-            pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
-        } while (!board.getTile(pos).isEmpty());
-
-        //0.7, 0.85, 1
-
-        if (ran <= 0.7) {
-            fruit = new NormalFruit(board, pos);
-        } else if (ran <= 0.85) {
-            TeleportFruit pair = new TeleportFruit(board, pos);
-            board.putOnTile(pos, pair);
-
-            do {
-                board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
-                pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
-            } while (!board.getTile(pos).isEmpty());
-
-            fruit = new TeleportFruit(board, pos);
-            ((TeleportFruit) fruit).setPair(pair);
-            pair.setPair(fruit);
-
-            
-
-        } else {
-            fruit = new ShuffleFruit(board, pos);
-        }
-
-        board.putOnTile(pos, fruit);
     }
 
     private void setKeyBindings() {
@@ -157,18 +119,22 @@ public class Field extends JPanel implements ActionListener, Resettable {
         getActionMap().put("right", rightButton());
     }
 
+    //function for colors distinct to the human eye
+    private float pleasingColorFunction(float x) {
+        return (float) (6.2016 * (0.0911254 * Math.pow(x, 5) - 0.107401 * Math.pow(x, 4) - 0.281072 * Math.pow(x, 3) + 0.408596 * Math.pow(x, 2) + 0.15 * x));
+    }
+
     private List<Color> distributedColors(int n) {
         List<Color> palette = new ArrayList<>();
-        float offset = 1.0f/(2*n)*player.getPoint()/5;
+        float offset = 1.0f / (2 * n) * player.getPoint() / 5;
         float h;
         float s;
         float b;
         for (int i = 0; i < n; i++) {
-            double x = ((double)i/n + offset) - (int)((double)i/n + offset);
-            //function for colors distinct to the human eye
-            h = (float)(6.2016 * (0.0911254 *x*x*x*x*x - 0.107401 *x*x*x*x - 0.281072 *x*x*x + 0.408596 *x*x + 0.15 *x));
-            s = 0.5f+(i%3)*0.25f;
-            b = 1.0f-((i+2)%3)*0.25f;
+            float x = ((float) i / n + offset) - (int) ((float) i / n + offset);
+            h = pleasingColorFunction(x);
+            s = 0.5f + (i % 3) * 0.25f;
+            b = 1.0f - ((i + 2) % 3) * 0.25f;
 
             palette.add(Color.getHSBColor(h, s, b));
         }
@@ -176,11 +142,14 @@ public class Field extends JPanel implements ActionListener, Resettable {
         return palette;
     }
 
+    public Board[][] getBoards() {
+        return boards;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         dTime = (dTime + 1) % ((1000 / Utils.SPEED) / Utils.TICK);
         if (dTime == 0) {
-            player.posUpdate();
             player.move();
 
             GridTile gt = player.getBoard().getTile((player.getPos()));
@@ -249,7 +218,6 @@ public class Field extends JPanel implements ActionListener, Resettable {
         };
     }
 
-    @Override
     public void reset() {
         init();
     }

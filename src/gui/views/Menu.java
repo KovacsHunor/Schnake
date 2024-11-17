@@ -9,8 +9,8 @@ import main.Main;
 
 public class Menu extends JPanel {
 
-    private JLabel usernameLabel;
-    private JTextField input;
+    private final JLabel usernameLabel;
+    private final JTextField input;
 
     private void setUsername() {
         String text = input.getText();

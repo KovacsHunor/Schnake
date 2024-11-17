@@ -1,6 +1,5 @@
 package gui.views;
 
-import gui.Resettable;
 import gui.game.Field;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -14,7 +13,7 @@ import logic.util.Utils;
 import static logic.util.Utils.BUTTON_FONT;
 import main.Main;
 
-public class Game extends JPanel implements Resettable{
+public class Game extends JPanel{
     private Field field;
     private final JLabel pointLabel = new JLabel("0");
 
@@ -68,7 +67,6 @@ public class Game extends JPanel implements Resettable{
         pointLabel.setText("" + point); 
     }
 
-    @Override
     public void reset() {
         field.reset();
         field.updatePoint();
