@@ -139,4 +139,6 @@ public class Main {
         list.add(user);
         leaderboard.getData().fireTableRowsInserted(list.size() - 1, list.size() - 1);
     }
+
+    
 }

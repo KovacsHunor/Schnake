@@ -18,27 +18,33 @@ import logic.util.Dir;
 import logic.util.Utils;
 import logic.util.Vector;
 
-public class Field extends JPanel implements ActionListener {
+public class Field implements ActionListener {
     
     private final Random rnd = new Random();
     private final Timer timer = new Timer(Utils.TICK, this);
     private final Board[][] boards;
     private final Game game;
+    private final FieldGui gui;
     
     private int dTime = 0;
     private Snake player;
     
-    public Field(Game game) {
+    public Field(Game game, FieldGui gui) {
+        this.gui = gui;
         this.game = game;
-        setPreferredSize(new Dimension(Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1),
-                Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1)));
-        setKeyBindings();
         
         boards = new Board[Utils.FIELD_SIZE][Utils.FIELD_SIZE];
 
         init();
     }
 
+    public Game getGame(){
+        return game;
+    }
+
+    public Snake getPlayer(){
+        return player;
+    }
 
     public void updatePoint() {
         game.setPointLabel(player.getPoint());
@@ -105,23 +111,7 @@ public class Field extends JPanel implements ActionListener {
     }
 
 
-    private void setKeyBindings() {
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("W"), "up");
-        getActionMap().put("up", upButton());
-
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("DOWN"), "down");
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("S"), "down");
-        getActionMap().put("down", downButton());
-
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "left");
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("A"), "left");
-        getActionMap().put("left", leftButton());
-
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("RIGHT"), "right");
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("D"), "right");
-        getActionMap().put("right", rightButton());
-    }
+    
 
     //function for colors distinct to the human eye
     private float pleasingColorFunction(float x) {
@@ -165,61 +155,15 @@ public class Field extends JPanel implements ActionListener {
             }
             updatePoint();
         }
-        repaint();
+        gui.repaint();
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void draw(Graphics g) {
         for (Board[] row : boards) {
             for (Board board : row) {
-                board.draw(g, this);
+                board.draw(g, gui);
             }
         }
-    }
-
-    private Action upButton() {
-        return new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (player.getOriginalDir().y != 1) {
-                    player.setDir(new Vector(0, -1));
-                }
-            }
-        };
-    }
-
-    private Action downButton() {
-        return new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (player.getOriginalDir().y != -1) {
-                    player.setDir(new Vector(0, 1));
-                }
-            }
-        };
-    }
-
-    private Action leftButton() {
-        return new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (player.getOriginalDir().x != 1) {
-                    player.setDir(new Vector(-1, 0));
-                }
-            }
-        };
-    }
-
-    private Action rightButton() {
-        return new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (player.getOriginalDir().x != -1) {
-                    player.setDir(new Vector(1, 0));
-                }
-            }
-        };
     }
 
     public void reset() {

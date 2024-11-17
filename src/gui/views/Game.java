@@ -1,6 +1,7 @@
 package gui.views;
 
 import gui.game.Field;
+import gui.game.FieldGui;
 import gui.main.Main;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -12,14 +13,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Game extends JPanel{
-    private Field field;
+    private FieldGui fieldPanel;
     private JPanel right = new JPanel();
     private final JLabel pointLabel = new JLabel("0");
 
     public Game() {
         setLayout(new GridBagLayout());
 
-        field = new Field(this);
+        fieldPanel = new FieldGui();
+        fieldPanel.setField(new Field(this, fieldPanel));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -30,7 +32,7 @@ public class Game extends JPanel{
         JButton menuButton = new JButton("Menu");
         menuButton.addActionListener(ae -> {
             Main.switchTo("menu");
-            field.reset();
+            fieldPanel.getField().reset();
         });
 
         pointLabel.setFont(new Font("Serif", Font.BOLD, 64));
@@ -38,7 +40,7 @@ public class Game extends JPanel{
         left.add(menuButton);
         pointLabel.setAlignmentX(CENTER_ALIGNMENT);
         right.add(pointLabel);
-        right.add(field);
+        right.add(fieldPanel);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -53,17 +55,16 @@ public class Game extends JPanel{
         pointLabel.setText("" + point); 
     }
 
-    public void setField(Field f){
-        field = f;
-        right.add(field);
+    public FieldGui getFieldGui(){
+        return fieldPanel;
     }
 
     public void reset() {
-        field.reset();
-        field.updatePoint();
+        fieldPanel.getField().reset();
+        fieldPanel.getField().updatePoint();
     }
 
     public void start() {
-        field.start();
+        fieldPanel.getField().start();
     }
 }
