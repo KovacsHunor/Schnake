@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HighscoreIO {
+    private HighscoreIO(){
+        
+    }
 
     public static List<User> readHighscores() {
         List<User> highscoreList = new ArrayList<>();

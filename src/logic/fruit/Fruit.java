@@ -10,7 +10,7 @@ import logic.util.Utils;
 import logic.util.Vector;
 
 public abstract class Fruit extends GridObject {
-    private static Random rnd = new Random();
+    private static final Random rnd = new Random();
 
     public static void newFruit(Board[][] boards) {
         double ran = rnd.nextDouble();

@@ -1,6 +1,6 @@
 package gui.views;
 
-import java.awt.Component;
+import gui.main.Main;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,9 +11,6 @@ import javax.swing.*;
 import javax.swing.table.TableRowSorter;
 import logic.leaderboard.HighscoreData;
 import logic.leaderboard.HighscoreIO;
-import logic.util.Utils;
-import static logic.util.Utils.BUTTON_FONT;
-import main.Main;
 
 public final class Leaderboard extends JPanel {
 
@@ -56,7 +53,6 @@ public final class Leaderboard extends JPanel {
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 
         JButton menuButton = new JButton("Menu");
-        menuButton.setFont(BUTTON_FONT);
         menuButton.addActionListener(ae -> Main.switchTo("menu"));
 
         left.add(menuButton);
@@ -70,21 +66,6 @@ public final class Leaderboard extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 0;
         add(right, gbc);
-
-        for (Component c : left.getComponents()) {
-            c.setForeground(Utils.FOREGROUND_COLOR);
-            c.setBackground(Utils.BACKGROUND_COLOR);
-        }
-        for (Component c : right.getComponents()) {
-            c.setForeground(Utils.FOREGROUND_COLOR);
-            c.setBackground(Utils.BACKGROUND_COLOR);
-        }
-        for (Component c : getComponents()) {
-            setForeground(Utils.FOREGROUND_COLOR);
-            setBackground(Utils.BACKGROUND_COLOR);
-            c.setForeground(Utils.FOREGROUND_COLOR);
-            c.setBackground(Utils.BACKGROUND_COLOR);
-        }
 
         sort();
     }

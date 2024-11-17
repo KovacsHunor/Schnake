@@ -1,14 +1,19 @@
-package main;
+package gui.main;
 
 import gui.views.DeathScreen;
 import gui.views.Game;
 import gui.views.Leaderboard;
 import gui.views.Menu;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.List;
 import javax.swing.*;
 import logic.leaderboard.HighscoreIO;
 import logic.leaderboard.User;
+import logic.util.Utils;
 
 public class Main {
 
@@ -43,11 +48,47 @@ public class Main {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         frame.add(deck);
+        guiSettings(deck);
         frame.pack();
         frame.setLocationRelativeTo(deck);
         frame.setVisible(true);
 
         setUser(user.getUsername());
+    }
+
+    private static void guiSettings(Component c) {
+        Font defaulFont = new Font("Serif", Font.PLAIN, 32);
+        Color bg = Utils.BACKGROUND_COLOR;
+        Color fg = new Color(0xB0B0B0);
+
+        c.setForeground(fg);
+        c.setBackground(bg);
+        switch (c) {
+            case JPanel p -> {
+                p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                for (Component c2 : p.getComponents()) {
+                    guiSettings(c2);
+                }
+            }
+            case JButton b -> {
+                b.setFont(defaulFont);
+            }
+            case JLabel l -> {
+                if (l.getFont().getSize() < 32) {
+                    l.setFont(defaulFont);
+                }
+                l.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+            case JTextField f -> {
+                f.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+            case JComboBox box -> {
+                box.setPreferredSize(new Dimension(80, 50));
+                box.setFont(defaulFont);
+            }
+            default -> {
+            }
+        }
     }
 
     public static void switchTo(String name) {
@@ -64,6 +105,7 @@ public class Main {
     }
 
     public static void toDeathScreen(int point) {
+        menu.updatePointLabel();
         boolean isHighScore = point > user.getHighscore();
         if (isHighScore) {
             user.setHighscore(point);

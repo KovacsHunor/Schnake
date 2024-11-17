@@ -69,15 +69,15 @@ public class Snake {
                 pos.x = Utils.BOARD_SIZE - pos.x - 1;
             }
 
-            pos.sub(dir);
-
+            
             Side current = board.getSide(Utils.getDir(dir));
             Side pair = current.getPair();
-
+            
             board = pair.getBoard();
             Vector newdir = Utils.getVector(pair.getDir());
-
+            
             int torotate = newdir.toRotate(dir);
+            pos.sub(dir);
             pos.rotateInSquare(Utils.BOARD_SIZE, torotate);
 
             dir = newdir.negated();

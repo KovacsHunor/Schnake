@@ -1,5 +1,6 @@
 package gui.views;
 
+import gui.main.Main;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import logic.util.Utils;
-import main.Main;
 
 public class DeathScreen extends JPanel {
     private final JLabel scoreDisplay = new JLabel("0");
@@ -26,11 +26,8 @@ public class DeathScreen extends JPanel {
         JPanel score = new JPanel();
         JLabel scoreText = new JLabel("Score:");
         scoreText.setFont(new Font("Serif", Font.PLAIN, 32));
-        scoreText.setForeground(Utils.FOREGROUND_COLOR);
-        score.setBackground(Utils.BACKGROUND_COLOR);
         
         scoreDisplay.setFont(new Font("Serif", Font.BOLD, 64));
-        scoreDisplay.setForeground(Utils.FOREGROUND_COLOR);
         
         score.add(scoreText);
         score.add(scoreDisplay);
@@ -38,16 +35,9 @@ public class DeathScreen extends JPanel {
         
         newRecord.setFont(new Font("Comic Sans MS", Font.BOLD, 32));
         newRecord.setVisible(false);
-        newRecord.setForeground(Utils.FOREGROUND_COLOR);
         
         JButton againButton = new JButton("Again");
-        againButton.setFont(Utils.BUTTON_FONT);
-        againButton.setBackground(Utils.BACKGROUND_COLOR);
-        againButton.setForeground(Utils.FOREGROUND_COLOR);
         JButton menuButton = new JButton("Menu");
-        menuButton.setFont(Utils.BUTTON_FONT);
-        menuButton.setBackground(Utils.BACKGROUND_COLOR);
-        menuButton.setForeground(Utils.FOREGROUND_COLOR);
         
         againButton.addActionListener(ae -> Main.toGame());
         menuButton.addActionListener(ae -> Main.switchTo("menu"));

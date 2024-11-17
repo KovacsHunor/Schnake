@@ -1,5 +1,6 @@
 package gui.game;
 
+import gui.main.Main;
 import gui.views.Game;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,17 +17,28 @@ import logic.snake.Snake;
 import logic.util.Dir;
 import logic.util.Utils;
 import logic.util.Vector;
-import main.Main;
 
 public class Field extends JPanel implements ActionListener {
-
+    
     private final Random rnd = new Random();
     private final Timer timer = new Timer(Utils.TICK, this);
-    private final Board[][] boards = new Board[Utils.FIELD_SIZE][Utils.FIELD_SIZE];
+    private final Board[][] boards;
     private final Game game;
-
+    
     private int dTime = 0;
     private Snake player;
+    
+    public Field(Game game) {
+        this.game = game;
+        setPreferredSize(new Dimension(Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1),
+                Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1)));
+        setKeyBindings();
+        
+        boards = new Board[Utils.FIELD_SIZE][Utils.FIELD_SIZE];
+
+        init();
+    }
+
 
     public void updatePoint() {
         game.setPointLabel(player.getPoint());
@@ -76,7 +88,7 @@ public class Field extends JPanel implements ActionListener {
         player.setBoard(boards[player.getBoard().getPos().x][player.getBoard().getPos().y]);
     }
 
-    private void init() {
+    public void init() {
         for (int i = 0; i < boards.length; i++) {
             for (int j = 0; j < boards[i].length; j++) {
                 boards[i][j] = new Board(new Vector(i, j));
@@ -92,14 +104,6 @@ public class Field extends JPanel implements ActionListener {
         stopTimer();
     }
 
-    public Field(Game game) {
-        this.game = game;
-        setPreferredSize(new Dimension(Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1),
-                Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1)));
-        setKeyBindings();
-
-        init();
-    }
 
     private void setKeyBindings() {
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("UP"), "up");

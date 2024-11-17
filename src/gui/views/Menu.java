@@ -1,19 +1,23 @@
 package gui.views;
 
+import gui.main.Main;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import javax.swing.*;
-import logic.util.Utils;
-import static logic.util.Utils.BUTTON_FONT;
-import main.Main;
 
-public class Menu extends JPanel {
+public final class Menu extends JPanel {
 
     private final JLabel usernameLabel;
-    private final JTextField input;
+    private final JTextField inputField;
+    private JLabel pointLabel;
+
+    public void updatePointLabel() {
+        pointLabel = new JLabel("" + Main.getUser().getHighscore());
+    }
 
     private void setUsername() {
-        String text = input.getText();
+        String text = inputField.getText();
         if (!text.equals("") && !text.contains(",")) {
             Main.setUser(text);
             usernameLabel.setText(text);
@@ -30,69 +34,113 @@ public class Menu extends JPanel {
     }
 
     public Menu() {
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        input = new JTextField(20);
-        input.setFont(BUTTON_FONT);
-
-        JPanel upper = new JPanel();
+        inputField = new JTextField(20);
+        inputField.setFont(new Font("Serif", Font.PLAIN, 32));
+        inputField.setMaximumSize(new Dimension(inputField.getMaximumSize().width, 80));
 
         usernameLabel = new JLabel(Main.getUser().getUsername());
-        usernameLabel.setFont(BUTTON_FONT);
+        usernameLabel.setFont(new Font("Serif", Font.PLAIN, 32));
 
-        JButton okButton = new JButton("Set username");
-        okButton.setFont(BUTTON_FONT);
+        updatePointLabel();
+        pointLabel.setFont(new Font("Serif", Font.PLAIN, 64));
 
-        okButton.addActionListener(ae -> setUsername()
-        );
+        JButton playButton = new JButton("Play");
+        playButton.addActionListener(ae -> Main.toGame());
 
-        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enter");
-        getActionMap().put("enter", setUsernameAction());
+        JButton leaderboardButton = new JButton("Leaderboard");
+        leaderboardButton.addActionListener(ae -> Main.toLeaderBoard());
 
-        upper.add(input);
-        upper.add(okButton);
-        upper.add(usernameLabel);
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(ae -> System.exit(0));
 
-        JButton button1 = new JButton("Play");
-        button1.setFont(BUTTON_FONT);
-        JButton button2 = new JButton("Leaderboard");
-        button2.setFont(BUTTON_FONT);
-        JButton button3 = new JButton("Exit");
-        button3.setFont(BUTTON_FONT);
+        Integer[] sizes = new Integer[20];
+        for (int i = 0; i < sizes.length; i++) {
+            sizes[i] = i + 1;
+        }
+        JLabel fieldLabel = new JLabel("Field size: ");
+        JComboBox<Integer> fieldBox = new JComboBox<>(sizes);
+        fieldBox.addItemListener((ItemEvent ie) -> {
+            //TODO
+        });
 
-        button1.addActionListener(ae -> Main.toGame());
-        button2.addActionListener(ae -> Main.toLeaderBoard());
-        button3.addActionListener(ae -> System.exit(0));
+        fieldBox.setPreferredSize(new Dimension(80, 50));
+
+        JLabel boardLabel = new JLabel("Board size: ");
+        JComboBox<Integer> boardBox = new JComboBox<>(sizes);
+        boardBox.addItemListener((ItemEvent ie) -> {
+            //TODO
+        });
+
+        boardBox.setPreferredSize(new Dimension(80, 50));
+
+        JPanel upper = new JPanel(new BorderLayout());
+        JPanel lower = new JPanel(new GridBagLayout());
+
+        JPanel info = new JPanel();
+        JPanel input = new JPanel();
+        JPanel navigate = new JPanel(new GridBagLayout());
+        JPanel settings = new JPanel(new GridBagLayout());
+
+        info.setLayout(new GridLayout(2, 1, 0, 0));
+        info.add(usernameLabel);
+        info.add(pointLabel);
+
+        input.setLayout(new BoxLayout(input, BoxLayout.PAGE_AXIS));
+        input.add(Box.createVerticalGlue());
+        input.add(inputField);
+        input.add(Box.createVerticalGlue());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-
-        add(upper, gbc);
+        navigate.add(playButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-
-        add(button1, gbc);
+        navigate.add(leaderboardButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(button2, gbc);
+        navigate.add(exitButton, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        add(button3, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        settings.add(fieldLabel, gbc);
 
-        for (Component c : upper.getComponents()) {
-            c.setForeground(Utils.FOREGROUND_COLOR);
-            c.setBackground(Utils.BACKGROUND_COLOR);
-        }
-        for (Component c : getComponents()) {
-            setForeground(Utils.FOREGROUND_COLOR);
-            setBackground(Utils.BACKGROUND_COLOR);
-            c.setForeground(Utils.FOREGROUND_COLOR);
-            c.setBackground(Utils.BACKGROUND_COLOR);
-        }
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        settings.add(boardLabel, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        settings.add(fieldBox, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        settings.add(boardBox, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        lower.add(navigate, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        lower.add(settings, gbc);
+
+        upper.add(info, BorderLayout.EAST);
+        upper.add(input, BorderLayout.WEST);
+
+        add(upper, BorderLayout.NORTH);
+        add(lower, BorderLayout.CENTER);
+        /*
+        
+         */
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enter");
+        getActionMap().put("enter", setUsernameAction());
     }
 }
