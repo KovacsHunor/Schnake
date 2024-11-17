@@ -7,9 +7,9 @@ public class Utils {
     public static final int TICK = 10;
     public static final int SPEED = 5;
 
-    public static int FIELD_SIZE = 2;
-    public static int BOARD_SIZE = 7;
-    public static int TILE_SIZE = 950/(Math.max(FIELD_SIZE, 2)*(BOARD_SIZE+2));
+    public static int fieldSize;
+    public static int boardSize;
+    public static int tileSize;
 
     public static final Color BACKGROUND_COLOR = new Color(0x202029);
 
@@ -18,7 +18,15 @@ public class Utils {
 
     private Utils(){}
 
+    public static void updateTileSize(){
+        tileSize = 1000/(Math.max(fieldSize, 2)*(boardSize+3)-1);
+    }
+
     static{
+        fieldSize = 2;
+        boardSize = 7;
+        updateTileSize();
+
         vectorDir.put(new Vector(0, -1), Dir.UP);
         vectorDir.put(new Vector(0, 1), Dir.DOWN);
         vectorDir.put(new Vector(1, 0), Dir.RIGHT);

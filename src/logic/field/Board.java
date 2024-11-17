@@ -12,29 +12,29 @@ import logic.util.Vector;
 
 public class Board {
 
-    private BufferedImage img = new BufferedImage(Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE, Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE, BufferedImage.TYPE_INT_RGB);
+    private BufferedImage img = new BufferedImage(Utils.boardSize * Utils.tileSize + 3 * Utils.tileSize, Utils.boardSize * Utils.tileSize + 3 * Utils.tileSize, BufferedImage.TYPE_INT_RGB);
     private Graphics2D g2d = img.createGraphics();
 
     private final Point pos;
     private final EnumMap<Dir, Side> sides;
 
-    private final GridTile[][] grid = new GridTile[Utils.BOARD_SIZE][Utils.BOARD_SIZE];
+    private final GridTile[][] grid = new GridTile[Utils.boardSize][Utils.boardSize];
     private static final MyPolygon[] sidePolygons = new MyPolygon[2];
 
-    static {
-        int offset = (int) (0.433f * Utils.TILE_SIZE);
-        int trix = ((Utils.BOARD_SIZE) * Utils.TILE_SIZE);
+    public static void setPolygons() {
+        int offset = (int) (0.433f * Utils.tileSize);
+        int trix = ((Utils.boardSize) * Utils.tileSize);
 
         MyPolygon arrow = new MyPolygon(
                 new int[]{0, trix - offset, trix, trix - offset, 0, offset},
-                new int[]{0, 0, Utils.TILE_SIZE / 4, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 4},
+                new int[]{0, 0, Utils.tileSize / 4, Utils.tileSize / 2, Utils.tileSize / 2, Utils.tileSize / 4},
                 6
         );
         sidePolygons[0] = arrow;
 
         MyPolygon rectangle = new MyPolygon(
                 new int[]{0, trix, trix, 0},
-                new int[]{0, 0, Utils.TILE_SIZE / 2, Utils.TILE_SIZE / 2},
+                new int[]{0, 0, Utils.tileSize / 2, Utils.tileSize / 2},
                 4
         );
         sidePolygons[1] = rectangle;
@@ -84,28 +84,28 @@ public class Board {
 
         g2d.setColor(side.getColor());
         if (side.getOrientation()) {
-            g2d.fillPolygon(polygon.translate(new Vector(Utils.TILE_SIZE, 0)));
+            g2d.fillPolygon(polygon.translate(new Vector(Utils.tileSize, 0)));
         } else {
-            g2d.fillPolygon(polygon.mirrorH().translate(new Vector(Utils.TILE_SIZE * (1 + Utils.BOARD_SIZE), 0)));
+            g2d.fillPolygon(polygon.mirrorH().translate(new Vector(Utils.tileSize * (1 + Utils.boardSize), 0)));
         }
 
         side = sides.get(Dir.DOWN);
         g2d.setColor(side.getColor());
         if (side.getOrientation()) {
-            translation = new Vector(Utils.TILE_SIZE * (1 + Utils.BOARD_SIZE), (int) ((Utils.BOARD_SIZE + 1.5) * Utils.TILE_SIZE));
+            translation = new Vector(Utils.tileSize * (1 + Utils.boardSize), (int) ((Utils.boardSize + 1.5) * Utils.tileSize));
             g2d.fillPolygon(polygon.mirrorH().translate(translation));
         } else {
-            translation = new Vector(Utils.TILE_SIZE, (int) ((1.5 + Utils.BOARD_SIZE) * Utils.TILE_SIZE));
+            translation = new Vector(Utils.tileSize, (int) ((1.5 + Utils.boardSize) * Utils.tileSize));
             g2d.fillPolygon(polygon.translate(translation));
         }
 
         side = sides.get(Dir.LEFT);
         g2d.setColor(side.getColor());
         if (side.getOrientation()) {
-            translation = new Vector(0, ((Utils.BOARD_SIZE + 1) * Utils.TILE_SIZE));
+            translation = new Vector(0, ((Utils.boardSize + 1) * Utils.tileSize));
             g2d.fillPolygon(polygon.mirrorH().rotate().translate(translation));
         } else {
-            translation = new Vector(0, Utils.TILE_SIZE);
+            translation = new Vector(0, Utils.tileSize);
             g2d.fillPolygon(polygon.rotate().translate(translation));
 
         }
@@ -113,23 +113,23 @@ public class Board {
         side = sides.get(Dir.RIGHT);
         g2d.setColor(side.getColor());
         if (side.getOrientation()) {
-            translation = new Vector((int) (Utils.TILE_SIZE * (1.5 + Utils.BOARD_SIZE)), Utils.TILE_SIZE);
+            translation = new Vector((int) (Utils.tileSize * (1.5 + Utils.boardSize)), Utils.tileSize);
             g2d.fillPolygon(polygon.rotate().translate(translation));
         } else {
-            translation = new Vector((int) (Utils.TILE_SIZE * (1.5 + Utils.BOARD_SIZE)), ((Utils.BOARD_SIZE + 1) * Utils.TILE_SIZE));
+            translation = new Vector((int) (Utils.tileSize * (1.5 + Utils.boardSize)), ((Utils.boardSize + 1) * Utils.tileSize));
             g2d.fillPolygon(polygon.mirrorH().rotate().translate(translation));
         }
     }
 
     public void draw(Graphics g, ImageObserver observer) {
         g2d.setColor(Utils.BACKGROUND_COLOR);
-        g2d.fillRect(0, 0, Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE, Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE);
+        g2d.fillRect(0, 0, Utils.boardSize * Utils.tileSize + 3 * Utils.tileSize, Utils.boardSize * Utils.tileSize + 3 * Utils.tileSize);
 
         drawSides();
 
         // draw the checkered grid
-        for (int row = 0; row < Utils.BOARD_SIZE; row++) {
-            for (int col = 0; col < Utils.BOARD_SIZE; col++) {
+        for (int row = 0; row < Utils.boardSize; row++) {
+            for (int col = 0; col < Utils.boardSize; col++) {
                 if (!grid[col][row].isEmpty()) {
                     GridObject go = grid[col][row].upper();
                     g2d.setColor(go.getColor());
@@ -142,15 +142,15 @@ public class Board {
                 }
 
                 g2d.fillRect(
-                        (col + 1) * Utils.TILE_SIZE,
-                        (row + 1) * Utils.TILE_SIZE,
-                        Utils.TILE_SIZE,
-                        Utils.TILE_SIZE);
+                        (col + 1) * Utils.tileSize,
+                        (row + 1) * Utils.tileSize,
+                        Utils.tileSize,
+                        Utils.tileSize);
             }
         }
 
-        g.drawImage(img, (pos.x) * (Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE),
-                (pos.y) * (Utils.BOARD_SIZE * Utils.TILE_SIZE + 3 * Utils.TILE_SIZE), observer);
+        g.drawImage(img, (pos.x) * (Utils.boardSize * Utils.tileSize + 3 * Utils.tileSize),
+                (pos.y) * (Utils.boardSize * Utils.tileSize + 3 * Utils.tileSize), observer);
     }
 
     public Point getPos() {

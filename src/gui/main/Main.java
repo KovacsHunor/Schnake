@@ -66,6 +66,10 @@ public class Main {
         switch (c) {
             case JPanel p -> {
                 p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                
+                //For debug
+                //p.setBorder(BorderFactory.createLineBorder(Color.RED));
+                
                 for (Component c2 : p.getComponents()) {
                     guiSettings(c2);
                 }

@@ -16,8 +16,8 @@ public class FieldGui extends JPanel {
     Field field;
 
     public FieldGui() {
-        setPreferredSize(new Dimension(Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1),
-                Utils.TILE_SIZE * (Utils.FIELD_SIZE * (Utils.BOARD_SIZE + 3) - 1)));
+        setPreferredSize(new Dimension(Utils.tileSize * (Utils.fieldSize * (Utils.boardSize + 3)-1),
+        Utils.tileSize * (Utils.fieldSize * (Utils.boardSize + 3)-1)));
         setKeyBindings();
     }
 

@@ -61,12 +61,12 @@ public class Snake {
     private void posUpdate() {
         pos.translate(dir.x, dir.y);
 
-        if (pos.x < 0 || pos.x >= Utils.BOARD_SIZE || pos.y < 0 || pos.y >= Utils.BOARD_SIZE) {
+        if (pos.x < 0 || pos.x >= Utils.boardSize || pos.y < 0 || pos.y >= Utils.boardSize) {
 
-            if (pos.x < 0 || pos.x >= Utils.BOARD_SIZE) {
-                pos.y = Utils.BOARD_SIZE - pos.y - 1;
+            if (pos.x < 0 || pos.x >= Utils.boardSize) {
+                pos.y = Utils.boardSize - pos.y - 1;
             } else {
-                pos.x = Utils.BOARD_SIZE - pos.x - 1;
+                pos.x = Utils.boardSize - pos.x - 1;
             }
 
             
@@ -78,7 +78,7 @@ public class Snake {
             
             int torotate = newdir.toRotate(dir);
             pos.sub(dir);
-            pos.rotateInSquare(Utils.BOARD_SIZE, torotate);
+            pos.rotateInSquare(Utils.boardSize, torotate);
 
             dir = newdir.negated();
         }

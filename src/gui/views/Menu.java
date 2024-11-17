@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
+import logic.util.Utils;
 
 public final class Menu extends JPanel {
 
@@ -65,18 +66,20 @@ public final class Menu extends JPanel {
         JLabel fieldLabel = new JLabel("Field size: ");
         JComboBox<Integer> fieldBox = new JComboBox<>(sizes);
         fieldBox.addItemListener((ItemEvent ie) -> {
-            //TODO
+            Utils.fieldSize = (Integer)ie.getItem();
         });
 
         fieldBox.setPreferredSize(new Dimension(80, 50));
+        fieldBox.setSelectedItem(Utils.fieldSize);
 
         JLabel boardLabel = new JLabel("Board size: ");
         JComboBox<Integer> boardBox = new JComboBox<>(sizes);
         boardBox.addItemListener((ItemEvent ie) -> {
-            //TODO
+            Utils.boardSize = (Integer)ie.getItem();
         });
 
         boardBox.setPreferredSize(new Dimension(80, 50));
+        boardBox.setSelectedItem(Utils.boardSize);
 
         JPanel upper = new JPanel(new BorderLayout());
         JPanel lower = new JPanel(new GridBagLayout());

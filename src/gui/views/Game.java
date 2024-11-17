@@ -3,6 +3,7 @@ package gui.views;
 import gui.game.Field;
 import gui.game.FieldGui;
 import gui.main.Main;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,17 +12,24 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import logic.field.Board;
+import logic.util.Utils;
 
-public class Game extends JPanel{
-    private FieldGui fieldPanel;
+public final class Game extends JPanel {
+
+    private FieldGui field;
+    JPanel fieldPanel = new JPanel(new GridBagLayout());
     private JPanel right = new JPanel();
     private final JLabel pointLabel = new JLabel("0");
 
     public Game() {
         setLayout(new GridBagLayout());
 
-        fieldPanel = new FieldGui();
-        fieldPanel.setField(new Field(this, fieldPanel));
+        field = new FieldGui();
+        field.setField(new Field(this, field));
+
+        fieldPanel.setPreferredSize(new Dimension(1050, 1050));
+        fieldPanel.add(field);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -32,7 +40,7 @@ public class Game extends JPanel{
         JButton menuButton = new JButton("Menu");
         menuButton.addActionListener(ae -> {
             Main.switchTo("menu");
-            fieldPanel.getField().reset();
+            field.getField().reset();
         });
 
         pointLabel.setFont(new Font("Serif", Font.BOLD, 64));
@@ -49,22 +57,29 @@ public class Game extends JPanel{
         gbc.gridx = 1;
         gbc.gridy = 0;
         add(right, gbc);
+
     }
 
-    public void setPointLabel(int point){
-        pointLabel.setText("" + point); 
+    public void setPointLabel(int point) {
+        pointLabel.setText("" + point);
     }
 
-    public FieldGui getFieldGui(){
-        return fieldPanel;
+    public FieldGui getFieldGui() {
+        return field;
     }
 
     public void reset() {
-        fieldPanel.getField().reset();
-        fieldPanel.getField().updatePoint();
+        Utils.updateTileSize();
+        field.getField().reset();
+        int side = Utils.tileSize * (Utils.fieldSize * (Utils.boardSize + 3) - 1);
+        field.setPreferredSize(new Dimension(side, side));
+        field.setSize(field.getPreferredSize());
+        Board.setPolygons();
+        revalidate();
+        repaint();
     }
 
     public void start() {
-        fieldPanel.getField().start();
+        field.getField().start();
     }
 }

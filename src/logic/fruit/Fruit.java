@@ -18,8 +18,8 @@ public abstract class Fruit extends GridObject {
         Board board;
         Vector pos;
         do {
-            board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
-            pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
+            board = boards[rnd.nextInt(Utils.fieldSize)][rnd.nextInt(Utils.fieldSize)];
+            pos = new Vector(rnd.nextInt(Utils.boardSize), rnd.nextInt(Utils.boardSize));
         } while (!board.getTile(pos).isEmpty());
 
         //0.7, 0.85, 1
@@ -30,8 +30,8 @@ public abstract class Fruit extends GridObject {
             board.putOnTile(pos, pair);
 
             do {
-                board = boards[rnd.nextInt(Utils.FIELD_SIZE)][rnd.nextInt(Utils.FIELD_SIZE)];
-                pos = new Vector(rnd.nextInt(Utils.BOARD_SIZE), rnd.nextInt(Utils.BOARD_SIZE));
+                board = boards[rnd.nextInt(Utils.fieldSize)][rnd.nextInt(Utils.fieldSize)];
+                pos = new Vector(rnd.nextInt(Utils.boardSize), rnd.nextInt(Utils.boardSize));
             } while (!board.getTile(pos).isEmpty());
 
             fruit = new TeleportFruit(board, pos);
@@ -65,12 +65,12 @@ public abstract class Fruit extends GridObject {
     public void draw(Graphics g) {
         g.setColor(getColor());
         g.fillRect(
-                (pos.x + 1 + (board.getPos().x) * (Utils.BOARD_SIZE + 3))
-                * Utils.TILE_SIZE,
-                (pos.y + 1 + (board.getPos().y) * (Utils.BOARD_SIZE + 3))
-                * Utils.TILE_SIZE,
-                Utils.TILE_SIZE,
-                Utils.TILE_SIZE);
+                (pos.x + 1 + (board.getPos().x) * (Utils.boardSize + 3))
+                * Utils.tileSize,
+                (pos.y + 1 + (board.getPos().y) * (Utils.boardSize + 3))
+                * Utils.tileSize,
+                Utils.tileSize,
+                Utils.tileSize);
     }
 
     protected abstract int getValue();

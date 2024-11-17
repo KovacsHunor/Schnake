@@ -33,12 +33,12 @@ public class TeleportFruit extends Fruit{
     public void draw(Graphics g) {
         super.draw(g);
         g.fillRect(
-                (pair.getPos().x + 1 + (pair.getBoard().getPos().x) * (Utils.BOARD_SIZE + 3))
-                * Utils.TILE_SIZE,
-                (pair.getPos().y + 1 + (pair.getBoard().getPos().y) * (Utils.BOARD_SIZE + 3))
-                * Utils.TILE_SIZE,
-                Utils.TILE_SIZE,
-                Utils.TILE_SIZE);
+                (pair.getPos().x + 1 + (pair.getBoard().getPos().x) * (Utils.boardSize + 3))
+                * Utils.tileSize,
+                (pair.getPos().y + 1 + (pair.getBoard().getPos().y) * (Utils.boardSize + 3))
+                * Utils.tileSize,
+                Utils.tileSize,
+                Utils.tileSize);
     }
 
     public void setPair(Fruit pair) {

@@ -22,7 +22,7 @@ public class Field implements ActionListener {
     
     private final Random rnd = new Random();
     private final Timer timer = new Timer(Utils.TICK, this);
-    private final Board[][] boards;
+    private Board[][] boards;
     private final Game game;
     private final FieldGui gui;
     
@@ -32,9 +32,6 @@ public class Field implements ActionListener {
     public Field(Game game, FieldGui gui) {
         this.gui = gui;
         this.game = game;
-        
-        boards = new Board[Utils.FIELD_SIZE][Utils.FIELD_SIZE];
-
         init();
     }
 
@@ -95,6 +92,8 @@ public class Field implements ActionListener {
     }
 
     public void init() {
+        boards = new Board[Utils.fieldSize][Utils.fieldSize];
+
         for (int i = 0; i < boards.length; i++) {
             for (int j = 0; j < boards[i].length; j++) {
                 boards[i][j] = new Board(new Vector(i, j));
