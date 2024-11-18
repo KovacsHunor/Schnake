@@ -8,19 +8,24 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
+import logic.util.Utils;
 
-public final class Game extends JPanel {
-
+public final class Game extends JPanel implements ActionListener{
+    private final Timer timer;
     private FieldGui fieldGui;
     JPanel fieldPanel = new JPanel(new GridBagLayout());
     private JPanel right = new JPanel();
     private final JLabel pointLabel = new JLabel("0");
 
     public Game() {
+        timer = new Timer(Utils.TICK, this);
         setLayout(new GridBagLayout());
 
         fieldGui = new FieldGui();
@@ -38,7 +43,7 @@ public final class Game extends JPanel {
         JButton menuButton = new JButton("Menu");
         menuButton.addActionListener(ae -> {
             Main.switchTo("menu");
-            fieldGui.stopTimer();
+            stopTimer();
         });
 
         pointLabel.setFont(new Font("Serif", Font.BOLD, 64));
@@ -58,8 +63,8 @@ public final class Game extends JPanel {
 
     }
 
-    public void setPointLabel(int point) {
-        pointLabel.setText("" + point);
+    public void updatePointLabel() {
+        pointLabel.setText("" + fieldGui.getField().getPlayer().getPoint());
     }
 
     public FieldGui getFieldGui() {
@@ -67,6 +72,27 @@ public final class Game extends JPanel {
     }
 
     public void start() {
-        fieldGui.startTimer();
+        fieldGui.newField();
+        startTimer();
+    }
+
+    public void stopTimer(){
+        timer.stop();
+    }
+
+    public void startTimer(){
+        timer.start();
+    }
+
+    private void tick(){
+        updatePointLabel();
+        if(fieldGui.getField() != null){
+            fieldGui.getField().tick();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        tick();
     }
 }

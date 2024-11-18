@@ -3,22 +3,17 @@ package gui.game;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.Timer;
-import logic.util.Utils;
 import logic.util.Vector;
 
-public class FieldGui extends JPanel implements ActionListener {
-    private final Timer timer;
+public class FieldGui extends JPanel{
     Field field;
 
     public FieldGui() {
-        timer = new Timer(Utils.TICK, this);
         setKeyBindings();
     }
 
@@ -72,20 +67,5 @@ public class FieldGui extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         field.draw(g);
-    }
-
-    public void stopTimer(){
-        timer.stop();
-    }
-
-    public void startTimer(){
-        timer.start();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(field != null){
-            field.tick();
-        }
     }
 }

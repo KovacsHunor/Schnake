@@ -109,7 +109,7 @@ public class Main {
     }
 
     public static void toDeathScreen(int point) {
-        game.getFieldGui().stopTimer();
+        game.stopTimer();
         menu.updatePointLabel();
         boolean isHighScore = point > user.getHighscore();
         if (isHighScore) {
@@ -123,7 +123,6 @@ public class Main {
     }
 
     public static void toGame() {
-        game.getFieldGui().newField();
         game.start();
         switchTo("game");
     }

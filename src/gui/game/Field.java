@@ -67,10 +67,6 @@ public final class Field{
         return player;
     }
 
-    public void updatePoint() {
-        game.setPointLabel(player.getPoint());
-    }
-
     public void shuffleSides() {
         List<Side> sideShuffle = new ArrayList<>();
         List<Board> boardShuffle = new ArrayList<>();
@@ -172,7 +168,6 @@ public final class Field{
             if (player.checkDeath()) {
                 Main.toDeathScreen(player.getPoint());
             }
-            updatePoint();
         }
         gui.repaint();
     }
