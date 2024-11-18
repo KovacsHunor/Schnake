@@ -12,10 +12,10 @@ public final class Menu extends JPanel {
 
     private final JLabel usernameLabel;
     private final JTextField inputField;
-    private JLabel pointLabel;
+    private final JLabel pointLabel = new JLabel();
 
-    public void updatePointLabel() {
-        pointLabel = new JLabel("" + Main.getUser().getHighscore());
+    public void setPointLabel(int point) {
+        pointLabel.setText("" + point);
     }
 
     private void setUsername() {
@@ -48,7 +48,7 @@ public final class Menu extends JPanel {
         usernameLabel = new JLabel(Main.getUser().getUsername());
         usernameLabel.setFont(new Font("Serif", Font.PLAIN, 32));
 
-        updatePointLabel();
+
         pointLabel.setFont(new Font("Serif", Font.PLAIN, 64));
 
         JButton playButton = new JButton("Play");
@@ -144,9 +144,6 @@ public final class Menu extends JPanel {
 
         add(upper, BorderLayout.NORTH);
         add(lower, BorderLayout.CENTER);
-        /*
-        
-         */
 
         getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ENTER"), "enter");
         getActionMap().put("enter", setUsernameAction());

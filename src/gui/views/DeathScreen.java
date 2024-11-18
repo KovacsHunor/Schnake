@@ -40,7 +40,7 @@ public class DeathScreen extends JPanel {
         JButton menuButton = new JButton("Menu");
         
         againButton.addActionListener(ae -> Main.toGame());
-        menuButton.addActionListener(ae -> Main.switchTo("menu"));
+        menuButton.addActionListener(ae -> Main.toMenu());
         
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -58,8 +58,8 @@ public class DeathScreen extends JPanel {
         gbc.gridy = 3;
         add(menuButton, gbc);
     }
-    public void setScoreLabel(String str){
-        scoreDisplay.setText(str);
+    public void setScoreLabel(int score){
+        scoreDisplay.setText(Integer.toString(score));
     }
 
     public void setHighscoreNotification(boolean isHighScore) {

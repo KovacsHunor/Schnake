@@ -42,7 +42,7 @@ public final class Game extends JPanel implements ActionListener{
 
         JButton menuButton = new JButton("Menu");
         menuButton.addActionListener(ae -> {
-            Main.switchTo("menu");
+            Main.toMenu();
             stopTimer();
         });
 

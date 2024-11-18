@@ -53,7 +53,7 @@ public final class Leaderboard extends JPanel {
         right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
 
         JButton menuButton = new JButton("Menu");
-        menuButton.addActionListener(ae -> Main.switchTo("menu"));
+        menuButton.addActionListener(ae -> Main.toMenu());
 
         left.add(menuButton);
 

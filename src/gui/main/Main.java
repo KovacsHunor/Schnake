@@ -66,10 +66,9 @@ public class Main {
         switch (c) {
             case JPanel p -> {
                 p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-                
+
                 //For debug
                 //p.setBorder(BorderFactory.createLineBorder(Color.RED));
-                
                 for (Component c2 : p.getComponents()) {
                     guiSettings(c2);
                 }
@@ -110,15 +109,15 @@ public class Main {
 
     public static void toDeathScreen(int point) {
         game.stopTimer();
-        menu.updatePointLabel();
         boolean isHighScore = point > user.getHighscore();
         if (isHighScore) {
             user.setHighscore(point);
+            menu.setPointLabel(point);
             leaderboard.sort();
             HighscoreIO.saveHighscores(leaderboard.getData().getList());
         }
+        deathScreen.setScoreLabel(point);
         deathScreen.setHighscoreNotification(isHighScore);
-        deathScreen.setScoreLabel("" + point);
         switchTo("deathScreen");
     }
 
@@ -131,22 +130,27 @@ public class Main {
         switchTo("leaderboard");
     }
 
+    public static void toMenu() {
+        switchTo("menu");
+    }
+
     public static void setUser(String text) {
         List<User> list = leaderboard.getData().getList();
         for (User u : list) {
             if (u.getUsername().equals(text)) {
                 user = u;
+                menu.setPointLabel(user.getHighscore());
                 return;
             }
         }
         user = new User(text);
         list.add(user);
         leaderboard.getData().fireTableRowsInserted(list.size() - 1, list.size() - 1);
+        menu.setPointLabel(user.getHighscore());
     }
 
-    public static Game getGame(){
+    public static Game getGame() {
         return game;
     }
 
-    
 }
