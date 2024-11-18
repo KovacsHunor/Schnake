@@ -1,11 +1,12 @@
 package gui.views;
 
+import gui.game.Field;
+import gui.game.FieldGui;
 import gui.main.Main;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
-import logic.util.Utils;
 
 public final class Menu extends JPanel {
 
@@ -66,20 +67,24 @@ public final class Menu extends JPanel {
         JLabel fieldLabel = new JLabel("Field size: ");
         JComboBox<Integer> fieldBox = new JComboBox<>(sizes);
         fieldBox.addItemListener((ItemEvent ie) -> {
-            Utils.fieldSize = (Integer)ie.getItem();
+            Game game = Main.getGame();
+            FieldGui gui = game.getFieldGui();
+            gui.setField(new Field(game, gui, (Integer)ie.getItem(), gui.getField().getTileNum()));
         });
 
         fieldBox.setPreferredSize(new Dimension(80, 50));
-        fieldBox.setSelectedItem(Utils.fieldSize);
+        fieldBox.setSelectedItem(2);
 
         JLabel boardLabel = new JLabel("Board size: ");
         JComboBox<Integer> boardBox = new JComboBox<>(sizes);
         boardBox.addItemListener((ItemEvent ie) -> {
-            Utils.boardSize = (Integer)ie.getItem();
+            Game game = Main.getGame();
+            FieldGui gui = game.getFieldGui();
+            gui.setField(new Field(game, gui, gui.getField().getBoardNum(), (Integer)ie.getItem()));
         });
 
         boardBox.setPreferredSize(new Dimension(80, 50));
-        boardBox.setSelectedItem(Utils.boardSize);
+        boardBox.setSelectedItem(6);
 
         JPanel upper = new JPanel(new BorderLayout());
         JPanel lower = new JPanel(new GridBagLayout());

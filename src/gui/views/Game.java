@@ -12,12 +12,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import logic.field.Board;
-import logic.util.Utils;
 
 public final class Game extends JPanel {
 
-    private FieldGui field;
+    private FieldGui fieldGui;
     JPanel fieldPanel = new JPanel(new GridBagLayout());
     private JPanel right = new JPanel();
     private final JLabel pointLabel = new JLabel("0");
@@ -25,11 +23,11 @@ public final class Game extends JPanel {
     public Game() {
         setLayout(new GridBagLayout());
 
-        field = new FieldGui();
-        field.setField(new Field(this, field));
+        fieldGui = new FieldGui();
+        fieldGui.setField(new Field(this, fieldGui, 2, 6));
 
         fieldPanel.setPreferredSize(new Dimension(1050, 1050));
-        fieldPanel.add(field);
+        fieldPanel.add(fieldGui);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -40,7 +38,7 @@ public final class Game extends JPanel {
         JButton menuButton = new JButton("Menu");
         menuButton.addActionListener(ae -> {
             Main.switchTo("menu");
-            field.getField().reset();
+            fieldGui.stopTimer();
         });
 
         pointLabel.setFont(new Font("Serif", Font.BOLD, 64));
@@ -65,21 +63,10 @@ public final class Game extends JPanel {
     }
 
     public FieldGui getFieldGui() {
-        return field;
-    }
-
-    public void reset() {
-        Utils.updateTileSize();
-        field.getField().reset();
-        int side = Utils.tileSize * (Utils.fieldSize * (Utils.boardSize + 3) - 1);
-        field.setPreferredSize(new Dimension(side, side));
-        field.setSize(field.getPreferredSize());
-        Board.setPolygons();
-        revalidate();
-        repaint();
+        return fieldGui;
     }
 
     public void start() {
-        field.getField().start();
+        fieldGui.startTimer();
     }
 }

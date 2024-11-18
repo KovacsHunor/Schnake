@@ -3,21 +3,22 @@ package gui.game;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.Timer;
 import logic.util.Utils;
 import logic.util.Vector;
 
-public class FieldGui extends JPanel {
-
+public class FieldGui extends JPanel implements ActionListener {
+    private final Timer timer;
     Field field;
 
     public FieldGui() {
-        setPreferredSize(new Dimension(Utils.tileSize * (Utils.fieldSize * (Utils.boardSize + 3)-1),
-        Utils.tileSize * (Utils.fieldSize * (Utils.boardSize + 3)-1)));
+        timer = new Timer(Utils.TICK, this);
         setKeyBindings();
     }
 
@@ -26,6 +27,16 @@ public class FieldGui extends JPanel {
     }
     public void setField(Field f){
         field = f;
+
+        if(field != null){
+            setPreferredSize(new Dimension(field.getTileSize() * (field.getBoardNum() * (field.getTileNum() + 3)-1),
+            field.getTileSize() * (field.getBoardNum() * (field.getTileNum() + 3)-1)));
+    
+            setSize(getPreferredSize());
+        }
+    }
+    public void newField(){
+        field = new Field(field.getGame(), this, field.getBoardNum(), field.getTileNum());
     }
 
     private void setKeyBindings() {
@@ -57,13 +68,24 @@ public class FieldGui extends JPanel {
         }; 
     }
 
-    public void newField(){
-        field = new Field(field.getGame(), this);
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         field.draw(g);
+    }
+
+    public void stopTimer(){
+        timer.stop();
+    }
+
+    public void startTimer(){
+        timer.start();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(field != null){
+            field.tick();
+        }
     }
 }

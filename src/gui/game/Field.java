@@ -3,12 +3,10 @@ package gui.game;
 import gui.main.Main;
 import gui.views.Game;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import javax.swing.*;
 import logic.field.Board;
 import logic.field.GridTile;
 import logic.field.Side;
@@ -18,20 +16,46 @@ import logic.util.Dir;
 import logic.util.Utils;
 import logic.util.Vector;
 
-public class Field implements ActionListener {
+public final class Field{
     
     private final Random rnd = new Random();
-    private final Timer timer = new Timer(Utils.TICK, this);
     private Board[][] boards;
     private final Game game;
     private final FieldGui gui;
-    
+
+    private int boardNum = 2;
+    private int tileNum = 6;
+    private int tileSize = 50;
+
     private int dTime = 0;
     private Snake player;
+
+    public int getBoardNum(){
+        return boardNum;
+    }
+
+    public int getTileNum(){
+        return tileNum;
+    }
+
+    public int getTileSize(){
+        return tileSize;
+    }
     
+    /*
     public Field(Game game, FieldGui gui) {
         this.gui = gui;
         this.game = game;
+        boardNum = 2;
+        tileNum = 6;
+        init();
+    }*/
+
+    public Field(Game game, FieldGui gui, int b, int t) {
+        this.gui = gui;
+        this.game = game;
+        boardNum = b;
+        tileNum = t;
         init();
     }
 
@@ -92,11 +116,12 @@ public class Field implements ActionListener {
     }
 
     public void init() {
-        boards = new Board[Utils.fieldSize][Utils.fieldSize];
+        tileSize = 1000/(Math.max(boardNum, 2)*(tileNum+3)-1);
+        boards = new Board[boardNum][boardNum];
 
-        for (int i = 0; i < boards.length; i++) {
-            for (int j = 0; j < boards[i].length; j++) {
-                boards[i][j] = new Board(new Vector(i, j));
+        for (int i = 0; i < boardNum; i++) {
+            for (int j = 0; j < boardNum; j++) {
+                boards[i][j] = new Board(new Vector(i, j), tileNum, tileSize);
             }
         }
 
@@ -104,9 +129,6 @@ public class Field implements ActionListener {
 
         shuffleSides();
         Fruit.newFruit(boards);
-
-        timer.restart();
-        stopTimer();
     }
 
 
@@ -139,8 +161,7 @@ public class Field implements ActionListener {
         return boards;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void tick() {
         dTime = (dTime + 1) % ((1000 / Utils.SPEED) / Utils.TICK);
         if (dTime == 0) {
             player.move();
@@ -150,7 +171,6 @@ public class Field implements ActionListener {
 
             if (player.checkDeath()) {
                 Main.toDeathScreen(player.getPoint());
-                reset();
             }
             updatePoint();
         }
@@ -163,21 +183,5 @@ public class Field implements ActionListener {
                 board.draw(g, gui);
             }
         }
-    }
-
-    public void reset() {
-        init();
-    }
-
-    public void startTimer() {
-        timer.start();
-    }
-
-    public void stopTimer() {
-        timer.stop();
-    }
-
-    public void start() {
-        startTimer();
     }
 }

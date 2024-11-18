@@ -34,8 +34,8 @@ public class Main {
 
         deck = new JPanel(new CardLayout());
 
-        menu = new Menu();
         game = new Game();
+        menu = new Menu();
         leaderboard = new Leaderboard();
         deathScreen = new DeathScreen();
 
@@ -109,6 +109,7 @@ public class Main {
     }
 
     public static void toDeathScreen(int point) {
+        game.getFieldGui().stopTimer();
         menu.updatePointLabel();
         boolean isHighScore = point > user.getHighscore();
         if (isHighScore) {
@@ -122,7 +123,7 @@ public class Main {
     }
 
     public static void toGame() {
-        game.reset();
+        game.getFieldGui().newField();
         game.start();
         switchTo("game");
     }
@@ -142,6 +143,10 @@ public class Main {
         user = new User(text);
         list.add(user);
         leaderboard.getData().fireTableRowsInserted(list.size() - 1, list.size() - 1);
+    }
+
+    public static Game getGame(){
+        return game;
     }
 
     
