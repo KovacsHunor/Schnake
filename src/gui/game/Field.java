@@ -107,8 +107,6 @@ public final class Field{
             colors.removeFirst();
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
-
-        player.setBoard(boards[player.getBoard().getPos().x][player.getBoard().getPos().y]);
     }
 
     public void init() {
