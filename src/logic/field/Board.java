@@ -66,11 +66,10 @@ public class Board {
         }
 
         sides = new EnumMap<>(Dir.class);
-
-        sides.put(Dir.UP, new Side(new Color(0, 0, 0), this, Dir.UP));
-        sides.put(Dir.DOWN, new Side(new Color(0, 0, 0), this, Dir.DOWN));
-        sides.put(Dir.RIGHT, new Side(new Color(0, 0, 0), this, Dir.RIGHT));
-        sides.put(Dir.LEFT, new Side(new Color(0, 0, 0), this, Dir.LEFT));
+        
+        for (Dir dir : Dir.values()) {
+            sides.put(dir, new Side(new Color(0, 0, 0), this, dir));
+        }
 
         this.pos = pos;
     }

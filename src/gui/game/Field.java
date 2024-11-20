@@ -124,7 +124,7 @@ public final class Field{
         player = new Snake(boards[0][0], new Color(255, 89, 94));
 
         shuffleSides();
-        Fruit.newFruit(boards);
+        Fruit.newFruit(this);
     }
 
 

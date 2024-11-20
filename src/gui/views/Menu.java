@@ -60,7 +60,7 @@ public final class Menu extends JPanel {
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(ae -> System.exit(0));
 
-        Integer[] sizes = new Integer[20];
+        Integer[] sizes = new Integer[10];
         for (int i = 0; i < sizes.length; i++) {
             sizes[i] = i + 1;
         }

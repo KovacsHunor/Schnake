@@ -4,45 +4,78 @@ import gui.game.Field;
 import java.awt.*;
 import java.util.Random;
 import logic.field.Board;
+import logic.field.BoardPos;
 import logic.field.GridObject;
 import logic.snake.Snake;
-import logic.util.Utils;
 import logic.util.Vector;
 
 public abstract class Fruit extends GridObject {
     private static final Random rnd = new Random();
 
-    public static void newFruit(Board[][] boards) {
-        double ran = rnd.nextDouble();
-        Fruit fruit;
+    private static BoardPos firstEmpty(Field f) {
+        for (Board[] boardRow : f.getBoards()) {
+            for (Board board2 : boardRow) {
+                for (int j = 0; j < board2.getTileNum(); j++) {
+                    for (int k = 0; k < board2.getTileNum(); k++) {
+                        Vector pos = new Vector(j, k);
+                        if (board2.getTile(pos).isEmpty()) {
+                            return new BoardPos(board2, pos);
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static BoardPos newBoardPos(Field f) {
         Board board;
         Vector pos;
+        int i = 0;
         do {
-            board = boards[rnd.nextInt(boards.length)][rnd.nextInt(boards.length)];
+            board = f.getBoards()[rnd.nextInt(f.getBoards().length)][rnd.nextInt(f.getBoards().length)];
             pos = new Vector(rnd.nextInt(board.getTileNum()), rnd.nextInt(board.getTileNum()));
-        } while (!board.getTile(pos).isEmpty());
+            i++;
+        } while (!(board.getTile(pos).isEmpty() && (f.getBoardNum() == 1 || board != f.getPlayer().getBoard())) && i < 100);
+        if (i < 100) {
+            return new BoardPos(board, pos);
+        }
 
+        BoardPos boardPos = firstEmpty(f);
+        if (boardPos != null) {
+            return boardPos;
+        }
+
+        f.getPlayer().kill();
+        return null;
+
+    }
+
+    public static void newFruit(Field f) {
+        double ran = rnd.nextDouble();
+        BoardPos boardPos = newBoardPos(f);
+        if (boardPos == null)
+            return;
+        Fruit fruit;
         //0.7, 0.85, 1
-        if (ran <= 0.7) {
-            fruit = new NormalFruit(board, pos);
-        } else if (ran <= 0.85) {
-            TeleportFruit pair = new TeleportFruit(board, pos);
-            board.putOnTile(pos, pair);
+        if (ran <= 0.15) {
+            fruit = new ShuffleFruit(boardPos.getBoard(), boardPos.getPos());
+        } else if (ran <= 0.3) {
+            TeleportFruit pair = new TeleportFruit(boardPos.getBoard(), boardPos.getPos());
+            boardPos.getBoard().putOnTile(boardPos.getPos(), pair);
+            boardPos = newBoardPos(f);
+            if (boardPos == null)
+                return;
 
-            do {
-                board = boards[rnd.nextInt(boards.length)][rnd.nextInt(boards.length)];
-                pos = new Vector(rnd.nextInt(board.getTileNum()), rnd.nextInt(board.getTileNum()));
-            } while (!board.getTile(pos).isEmpty());
-
-            fruit = new TeleportFruit(board, pos);
+            fruit = new TeleportFruit(boardPos.getBoard(), boardPos.getPos());
             ((TeleportFruit) fruit).setPair(pair);
             pair.setPair(fruit);
 
         } else {
-            fruit = new ShuffleFruit(board, pos);
+            fruit = new NormalFruit(boardPos.getBoard(), boardPos.getPos());
         }
 
-        board.putOnTile(pos, fruit);
+        boardPos.getBoard().putOnTile(boardPos.getPos(), fruit);
     }
 
     protected Fruit(Board b, Vector p) {
@@ -53,7 +86,7 @@ public abstract class Fruit extends GridObject {
     public void eaten(Field f, Snake s) {
         s.grow();
         s.setPoint(s.getPoint() + getValue());
-        newFruit(f.getBoards());
+        newFruit(f);
     }
 
     @Override
@@ -66,9 +99,9 @@ public abstract class Fruit extends GridObject {
         g.setColor(getColor());
         g.fillRect(
                 (pos.x + 1 + (board.getPos().x) * (board.getTileNum() + 3))
-                * board.getTileSize(),
+                        * board.getTileSize(),
                 (pos.y + 1 + (board.getPos().y) * (board.getTileNum() + 3))
-                * board.getTileSize(),
+                        * board.getTileSize(),
                 board.getTileSize(),
                 board.getTileSize());
     }
