@@ -2,14 +2,12 @@ package logic.field;
 
 import java.awt.Color;
 
-public class GridObject {
+public abstract class GridObject {
     protected FieldPos fieldPos;
 
-    public void steppedOn(){
-        //emtpy by default
-    }
+    public abstract void steppedOn();
 
-    public GridObject(FieldPos fp){
+    protected GridObject(FieldPos fp){
         fieldPos = new FieldPos(fp);
     }
 
@@ -21,9 +19,7 @@ public class GridObject {
         fieldPos.getBoard().getTile(fieldPos.getPos()).put(this);
     }
 
-    public Color getColor(){
-        return null;
-    }
+    public abstract Color getColor();
 
     public FieldPos getFieldPos(){
         return fieldPos;

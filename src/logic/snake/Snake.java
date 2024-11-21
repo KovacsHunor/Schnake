@@ -45,7 +45,10 @@ public class Snake {
     }
 
     public void grow() {
-        Node endNode = new Node(nodes.get(nodes.size() - 1));
+        // does not matter where it is as long as the position is valid
+        FieldPos nodePos = new FieldPos(Field.getInstance().getBoards()[0][0], new Vector(0, 0));
+
+        Node endNode = new Node(nodePos, color);
         nodes.add(endNode);
     }
 

@@ -11,7 +11,7 @@ import logic.util.Vector;
 public abstract class Fruit extends GridObject {
     private static final Random rnd = new Random();
 
-    private static FieldPos firstEmpty() {
+    private static FieldPos findEmpty() {
         int tileNum = Field.getInstance().getTileNum();
 
         for (Board[] boardRow : Field.getInstance().getBoards()) {
@@ -45,7 +45,7 @@ public abstract class Fruit extends GridObject {
             return new FieldPos(board, pos);
         }
 
-        FieldPos fieldPos = firstEmpty();
+        FieldPos fieldPos = findEmpty();
         if (fieldPos != null) {
             return fieldPos;
         }
@@ -60,9 +60,10 @@ public abstract class Fruit extends GridObject {
         FieldPos boardPos = newFruitPos();
         Fruit fruit;
 
-        if (boardPos == null)
+        if (boardPos == null) {
             return;
-        //0.7, 0.85, 1
+        }
+
         if (ran <= 0.15) {
             fruit = new ShuffleFruit(boardPos);
         } else if (ran <= 0.3) {
