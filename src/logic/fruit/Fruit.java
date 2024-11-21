@@ -29,7 +29,7 @@ public abstract class Fruit extends GridObject {
         return null;
     }
 
-    private static FieldPos newFruitPos() {
+    protected static FieldPos newFruitPos() {
         Field field = Field.getInstance();
         Board board;
         Vector pos;
@@ -57,33 +57,33 @@ public abstract class Fruit extends GridObject {
 
     public static void newFruit() {
         double ran = rnd.nextDouble();
-        FieldPos boardPos = newFruitPos();
+        FieldPos fieldPos = newFruitPos();
         Fruit fruit;
 
-        if (boardPos == null) {
+        if (fieldPos == null) {
             return;
         }
 
         if (ran <= 0.15) {
-            fruit = new ShuffleFruit(boardPos);
+            fruit = new ShuffleFruit(fieldPos);
         } else if (ran <= 0.3) {
-            TeleportFruit pair = new TeleportFruit(boardPos);
-            boardPos.getBoard().putOnTile(boardPos.getPos(), pair);
-            boardPos = newFruitPos();
-            if (boardPos == null)
+            fruit = new TeleportFruit(fieldPos);
+
+            FieldPos pairFieldPos = newFruitPos();
+            if (pairFieldPos == null){
                 return;
+            }
 
-            TeleportFruit tf = new TeleportFruit(boardPos);
-            tf.setPair(pair);
-            pair.setPair(tf);
+            TeleportFruit pair = new TeleportFruit(pairFieldPos);
+            pair.setPair((TeleportFruit) fruit);
+            ((TeleportFruit) fruit).setPair(pair);
 
-            fruit = tf;
-
+            pair.place();
         } else {
-            fruit = new NormalFruit(boardPos);
+            fruit = new NormalFruit(fieldPos);
         }
 
-        boardPos.getBoard().putOnTile(boardPos.getPos(), fruit);
+        fruit.place();
     }
 
     protected Fruit(FieldPos fp) {

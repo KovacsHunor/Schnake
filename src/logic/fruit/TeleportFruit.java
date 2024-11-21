@@ -39,6 +39,4 @@ public class TeleportFruit extends Fruit{
     protected int getValue() {
         return 2;
     }
-
-
 }
