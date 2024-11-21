@@ -14,7 +14,7 @@ public class NormalFruit extends Fruit {
     }
 
     @Override
-    protected int getValue() {
+    public int getValue() {
         return 1;
     }
 }

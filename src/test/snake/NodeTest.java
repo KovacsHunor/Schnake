@@ -27,7 +27,7 @@ public class NodeTest {
         Node node = new Node(snake.getNodes().get(0));
 
         assertFalse(snake.checkDeath());
-        node.steppedOn();
+        node.steppedOn(snake);
         assertTrue(snake.checkDeath());
     }
 }

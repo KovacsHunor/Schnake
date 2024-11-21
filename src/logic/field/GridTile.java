@@ -3,6 +3,8 @@ package logic.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.snake.Snake;
+
 public class GridTile {
     private final List<GridObject> items = new ArrayList<>();
 
@@ -14,11 +16,11 @@ public class GridTile {
         items.remove(item);
     }
 
-    public void steppedOn(){
+    public void steppedOn(Snake player){
         List<GridObject> temp = new ArrayList<>();
         temp.addAll(items);
         for (GridObject gridObject : temp) {
-            gridObject.steppedOn();
+            gridObject.steppedOn(player);
         }
     }
 

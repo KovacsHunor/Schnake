@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import logic.field.Field;
 import logic.field.GridObject;
+import logic.field.GridTile;
 import logic.fruit.NormalFruit;
 import logic.snake.Node;
 import logic.snake.Snake;
@@ -27,23 +28,24 @@ public class GridObjectTest {
     public void gridOperationTest() {
         preTest1();
         GridObject go = new Node(snake.getNodes().getFirst());
-
+        GridTile gt = snake.getFieldPos().getBoard().getTile(snake.getFieldPos().getPos());
+        
         //the head of the snake is on it already
-        assertFalse(snake.getFieldPos().getBoard().getTile(snake.getFieldPos().getPos()).isEmpty());
+        assertFalse(gt.isEmpty());
        
         go.place();
 
         //there are now two items on it
-        assertFalse(snake.getFieldPos().getBoard().getTile(snake.getFieldPos().getPos()).isEmpty());
+        assertFalse(gt.isEmpty());
         
         snake.getNodes().getFirst().withdraw();
         
         //down to one
-        assertFalse(snake.getFieldPos().getBoard().getTile(snake.getFieldPos().getPos()).isEmpty());
+        assertFalse(gt.isEmpty());
         
         go.withdraw();
         
         //it is empty
-        assertTrue(snake.getFieldPos().getBoard().getTile(snake.getFieldPos().getPos()).isEmpty());
+        assertTrue(gt.isEmpty());
     }
 }

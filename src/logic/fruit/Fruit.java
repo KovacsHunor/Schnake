@@ -90,17 +90,16 @@ public abstract class Fruit extends GridObject {
         super(fp);
     }
 
-    public void eaten() {
-        Snake s = Field.getInstance().getPlayer();
-        s.grow();
-        s.setPoint(s.getPoint() + getValue());
+    public void eatenBy(Snake player) {
+        player.grow();
+        player.setPoint(player.getPoint() + getValue());
         newFruit();
     }
 
     @Override
-    public void steppedOn() {
+    public void steppedOn(Snake player) {
         withdraw();
-        eaten();
+        eatenBy(player);
     }
 
     protected abstract int getValue();

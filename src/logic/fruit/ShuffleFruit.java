@@ -3,6 +3,7 @@ package logic.fruit;
 import java.awt.Color;
 import logic.field.Field;
 import logic.field.FieldPos;
+import logic.snake.Snake;
 
 public class ShuffleFruit extends Fruit {
     public ShuffleFruit(FieldPos fp) {
@@ -10,9 +11,9 @@ public class ShuffleFruit extends Fruit {
     }
 
     @Override
-    public void eaten() {
+    public void eatenBy(Snake player) {
         Field.getInstance().shuffleSides();
-        super.eaten();
+        super.eatenBy(player);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class ShuffleFruit extends Fruit {
     }
 
     @Override
-    protected int getValue() {
-        return 5;
+    public int getValue() {
+        return 2;
     }
 }

@@ -14,10 +14,9 @@ public class TeleportFruit extends Fruit{
     }
 
     @Override
-    public void eaten() {
-        Snake s = Field.getInstance().getPlayer();
-        s.setFieldPos(pair.getFieldPos());
-        super.eaten();
+    public void eatenBy(Snake player) {
+        player.setFieldPos(pair.getFieldPos());
+        super.eatenBy(player);
     }
 
     @Override
@@ -36,7 +35,7 @@ public class TeleportFruit extends Fruit{
     }
 
     @Override
-    protected int getValue() {
-        return 2;
+    public int getValue() {
+        return 3;
     }
 }

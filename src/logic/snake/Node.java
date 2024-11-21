@@ -22,10 +22,9 @@ public class Node extends GridObject{
     }
 
     @Override
-    public void steppedOn() {
-        Snake s = Field.getInstance().getPlayer();
-        if(!this.equals(s.getNodes().get(0))){
-            s.kill();
+    public void steppedOn(Snake player) {
+        if(!this.equals(player.getNodes().get(0))){
+            player.kill();
         }
     }
 

@@ -2,10 +2,12 @@ package logic.field;
 
 import java.awt.Color;
 
+import logic.snake.Snake;
+
 public abstract class GridObject {
     protected FieldPos fieldPos;
 
-    public abstract void steppedOn();
+    public abstract void steppedOn(Snake player);
 
     protected GridObject(FieldPos fp){
         fieldPos = new FieldPos(fp);

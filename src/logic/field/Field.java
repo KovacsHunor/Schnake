@@ -160,7 +160,7 @@ public final class Field {
         player.move();
 
         GridTile gt = player.getFieldPos().getBoard().getTile((player.getFieldPos().getPos()));
-        gt.steppedOn();
+        gt.steppedOn(player);
 
         if (player.checkDeath()) {
             Main.toDeathScreen(player.getPoint());
