@@ -76,6 +76,7 @@ public final class Game extends JPanel implements ActionListener {
 
     public void start() {
         fieldGui.newField();
+        updatePointLabel();
         startTimer();
     }
 
