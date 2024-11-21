@@ -28,7 +28,7 @@ public class FieldGui extends JPanel {
 
     public void newField() {
         Field field = Field.getInstance();
-        Field.newInstance(field.getGame(), this, field.getBoardNum(), field.getTileNum());
+        Field.newInstance(field.getBoardNum(), field.getTileNum());
         init();
     }
 
@@ -60,6 +60,10 @@ public class FieldGui extends JPanel {
                 }
             }
         };
+    }
+
+    public void tick(){
+        Field.getInstance().tick();
     }
 
     @Override

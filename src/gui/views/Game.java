@@ -18,17 +18,18 @@ import javax.swing.Timer;
 import logic.field.Field;
 import logic.util.Utils;
 
-public final class Game extends JPanel implements ActionListener{
+public final class Game extends JPanel implements ActionListener {
     private final Timer timer;
     private FieldGui fieldGui;
     JPanel fieldPanel = new JPanel(new GridBagLayout());
     private JPanel right = new JPanel();
     private final JLabel pointLabel = new JLabel("0");
+    int delta = 0;
 
     public Game() {
-        timer = new Timer(Utils.TICK, this);
-        Field.newInstance(this, fieldGui, 2, 6);
-        
+        timer = new Timer(2000/Utils.SPEED, this);
+        Field.newInstance(2, 6);
+
         setLayout(new GridBagLayout());
 
         fieldGui = new FieldGui();
@@ -78,23 +79,25 @@ public final class Game extends JPanel implements ActionListener{
         startTimer();
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timer.stop();
     }
 
-    public void startTimer(){
+    public void startTimer() {
         timer.start();
     }
 
-    private void tick(){
+    private void tick() {
         updatePointLabel();
-        if(Field.getInstance() != null){
-            Field.getInstance().tick();
-        }
+        fieldGui.tick();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        tick();
+        delta = (delta + 1) % (3);
+        if (delta == 0) {
+            tick();
+        }
+        fieldGui.repaint();
     }
 }

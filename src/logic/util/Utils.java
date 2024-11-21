@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.util.*;
 
 public class Utils {
-    public static final int TICK = 10;
-    public static final int SPEED = 5;
+    public static final int SPEED = 35;
 
     public static final Color BACKGROUND_COLOR = new Color(0x202029);
 

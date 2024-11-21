@@ -1,8 +1,6 @@
 package logic.field;
 
-import gui.game.FieldGui;
 import gui.main.Main;
-import gui.views.Game;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,81 +10,69 @@ import java.util.Random;
 import logic.fruit.Fruit;
 import logic.snake.Snake;
 import logic.util.Dir;
-import logic.util.Utils;
 import logic.util.Vector;
 
-
 // Based on Singleton design pattern
-public final class Field{
+public final class Field {
     private final Random rnd = new Random();
     private Board[][] boards;
-    
-    private Game game;
-    private FieldGui gui;
 
     private int boardNum = 2;
     private int tileNum = 6;
     private int tileSize = 50;
-    
+
     private Snake player;
-    private int dTime = 0;
 
     private static Field field;
-    
-    public int getBoardNum(){
+
+    public int getBoardNum() {
         return boardNum;
     }
 
-    public int getTileNum(){
+    public int getTileNum() {
         return tileNum;
     }
 
-    public int getTileSize(){
+    public int getTileSize() {
         return tileSize;
     }
 
-    private Field(){
+    private Field() {
 
     }
 
-    public static Field newInstance(Game game, FieldGui gui, int b, int t){
-        field = new Field(game, gui, b, t);
+    public static Field newInstance(int b, int t) {
+        field = new Field(b, t);
         field.init();
         return field;
     }
 
-    public static Field newInstance(){
-        field = new Field(field.game, field.gui, field.boardNum, field.tileNum);
+    public static Field newInstance() {
+        field = new Field(field.boardNum, field.tileNum);
         field.init();
         return field;
     }
-    
-    public static Field getInstance(){
-        if(field == null){
+
+    public static Field getInstance() {
+        if (field == null) {
             throw new IllegalArgumentException();
         }
         return field;
     }
-    
-    private Field(Game game, FieldGui gui, int b, int t) {
-        this.gui = gui;
-        this.game = game;
+
+    private Field(int b, int t) {
         boardNum = b;
         tileNum = t;
     }
-    
-    public Game getGame(){
-        return game;
-    }
-    
-    public Snake getPlayer(){
+
+    public Snake getPlayer() {
         return player;
     }
-    
+
     public void shuffleSides() {
         List<Side> sideShuffle = new ArrayList<>();
         List<Board> boardShuffle = new ArrayList<>();
-        
+
         for (Board[] boardArray : boards) {
             for (Board board : boardArray) {
                 boardShuffle.add(board);
@@ -95,25 +81,25 @@ public final class Field{
         }
         Collections.shuffle(sideShuffle);
         Collections.shuffle(boardShuffle);
-        
+
         int dirIndex1 = rnd.nextInt(4);
         int dirIndex2 = rnd.nextInt(4);
-        
+
         List<Color> colors = distributedColors(sideShuffle.size());
 
         for (int i = 1; i < boardShuffle.size(); i++) {
             Color c = colors.getFirst();
             colors.removeFirst();
-            
+
             while (dirIndex1 == dirIndex2) {
                 dirIndex1 = rnd.nextInt(4);
             }
             dirIndex2 = rnd.nextInt(4);
-            
+
             Side s1 = boardShuffle.get(i - 1).getSide(Dir.values()[dirIndex1]);
             Side s2 = boardShuffle.get(i).getSide(Dir.values()[dirIndex2]);
             Side.connect(s1, s2, c);
-            
+
             sideShuffle.remove(s1);
             sideShuffle.remove(s2);
         }
@@ -124,9 +110,9 @@ public final class Field{
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
     }
-    
+
     private void init() {
-        tileSize = 1000/(Math.max(boardNum, 2)*(tileNum+3)-1);
+        tileSize = 1000 / (Math.max(boardNum, 2) * (tileNum + 3) - 1);
         boards = new Board[boardNum][boardNum];
 
         for (int i = 0; i < boardNum; i++) {
@@ -134,20 +120,18 @@ public final class Field{
                 boards[i][j] = new Board(new Vector(i, j));
             }
         }
-        
+
         player = new Snake(boards[0][0], new Color(255, 89, 94));
-        
+
         shuffleSides();
         Fruit.newFruit();
         Board.setPolygons();
     }
 
-
-    
-
     //function for colors distinct to the human eye
     private float distinctColorFunction(float x) {
-        return (float) (6.2016 * (0.0911254 * Math.pow(x, 5) - 0.107401 * Math.pow(x, 4) - 0.281072 * Math.pow(x, 3) + 0.408596 * Math.pow(x, 2) + 0.15 * x));
+        return (float) (6.2016 * (0.0911254 * Math.pow(x, 5) - 0.107401 * Math.pow(x, 4) - 0.281072 * Math.pow(x, 3)
+                + 0.408596 * Math.pow(x, 2) + 0.15 * x));
     }
 
     private List<Color> distributedColors(int n) {
@@ -173,24 +157,20 @@ public final class Field{
     }
 
     public void tick() {
-        dTime = (dTime + 1) % ((1000 / Utils.SPEED) / Utils.TICK);
-        if (dTime == 0) {
-            player.move();
+        player.move();
 
-            GridTile gt = player.getFieldPos().getBoard().getTile((player.getFieldPos().getPos()));
-            gt.steppedOn();
+        GridTile gt = player.getFieldPos().getBoard().getTile((player.getFieldPos().getPos()));
+        gt.steppedOn();
 
-            if (player.checkDeath()) {
-                Main.toDeathScreen(player.getPoint());
-            }
+        if (player.checkDeath()) {
+            Main.toDeathScreen(player.getPoint());
         }
-        gui.repaint();
     }
 
     public void draw(Graphics g) {
         for (Board[] row : boards) {
             for (Board board : row) {
-                board.draw(g, gui);
+                board.draw(g);
             }
         }
     }

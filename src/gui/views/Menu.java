@@ -66,7 +66,7 @@ public final class Menu extends JPanel {
         fieldBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
-            Field.newInstance(game, gui, (Integer)ie.getItem(), Field.getInstance().getTileNum());
+            Field.newInstance((Integer)ie.getItem(), Field.getInstance().getTileNum());
             gui.init();
         });
 
@@ -76,7 +76,7 @@ public final class Menu extends JPanel {
         boardBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
-            Field.newInstance(game, gui, Field.getInstance().getBoardNum(), (Integer)ie.getItem());
+            Field.newInstance(Field.getInstance().getBoardNum(), (Integer)ie.getItem());
             gui.init();
         });
         

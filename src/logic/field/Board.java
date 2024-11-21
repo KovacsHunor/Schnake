@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.EnumMap;
 import java.util.Map;
+
+import gui.main.Main;
 import logic.util.Dir;
 import logic.util.MyPolygon;
 import logic.util.Utils;
@@ -129,7 +131,7 @@ public class Board {
         }
     }
 
-    public void draw(Graphics g, ImageObserver observer) {
+    public void draw(Graphics g) {
         int tileNum = Field.getInstance().getTileNum();
         int tileSize = Field.getInstance().getTileSize();
 
@@ -160,7 +162,7 @@ public class Board {
         }
 
         g.drawImage(img, (pos.x) * (tileNum * tileSize + 3 * tileSize),
-                (pos.y) * (tileNum * tileSize + 3 * tileSize), observer);
+                (pos.y) * (tileNum * tileSize + 3 * tileSize), Main.getGame().getFieldGui());
     }
 
     public Point getPos() {
