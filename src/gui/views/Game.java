@@ -27,10 +27,11 @@ public final class Game extends JPanel implements ActionListener{
 
     public Game() {
         timer = new Timer(Utils.TICK, this);
+        Field.newInstance(this, fieldGui, 2, 6);
+        
         setLayout(new GridBagLayout());
 
         fieldGui = new FieldGui();
-        fieldGui.setField(Field.newInstance(this, fieldGui, 2, 6));
 
         fieldPanel.setPreferredSize(new Dimension(1050, 1050));
         fieldPanel.add(fieldGui);
@@ -65,7 +66,7 @@ public final class Game extends JPanel implements ActionListener{
     }
 
     public void updatePointLabel() {
-        pointLabel.setText("" + fieldGui.getField().getPlayer().getPoint());
+        pointLabel.setText("" + Field.getInstance().getPlayer().getPoint());
     }
 
     public FieldGui getFieldGui() {
@@ -88,7 +89,7 @@ public final class Game extends JPanel implements ActionListener{
     private void tick(){
         updatePointLabel();
         if(Field.getInstance() != null){
-            fieldGui.getField().tick();
+            Field.getInstance().tick();
         }
     }
 

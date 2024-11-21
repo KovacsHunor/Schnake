@@ -12,28 +12,24 @@ import javax.swing.KeyStroke;
 import logic.field.Field;
 import logic.util.Vector;
 
-public class FieldGui extends JPanel{
-    Field field;
-
+public class FieldGui extends JPanel {
     public FieldGui() {
+        init();
+    }
+
+    public void init() {
+        Field field = Field.getInstance();
         setKeyBindings();
+        setPreferredSize(new Dimension(field.getTileSize() * (field.getBoardNum() * (field.getTileNum() + 3) - 1),
+                field.getTileSize() * (field.getBoardNum() * (field.getTileNum() + 3) - 1)));
+
+        setSize(getPreferredSize());
     }
 
-    public Field getField(){
-        return field;
-    }
-    public void setField(Field f){
-        field = f;
-
-        if(field != null){
-            setPreferredSize(new Dimension(field.getTileSize() * (field.getBoardNum() * (field.getTileNum() + 3)-1),
-            field.getTileSize() * (field.getBoardNum() * (field.getTileNum() + 3)-1)));
-    
-            setSize(getPreferredSize());
-        }
-    }
-    public void newField(){
-        field = Field.newInstance(field.getGame(), this, field.getBoardNum(), field.getTileNum());
+    public void newField() {
+        Field field = Field.getInstance();
+        Field.newInstance(field.getGame(), this, field.getBoardNum(), field.getTileNum());
+        init();
     }
 
     private void setKeyBindings() {
@@ -55,6 +51,7 @@ public class FieldGui extends JPanel{
     }
 
     private Action buttonAction(Vector dir) {
+        Field field = Field.getInstance();
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,12 +59,12 @@ public class FieldGui extends JPanel{
                     field.getPlayer().setDir(new Vector(dir));
                 }
             }
-        }; 
+        };
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        field.draw(g);
+        Field.getInstance().draw(g);
     }
 }

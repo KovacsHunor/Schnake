@@ -17,7 +17,7 @@ import logic.util.Utils;
 
 public class Main {
 
-    private static JFrame frame;
+    
     private static JPanel deck;
     private static User user = new User();
 
@@ -27,6 +27,7 @@ public class Main {
     private static DeathScreen deathScreen;
 
     public static void init() {
+        JFrame frame;
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ignored) {
