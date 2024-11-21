@@ -1,5 +1,6 @@
-package gui.game;
+package logic.field;
 
+import gui.game.FieldGui;
 import gui.main.Main;
 import gui.views.Game;
 import java.awt.*;
@@ -7,29 +8,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import logic.field.Board;
-import logic.field.GridTile;
-import logic.field.Side;
+
 import logic.fruit.Fruit;
 import logic.snake.Snake;
 import logic.util.Dir;
 import logic.util.Utils;
 import logic.util.Vector;
 
+
+// Based on Singleton design pattern
 public final class Field{
-    
     private final Random rnd = new Random();
     private Board[][] boards;
-    private final Game game;
-    private final FieldGui gui;
+    
+    private Game game;
+    private FieldGui gui;
 
     private int boardNum = 2;
     private int tileNum = 6;
     private int tileSize = 50;
-
-    private int dTime = 0;
+    
     private Snake player;
+    private int dTime = 0;
 
+    private static Field field;
+    
     public int getBoardNum(){
         return boardNum;
     }
@@ -42,26 +45,42 @@ public final class Field{
         return tileSize;
     }
 
-    public Field(Game game, FieldGui gui, int b, int t) {
+    private Field(){
+
+    }
+
+    public static Field newInstance(Game game, FieldGui gui, int b, int t){
+        field = new Field(game, gui, b, t);
+        field.init();
+        return field;
+    }
+    
+    public static Field getInstance(){
+        if(field == null){
+            throw new IllegalArgumentException();
+        }
+        return field;
+    }
+    
+    private Field(Game game, FieldGui gui, int b, int t) {
         this.gui = gui;
         this.game = game;
         boardNum = b;
         tileNum = t;
-        init();
     }
-
+    
     public Game getGame(){
         return game;
     }
-
+    
     public Snake getPlayer(){
         return player;
     }
-
+    
     public void shuffleSides() {
         List<Side> sideShuffle = new ArrayList<>();
         List<Board> boardShuffle = new ArrayList<>();
-
+        
         for (Board[] boardArray : boards) {
             for (Board board : boardArray) {
                 boardShuffle.add(board);
@@ -70,21 +89,21 @@ public final class Field{
         }
         Collections.shuffle(sideShuffle);
         Collections.shuffle(boardShuffle);
-
+        
         int dirIndex1 = rnd.nextInt(4);
         int dirIndex2 = rnd.nextInt(4);
-
+        
         List<Color> colors = distributedColors(sideShuffle.size());
 
         for (int i = 1; i < boardShuffle.size(); i++) {
             Color c = colors.getFirst();
             colors.removeFirst();
-
+            
             while (dirIndex1 == dirIndex2) {
                 dirIndex1 = rnd.nextInt(4);
             }
             dirIndex2 = rnd.nextInt(4);
-
+            
             Side s1 = boardShuffle.get(i - 1).getSide(Dir.values()[dirIndex1]);
             Side s2 = boardShuffle.get(i).getSide(Dir.values()[dirIndex2]);
             Side.connect(s1, s2, c);
@@ -99,7 +118,7 @@ public final class Field{
             Side.connect(sideShuffle.get(i), sideShuffle.get(i + 1), c);
         }
     }
-
+    
     public void init() {
         tileSize = 1000/(Math.max(boardNum, 2)*(tileNum+3)-1);
         boards = new Board[boardNum][boardNum];
@@ -109,11 +128,11 @@ public final class Field{
                 boards[i][j] = new Board(new Vector(i, j), tileNum, tileSize);
             }
         }
-
+        
         player = new Snake(boards[0][0], new Color(255, 89, 94));
-
+        
         shuffleSides();
-        Fruit.newFruit(this);
+        Fruit.newFruit();
     }
 
 
@@ -152,7 +171,7 @@ public final class Field{
             player.move();
 
             GridTile gt = player.getBoard().getTile((player.getPos()));
-            gt.steppedOn(this, player);
+            gt.steppedOn();
 
             if (player.checkDeath()) {
                 Main.toDeathScreen(player.getPoint());

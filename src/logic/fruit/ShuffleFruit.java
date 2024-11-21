@@ -1,9 +1,8 @@
 package logic.fruit;
 
-import gui.game.Field;
 import java.awt.Color;
 import logic.field.Board;
-import logic.snake.Snake;
+import logic.field.Field;
 import logic.util.Vector;
 
 public class ShuffleFruit extends Fruit{
@@ -12,9 +11,9 @@ public class ShuffleFruit extends Fruit{
     }
 
     @Override
-    public void eaten(Field f, Snake s){
-        f.shuffleSides();
-        super.eaten(f, s);
+    public void eaten(){
+        Field.getInstance().shuffleSides();
+        super.eaten();
     }
 
     @Override

@@ -1,9 +1,7 @@
 package logic.field;
 
-import gui.game.Field;
 import java.util.ArrayList;
 import java.util.List;
-import logic.snake.Snake;
 
 public class GridTile {
     private final List<GridObject> items = new ArrayList<>();
@@ -16,11 +14,11 @@ public class GridTile {
         items.remove(item);
     }
 
-    public void steppedOn(Field f, Snake s){
+    public void steppedOn(){
         List<GridObject> temp = new ArrayList<>();
         temp.addAll(items);
         for (GridObject gridObject : temp) {
-            gridObject.steppedOn(f, s);
+            gridObject.steppedOn();
         }
     }
 

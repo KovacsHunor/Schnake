@@ -68,7 +68,7 @@ public class Main {
                 p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 
                 //For debug
-                p.setBorder(BorderFactory.createLineBorder(Color.RED));
+                //p.setBorder(BorderFactory.createLineBorder(Color.RED));
 
                 for (Component c2 : p.getComponents()) {
                     guiSettings(c2);
@@ -144,7 +144,7 @@ public class Main {
                 menu.setPointLabel(user.getHighscore());
                 return;
             }
-        }
+        } 
         user = new User(text);
         list.add(user);
         leaderboard.getData().fireTableRowsInserted(list.size() - 1, list.size() - 1);

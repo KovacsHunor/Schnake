@@ -8,6 +8,8 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+
+import logic.field.Field;
 import logic.util.Vector;
 
 public class FieldGui extends JPanel{
@@ -31,7 +33,7 @@ public class FieldGui extends JPanel{
         }
     }
     public void newField(){
-        field = new Field(field.getGame(), this, field.getBoardNum(), field.getTileNum());
+        field = Field.newInstance(field.getGame(), this, field.getBoardNum(), field.getTileNum());
     }
 
     private void setKeyBindings() {

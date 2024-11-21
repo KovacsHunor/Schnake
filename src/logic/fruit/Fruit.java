@@ -1,10 +1,10 @@
 package logic.fruit;
 
-import gui.game.Field;
 import java.awt.*;
 import java.util.Random;
 import logic.field.Board;
 import logic.field.BoardPos;
+import logic.field.Field;
 import logic.field.GridObject;
 import logic.snake.Snake;
 import logic.util.Vector;
@@ -12,8 +12,8 @@ import logic.util.Vector;
 public abstract class Fruit extends GridObject {
     private static final Random rnd = new Random();
 
-    private static BoardPos firstEmpty(Field f) {
-        for (Board[] boardRow : f.getBoards()) {
+    private static BoardPos firstEmpty() {
+        for (Board[] boardRow : Field.getInstance().getBoards()) {
             for (Board board2 : boardRow) {
                 for (int j = 0; j < board2.getTileNum(); j++) {
                     for (int k = 0; k < board2.getTileNum(); k++) {
@@ -28,42 +28,44 @@ public abstract class Fruit extends GridObject {
         return null;
     }
 
-    private static BoardPos newBoardPos(Field f) {
+    private static BoardPos newBoardPos() {
+        Field field = Field.getInstance();
         Board board;
         Vector pos;
         int i = 0;
         do {
-            board = f.getBoards()[rnd.nextInt(f.getBoards().length)][rnd.nextInt(f.getBoards().length)];
+            board = field.getBoards()[rnd.nextInt(field.getBoards().length)][rnd.nextInt(field.getBoards().length)];
             pos = new Vector(rnd.nextInt(board.getTileNum()), rnd.nextInt(board.getTileNum()));
             i++;
-        } while (!(board.getTile(pos).isEmpty() && (f.getBoardNum() == 1 || board != f.getPlayer().getBoard())) && i < 100);
+        } while (!(board.getTile(pos).isEmpty() && (field.getBoardNum() == 1 || board != field.getPlayer().getBoard())) && i < 100);
         if (i < 100) {
             return new BoardPos(board, pos);
         }
 
-        BoardPos boardPos = firstEmpty(f);
+        BoardPos boardPos = firstEmpty();
         if (boardPos != null) {
             return boardPos;
         }
 
-        f.getPlayer().kill();
+        field.getPlayer().kill();
         return null;
 
     }
 
-    public static void newFruit(Field f) {
+    public static void newFruit() {
         double ran = rnd.nextDouble();
-        BoardPos boardPos = newBoardPos(f);
+        BoardPos boardPos = newBoardPos();
+        Fruit fruit;
+
         if (boardPos == null)
             return;
-        Fruit fruit;
         //0.7, 0.85, 1
         if (ran <= 0.15) {
             fruit = new ShuffleFruit(boardPos.getBoard(), boardPos.getPos());
         } else if (ran <= 0.3) {
             TeleportFruit pair = new TeleportFruit(boardPos.getBoard(), boardPos.getPos());
             boardPos.getBoard().putOnTile(boardPos.getPos(), pair);
-            boardPos = newBoardPos(f);
+            boardPos = newBoardPos();
             if (boardPos == null)
                 return;
 
@@ -83,16 +85,17 @@ public abstract class Fruit extends GridObject {
         pos = p;
     }
 
-    public void eaten(Field f, Snake s) {
+    public void eaten() {
+        Snake s = Field.getInstance().getPlayer();
         s.grow();
         s.setPoint(s.getPoint() + getValue());
-        newFruit(f);
+        newFruit();
     }
 
     @Override
-    public void steppedOn(Field f, Snake s) {
+    public void steppedOn() {
         destroy();
-        eaten(f, s);
+        eaten();
     }
 
     public void draw(Graphics g) {

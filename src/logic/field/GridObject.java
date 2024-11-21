@@ -1,6 +1,5 @@
 package logic.field;
 
-import gui.game.Field;
 import java.awt.Color;
 import logic.snake.Snake;
 import logic.util.Vector;
@@ -9,7 +8,7 @@ public class GridObject {
     protected Board board;
     protected Vector pos;
 
-    public void steppedOn(Field f, Snake s){
+    public void steppedOn(){
         //emtpy by default
     }
 

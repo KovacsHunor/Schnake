@@ -1,8 +1,8 @@
 package logic.snake;
 
-import gui.game.Field;
 import java.awt.Color;
 import logic.field.Board;
+import logic.field.Field;
 import logic.field.GridObject;
 import logic.util.Vector;
 
@@ -29,7 +29,8 @@ public class Node extends GridObject{
     }
 
     @Override
-    public void steppedOn(Field f, Snake s) {
+    public void steppedOn() {
+        Snake s = Field.getInstance().getPlayer();
         if(!this.equals(s.getNodes().get(0))){
             s.kill();
         }

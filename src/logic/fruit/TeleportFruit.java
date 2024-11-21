@@ -1,9 +1,9 @@
 package logic.fruit;
 
-import gui.game.Field;
 import java.awt.Color;
 import java.awt.Graphics;
 import logic.field.Board;
+import logic.field.Field;
 import logic.snake.Snake;
 import logic.util.Vector;
 
@@ -16,10 +16,11 @@ public class TeleportFruit extends Fruit{
     }
 
     @Override
-    public void eaten(Field f, Snake s) {
+    public void eaten() {
+        Snake s = Field.getInstance().getPlayer();
         s.setBoard(pair.getBoard());
         s.setPos(pair.getPos());
-        super.eaten(f, s);
+        super.eaten();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package gui.views;
 
-import gui.game.Field;
 import gui.game.FieldGui;
 import gui.main.Main;
 import java.awt.Dimension;
@@ -15,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import logic.field.Field;
 import logic.util.Utils;
 
 public final class Game extends JPanel implements ActionListener{
@@ -29,7 +30,7 @@ public final class Game extends JPanel implements ActionListener{
         setLayout(new GridBagLayout());
 
         fieldGui = new FieldGui();
-        fieldGui.setField(new Field(this, fieldGui, 2, 6));
+        fieldGui.setField(Field.newInstance(this, fieldGui, 2, 6));
 
         fieldPanel.setPreferredSize(new Dimension(1050, 1050));
         fieldPanel.add(fieldGui);

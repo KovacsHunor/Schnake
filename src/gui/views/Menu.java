@@ -1,8 +1,9 @@
 package gui.views;
 
-import gui.game.Field;
 import gui.game.FieldGui;
 import gui.main.Main;
+import logic.field.Field;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
@@ -65,7 +66,7 @@ public final class Menu extends JPanel {
         fieldBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
-            gui.setField(new Field(game, gui, (Integer)ie.getItem(), gui.getField().getTileNum()));
+            gui.setField(Field.newInstance(game, gui, (Integer)ie.getItem(), gui.getField().getTileNum()));
         });
 
         
@@ -74,7 +75,7 @@ public final class Menu extends JPanel {
         boardBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
-            gui.setField(new Field(game, gui, gui.getField().getBoardNum(), (Integer)ie.getItem()));
+            gui.setField(Field.newInstance(game, gui, gui.getField().getBoardNum(), (Integer)ie.getItem()));
         });
         
         fieldBox.setSelectedItem(2);
@@ -92,7 +93,7 @@ public final class Menu extends JPanel {
         info.add(usernameLabel);
         info.add(pointLabel);
 
-        input.setLayout(new GridLayout(2,1));
+        input.setLayout(new GridLayout(3,1));
         input.add(inputFieldLabel);
         input.add(inputField);
 
