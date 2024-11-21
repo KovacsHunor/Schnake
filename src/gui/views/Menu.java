@@ -19,7 +19,7 @@ public final class Menu extends JPanel {
     }
 
     private void setUsername() {
-        String text = inputField.getText();
+        String text = inputField.getText().trim();
         if (!text.equals("") && !text.contains(",")) {
             Main.setUser(text);
             usernameLabel.setText(text);
@@ -42,13 +42,10 @@ public final class Menu extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         inputField = new JTextField(20);
-        inputField.setFont(new Font("Serif", Font.PLAIN, 32));
-        inputField.setMaximumSize(new Dimension(inputField.getMaximumSize().width, 80));
+        JLabel inputFieldLabel = new JLabel("Username:");
+        JLabel fieldLabel = new JLabel("Field size: ");
 
         usernameLabel = new JLabel(Main.getUser().getUsername());
-        usernameLabel.setFont(new Font("Serif", Font.PLAIN, 32));
-
-
         pointLabel.setFont(new Font("Serif", Font.PLAIN, 64));
 
         JButton playButton = new JButton("Play");
@@ -64,7 +61,6 @@ public final class Menu extends JPanel {
         for (int i = 0; i < sizes.length; i++) {
             sizes[i] = i + 1;
         }
-        JLabel fieldLabel = new JLabel("Field size: ");
         JComboBox<Integer> fieldBox = new JComboBox<>(sizes);
         fieldBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
@@ -72,9 +68,7 @@ public final class Menu extends JPanel {
             gui.setField(new Field(game, gui, (Integer)ie.getItem(), gui.getField().getTileNum()));
         });
 
-        fieldBox.setPreferredSize(new Dimension(80, 50));
-        fieldBox.setSelectedItem(2);
-
+        
         JLabel boardLabel = new JLabel("Board size: ");
         JComboBox<Integer> boardBox = new JComboBox<>(sizes);
         boardBox.addItemListener((ItemEvent ie) -> {
@@ -82,8 +76,8 @@ public final class Menu extends JPanel {
             FieldGui gui = game.getFieldGui();
             gui.setField(new Field(game, gui, gui.getField().getBoardNum(), (Integer)ie.getItem()));
         });
-
-        boardBox.setPreferredSize(new Dimension(80, 50));
+        
+        fieldBox.setSelectedItem(2);
         boardBox.setSelectedItem(6);
 
         JPanel upper = new JPanel(new BorderLayout());
@@ -98,10 +92,9 @@ public final class Menu extends JPanel {
         info.add(usernameLabel);
         info.add(pointLabel);
 
-        input.setLayout(new BoxLayout(input, BoxLayout.PAGE_AXIS));
-        input.add(Box.createVerticalGlue());
+        input.setLayout(new GridLayout(2,1));
+        input.add(inputFieldLabel);
         input.add(inputField);
-        input.add(Box.createVerticalGlue());
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -115,20 +108,20 @@ public final class Menu extends JPanel {
         gbc.gridy = 2;
         navigate.add(exitButton, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 0;
         settings.add(fieldLabel, gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         settings.add(boardLabel, gbc);
 
-        gbc.gridx = 2;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         settings.add(fieldBox, gbc);
 
-        gbc.gridx = 2;
-        gbc.gridy = 2;
+        gbc.gridx = 1;
+        gbc.gridy = 1;
         settings.add(boardBox, gbc);
 
         gbc.gridx = 1;

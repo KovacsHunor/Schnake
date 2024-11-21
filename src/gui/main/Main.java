@@ -66,9 +66,10 @@ public class Main {
         switch (c) {
             case JPanel p -> {
                 p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+                
                 //For debug
-                //p.setBorder(BorderFactory.createLineBorder(Color.RED));
+                p.setBorder(BorderFactory.createLineBorder(Color.RED));
+
                 for (Component c2 : p.getComponents()) {
                     guiSettings(c2);
                 }
@@ -83,6 +84,7 @@ public class Main {
                 l.setHorizontalAlignment(SwingConstants.CENTER);
             }
             case JTextField f -> {
+                f.setFont(defaulFont);
                 f.setHorizontalAlignment(SwingConstants.CENTER);
             }
             case JComboBox box -> {

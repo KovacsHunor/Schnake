@@ -41,15 +41,6 @@ public final class Field{
     public int getTileSize(){
         return tileSize;
     }
-    
-    /*
-    public Field(Game game, FieldGui gui) {
-        this.gui = gui;
-        this.game = game;
-        boardNum = 2;
-        tileNum = 6;
-        init();
-    }*/
 
     public Field(Game game, FieldGui gui, int b, int t) {
         this.gui = gui;
@@ -129,7 +120,7 @@ public final class Field{
     
 
     //function for colors distinct to the human eye
-    private float pleasingColorFunction(float x) {
+    private float distinctColorFunction(float x) {
         return (float) (6.2016 * (0.0911254 * Math.pow(x, 5) - 0.107401 * Math.pow(x, 4) - 0.281072 * Math.pow(x, 3) + 0.408596 * Math.pow(x, 2) + 0.15 * x));
     }
 
@@ -141,7 +132,7 @@ public final class Field{
         float b;
         for (int i = 0; i < n; i++) {
             float x = ((float) i / n + offset) - (int) ((float) i / n + offset);
-            h = pleasingColorFunction(x);
+            h = distinctColorFunction(x);
             s = 0.5f + (i % 3) * 0.25f;
             b = 1.0f - ((i + 2) % 3) * 0.25f;
 
