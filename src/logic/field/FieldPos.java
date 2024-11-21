@@ -2,13 +2,18 @@ package logic.field;
 
 import logic.util.Vector;
 
-public class BoardPos {
+public class FieldPos {
     private final Board board;
     private final Vector pos;
 
-    public BoardPos(Board b, Vector v){
+    public FieldPos(Board b, Vector v){
         board = b;
-        pos = v;
+        pos = new Vector(v);
+    }
+
+    public FieldPos(FieldPos fp){
+        board = fp.board;
+        pos = new Vector(fp.pos);
     }
 
     public Board getBoard(){

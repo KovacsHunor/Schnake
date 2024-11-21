@@ -26,12 +26,6 @@ public class GridTile {
         return items.isEmpty();
     }
 
-    public void removeFirst(){
-        if(!isEmpty()){
-            items.removeFirst();
-        }
-    }
-
     public GridObject upper(){
         if(isEmpty()) return null;
         return items.getFirst();

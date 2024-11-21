@@ -11,19 +11,18 @@ import logic.util.Utils;
 import logic.util.Vector;
 
 public class Board {
-
-    
-    private int tileNum;
-    private int tileSize;
     private BufferedImage img;
     private Graphics2D g2d;
     private final Point pos;
     private final EnumMap<Dir, Side> sides;
 
     private final GridTile[][] grid;
-    private final MyPolygon[] sidePolygons = new MyPolygon[2];
+    private static final MyPolygon[] sidePolygons = new MyPolygon[2];
 
-    private void setPolygons() {
+    public static void setPolygons() {
+        int tileNum = Field.getInstance().getTileNum();
+        int tileSize = Field.getInstance().getTileSize();
+
         int offset = (int) (0.433f * tileSize);
         int trix = ((tileNum) * tileSize);
 
@@ -42,20 +41,11 @@ public class Board {
         sidePolygons[1] = rectangle;
     }
 
-    public int getTileNum(){
-        return tileNum;
-    }
-
-    public int getTileSize(){
-        return tileSize;
-    }
-
-    public Board(Point pos, int tileNum, int tileSize) {
-        this.tileNum = tileNum;
-        this.tileSize = tileSize;
+    public Board(Point pos) {
+        int tileNum = Field.getInstance().getTileNum();
+        int tileSize = Field.getInstance().getTileSize();
 
         grid = new GridTile[tileNum][tileNum];
-        setPolygons();
 
         img = new BufferedImage(tileNum * tileSize + 3 * tileSize, tileNum * tileSize + 3 * tileSize, BufferedImage.TYPE_INT_RGB);
         g2d = img.createGraphics();
@@ -90,15 +80,16 @@ public class Board {
         return sides;
     }
 
+    //  draw the teleporter sides
     public void drawSides() {
-
-        //  draw the teleporter sides
+        int tileNum = Field.getInstance().getTileNum();
+        int tileSize = Field.getInstance().getTileSize();
         Side side;
         Vector translation;
-
-        side = sides.get(Dir.UP);
         MyPolygon polygon = sidePolygons[0];
 
+        
+        side = sides.get(Dir.UP);
         g2d.setColor(side.getColor());
         if (side.getOrientation()) {
             g2d.fillPolygon(polygon.translate(new Vector(tileSize, 0)));
@@ -139,6 +130,9 @@ public class Board {
     }
 
     public void draw(Graphics g, ImageObserver observer) {
+        int tileNum = Field.getInstance().getTileNum();
+        int tileSize = Field.getInstance().getTileSize();
+
         g2d.setColor(Utils.BACKGROUND_COLOR);
         g2d.fillRect(0, 0, tileNum * tileSize + 3 * tileSize, tileNum * tileSize + 3 * tileSize);
 
@@ -148,8 +142,7 @@ public class Board {
         for (int row = 0; row < tileNum; row++) {
             for (int col = 0; col < tileNum; col++) {
                 if (!grid[col][row].isEmpty()) {
-                    GridObject go = grid[col][row].upper();
-                    g2d.setColor(go.getColor());
+                    g2d.setColor(grid[col][row].upper().getColor());
                 } else {
                     if ((row + col) % 2 == 1) {
                         g2d.setColor(new Color(60, 60, 60));

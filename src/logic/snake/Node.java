@@ -1,31 +1,24 @@
 package logic.snake;
 
 import java.awt.Color;
-import logic.field.Board;
 import logic.field.Field;
+import logic.field.FieldPos;
 import logic.field.GridObject;
-import logic.util.Vector;
 
 public class Node extends GridObject{
     private final Color color;
-    public Node(Board b, Vector p, Color c){
-        board = b;
-        pos = p;
+    public Node(FieldPos fp, Color c){
+        super(fp);
         color = c;
     }
 
     public Node(Node n){
-        board = n.board;
-        pos = n.pos;
+        super(n.fieldPos);
         color = n.color;
     }
 
-    public void setPos(Vector p){
-        pos = new Vector(p);
-    }
-
-    public void setBoard(Board b) {
-        board = b;
+    public void setFieldPos(FieldPos fp){
+        fieldPos = new FieldPos(fp);
     }
 
     @Override

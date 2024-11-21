@@ -87,7 +87,7 @@ public final class Game extends JPanel implements ActionListener{
 
     private void tick(){
         updatePointLabel();
-        if(fieldGui.getField() != null){
+        if(Field.getInstance() != null){
             fieldGui.getField().tick();
         }
     }

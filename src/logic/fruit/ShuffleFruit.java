@@ -1,13 +1,12 @@
 package logic.fruit;
 
 import java.awt.Color;
-import logic.field.Board;
 import logic.field.Field;
-import logic.util.Vector;
+import logic.field.FieldPos;
 
 public class ShuffleFruit extends Fruit{
-    public ShuffleFruit(Board b, Vector p){
-        super(b, p);
+    public ShuffleFruit(FieldPos fp){
+        super(fp);
     }
 
     @Override

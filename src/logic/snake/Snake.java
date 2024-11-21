@@ -4,21 +4,20 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import logic.field.Board;
+import logic.field.Field;
+import logic.field.FieldPos;
 import logic.field.Side;
 import logic.util.Utils;
 import logic.util.Vector;
 
 public class Snake {
 
-    private Board board;
+    private FieldPos fieldPos;
     private final Color color;
-    private Vector pos = new Vector(0, 0);
     private Vector originalDir = new Vector(0, 1);
     private Vector dir = new Vector(0, 1);
     private int point = 0;
-
     private boolean deathFlag = false;
-
     private final List<Node> nodes = new LinkedList<>();
 
     public void kill() {
@@ -26,15 +25,11 @@ public class Snake {
     }
 
     public Snake(Board b, Color c) {
-        board = b;
+        fieldPos = new FieldPos(b, new Vector(0, 0));
         color = c;
-        Node node = new Node(board, new Vector(pos), color);
+        Node node = new Node(fieldPos, color);
         nodes.add(node);
-        board.putOnTile(pos, node);
-    }
-
-    public void setPos(Vector newPos) {
-        pos = newPos;
+        fieldPos.getBoard().putOnTile(fieldPos.getPos(), node);
     }
 
     public int getPoint() {
@@ -54,53 +49,59 @@ public class Snake {
         nodes.add(endNode);
     }
 
-    public void setBoard(Board b) {
-        board = b;
-    }
-
     private void posUpdate() {
+        int tileNum = Field.getInstance().getTileNum();
+        Vector pos = fieldPos.getPos();
+        Board board = fieldPos.getBoard();
+
         pos.translate(dir.x, dir.y);
 
-        if (pos.x < 0 || pos.x >= board.getTileNum() || pos.y < 0 || pos.y >= board.getTileNum()) {
+        if (pos.x < 0 || pos.x >= tileNum || pos.y < 0 || pos.y >= tileNum) {
 
-            if (pos.x < 0 || pos.x >= board.getTileNum()) {
-                pos.y = board.getTileNum() - pos.y - 1;
+            if (pos.x < 0 || pos.x >= tileNum) {
+                pos.y = tileNum - pos.y - 1;
             } else {
-                pos.x = board.getTileNum() - pos.x - 1;
+                pos.x = tileNum - pos.x - 1;
             }
 
-            
             Side current = board.getSide(Utils.getDir(dir));
             Side pair = current.getPair();
-            
+
             board = pair.getBoard();
             Vector newdir = Utils.getVector(pair.getDir());
-            
+
             int torotate = newdir.toRotate(dir);
             pos.sub(dir);
-            pos.rotateInSquare(board.getTileNum(), torotate);
+            pos.rotateInSquare(tileNum, torotate);
 
             dir = newdir.negated();
         }
+
+        setFieldPos(new FieldPos(board, pos));
+    }
+
+    public void setFieldPos(FieldPos fp) {
+        fieldPos = new FieldPos(fp);
+    }
+
+    public FieldPos getFieldPos() {
+        return fieldPos;
     }
 
     public void move() {
         posUpdate();
 
         Node node;
-        for (int i = nodes.size() - 1; i > 0; i--) {
+        for (int i = nodes.size() - 1; i >= 0; i--) {
             node = nodes.get(i);
-            node.getBoard().getTile(node.getPos()).remove(node);
-
-            node.setPos(nodes.get(i - 1).getPos());
-            node.setBoard(nodes.get(i - 1).getBoard());
-            node.getBoard().getTile(node.getPos()).put(node);
+            node.withdraw();
+            if (i != 0) {
+                node.setFieldPos(nodes.get(i - 1).getFieldPos());
+            } else {
+                node.setFieldPos(fieldPos);
+            }
+            node.place();
         }
-        node = nodes.get(0);
-        node.getBoard().getTile(node.getPos()).remove(node);
-        node.setPos(pos);
-        node.setBoard(board);
-        node.getBoard().getTile(node.getPos()).put(node);
 
         originalDir = dir;
     }
@@ -109,16 +110,8 @@ public class Snake {
         return nodes;
     }
 
-    public Vector getPos() {
-        return pos;
-    }
-
     public int getSize() {
         return nodes.size();
-    }
-
-    public Board getBoard() {
-        return board;
     }
 
     public Vector getDir() {

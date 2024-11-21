@@ -1,47 +1,32 @@
 package logic.fruit;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import logic.field.Board;
 import logic.field.Field;
+import logic.field.FieldPos;
 import logic.snake.Snake;
-import logic.util.Vector;
 
 public class TeleportFruit extends Fruit{
 
-    private Fruit pair;
+    private TeleportFruit pair;
 
-    public TeleportFruit(Board b, Vector p) {
-        super(b, p);
+    public TeleportFruit(FieldPos fp) {
+        super(fp);
     }
 
     @Override
     public void eaten() {
         Snake s = Field.getInstance().getPlayer();
-        s.setBoard(pair.getBoard());
-        s.setPos(pair.getPos());
+        s.setFieldPos(pair.getFieldPos());
         super.eaten();
     }
 
     @Override
-    public void destroy() {
-        getBoard().getTile(getPos()).remove(this);
-        pair.getBoard().getTile(pair.getPos()).remove(pair);
+    public void withdraw() {
+        fieldPos.getBoard().getTile(fieldPos.getPos()).remove(this);
+        pair.getFieldPos().getBoard().getTile(pair.getFieldPos().getPos()).remove(pair);
     }
 
-    @Override
-    public void draw(Graphics g) {
-        super.draw(g);
-        g.fillRect(
-                (pair.getPos().x + 1 + (pair.getBoard().getPos().x) * (board.getTileNum() + 3))
-                * board.getTileSize(),
-                (pair.getPos().y + 1 + (pair.getBoard().getPos().y) * (board.getTileNum() + 3))
-                * board.getTileSize(),
-                board.getTileSize(),
-                board.getTileSize());
-    }
-
-    public void setPair(Fruit pair) {
+    public void setPair(TeleportFruit pair) {
         this.pair = pair;
     }
 

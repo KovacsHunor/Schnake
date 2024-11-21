@@ -54,6 +54,12 @@ public final class Field{
         field.init();
         return field;
     }
+
+    public static Field newInstance(){
+        field = new Field(field.game, field.gui, field.boardNum, field.tileNum);
+        field.init();
+        return field;
+    }
     
     public static Field getInstance(){
         if(field == null){
@@ -119,13 +125,13 @@ public final class Field{
         }
     }
     
-    public void init() {
+    private void init() {
         tileSize = 1000/(Math.max(boardNum, 2)*(tileNum+3)-1);
         boards = new Board[boardNum][boardNum];
 
         for (int i = 0; i < boardNum; i++) {
             for (int j = 0; j < boardNum; j++) {
-                boards[i][j] = new Board(new Vector(i, j), tileNum, tileSize);
+                boards[i][j] = new Board(new Vector(i, j));
             }
         }
         
@@ -133,6 +139,7 @@ public final class Field{
         
         shuffleSides();
         Fruit.newFruit();
+        Board.setPolygons();
     }
 
 
@@ -170,7 +177,7 @@ public final class Field{
         if (dTime == 0) {
             player.move();
 
-            GridTile gt = player.getBoard().getTile((player.getPos()));
+            GridTile gt = player.getFieldPos().getBoard().getTile((player.getFieldPos().getPos()));
             gt.steppedOn();
 
             if (player.checkDeath()) {

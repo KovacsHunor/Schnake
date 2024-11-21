@@ -1,12 +1,11 @@
 package logic.fruit;
 
 import java.awt.Color;
-import logic.field.Board;
-import logic.util.Vector;
+import logic.field.FieldPos;
 
 public class NormalFruit extends Fruit{
-    public NormalFruit(Board b, Vector p){
-        super(b, p);
+    public NormalFruit(FieldPos fp){
+        super(fp);
     }
 
     @Override
