@@ -2,11 +2,9 @@ package logic.field;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.util.EnumMap;
 import java.util.Map;
 
-import gui.main.Main;
 import logic.util.Dir;
 import logic.util.MyPolygon;
 import logic.util.Utils;
@@ -93,7 +91,7 @@ public class Board {
         
         side = sides.get(Dir.UP);
         g2d.setColor(side.getColor());
-        if (side.getOrientation()) {
+        if (side.isDefaultOriented()) {
             g2d.fillPolygon(polygon.translate(new Vector(tileSize, 0)));
         } else {
             g2d.fillPolygon(polygon.mirrorH().translate(new Vector(tileSize * (1 + tileNum), 0)));
@@ -101,7 +99,7 @@ public class Board {
 
         side = sides.get(Dir.DOWN);
         g2d.setColor(side.getColor());
-        if (side.getOrientation()) {
+        if (side.isDefaultOriented()) {
             translation = new Vector(tileSize * (1 + tileNum), (int) ((tileNum + 1.5) * tileSize));
             g2d.fillPolygon(polygon.mirrorH().translate(translation));
         } else {
@@ -111,7 +109,7 @@ public class Board {
 
         side = sides.get(Dir.LEFT);
         g2d.setColor(side.getColor());
-        if (side.getOrientation()) {
+        if (side.isDefaultOriented()) {
             translation = new Vector(0, ((tileNum + 1) * tileSize));
             g2d.fillPolygon(polygon.mirrorH().rotate().translate(translation));
         } else {
@@ -122,7 +120,7 @@ public class Board {
 
         side = sides.get(Dir.RIGHT);
         g2d.setColor(side.getColor());
-        if (side.getOrientation()) {
+        if (side.isDefaultOriented()) {
             translation = new Vector((int) (tileSize * (1.5 + tileNum)), tileSize);
             g2d.fillPolygon(polygon.rotate().translate(translation));
         } else {
@@ -162,7 +160,7 @@ public class Board {
         }
 
         g.drawImage(img, (pos.x) * (tileNum * tileSize + 3 * tileSize),
-                (pos.y) * (tileNum * tileSize + 3 * tileSize), Main.getGame().getFieldGui());
+                (pos.y) * (tileNum * tileSize + 3 * tileSize), null);
     }
 
     public Point getPos() {

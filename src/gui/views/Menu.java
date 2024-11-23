@@ -58,11 +58,16 @@ public final class Menu extends JPanel {
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(ae -> System.exit(0));
 
-        Integer[] sizes = new Integer[10];
-        for (int i = 0; i < sizes.length; i++) {
-            sizes[i] = i + 1;
+        Integer[] fieldSizes = new Integer[3];
+        for (int i = 0; i < fieldSizes.length; i++) {
+            fieldSizes[i] = i + 1;
         }
-        JComboBox<Integer> fieldBox = new JComboBox<>(sizes);
+
+        Integer[] boardSizes = new Integer[8];
+        for (int i = 0; i < boardSizes.length; i++) {
+            boardSizes[i] = i + 2;
+        }
+        JComboBox<Integer> fieldBox = new JComboBox<>(fieldSizes);
         fieldBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
@@ -72,7 +77,7 @@ public final class Menu extends JPanel {
 
         
         JLabel boardLabel = new JLabel("Board size: ");
-        JComboBox<Integer> boardBox = new JComboBox<>(sizes);
+        JComboBox<Integer> boardBox = new JComboBox<>(boardSizes);
         boardBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();

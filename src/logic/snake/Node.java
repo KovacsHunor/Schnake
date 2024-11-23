@@ -1,7 +1,6 @@
 package logic.snake;
 
 import java.awt.Color;
-import logic.field.Field;
 import logic.field.FieldPos;
 import logic.field.GridObject;
 

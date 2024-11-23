@@ -25,7 +25,7 @@ public class FruitTest {
     }
 
     @Test
-    public void eatenByTest1() {
+    public void normalFruitTest() {
         preTest1();
         NormalFruit fruit = new NormalFruit(new FieldPos(snake.getFieldPos().getBoard(),
                 snake.getFieldPos().getPos().sum(snake.getDir())));
@@ -39,7 +39,7 @@ public class FruitTest {
     }
 
     @Test
-    public void eatenByTest2() {
+    public void teleportFruitTest() {
         preTest1();
         TeleportFruit fruit = new TeleportFruit(new FieldPos(snake.getFieldPos().getBoard(),
                 snake.getFieldPos().getPos()));

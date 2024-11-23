@@ -1,7 +1,6 @@
 package logic.fruit;
 
 import java.awt.Color;
-import logic.field.Field;
 import logic.field.FieldPos;
 import logic.snake.Snake;
 
