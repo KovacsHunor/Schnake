@@ -8,6 +8,7 @@ import source.logic.util.Vector;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -75,8 +76,10 @@ public final class Field {
 
         for (Board[] boardArray : boards) {
             for (Board board : boardArray) {
+                Collection<Side> sides = board.getSides().values();
+
+                sideShuffle.addAll(sides);
                 boardShuffle.add(board);
-                sideShuffle.addAll(board.getSides().values());
             }
         }
         Collections.shuffle(sideShuffle);

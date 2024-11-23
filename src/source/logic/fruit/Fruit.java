@@ -65,26 +65,27 @@ public abstract class Fruit extends GridObject {
             return;
         }
 
-        if (ran <= 0.15) {
+        if (ran <= 0.33) {
             fruit = new ShuffleFruit(fieldPos);
-        } else if (ran <= 0.3) {
+            fruit.place();
+        } else if (ran <= 0.66) {
             fruit = new TeleportFruit(fieldPos);
-
+            fruit.place();
+            
             FieldPos pairFieldPos = newFruitPos();
             if (pairFieldPos == null){
                 return;
             }
-
+            
             TeleportFruit pair = new TeleportFruit(pairFieldPos);
             pair.setPair((TeleportFruit) fruit);
             ((TeleportFruit) fruit).setPair(pair);
-
             pair.place();
         } else {
             fruit = new NormalFruit(fieldPos);
+            fruit.place();
         }
 
-        fruit.place();
     }
 
     protected Fruit(FieldPos fp) {

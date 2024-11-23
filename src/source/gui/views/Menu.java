@@ -9,16 +9,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
 
+/**
+ * The menu view
+ */
 public final class Menu extends JPanel {
 
     private final JLabel usernameLabel;
     private final JTextField inputField;
     private final JLabel pointLabel = new JLabel();
 
+    /**
+     *      Sets the point display to the given point
+     * @param point The point to be displayed
+     */
     public void setPointLabel(int point) {
         pointLabel.setText("" + point);
     }
 
+    /**
+     * Sets the current user based on the content of the text field
+     */
     private void setUsername() {
         String text = inputField.getText().trim();
         if (!text.equals("") && !text.contains(",")) {
@@ -27,6 +37,10 @@ public final class Menu extends JPanel {
         }
     }
 
+    /**
+     * Converts the setUsername function to an Action
+     * @return  The Action
+     */
     private Action setUsernameAction() {
         return new AbstractAction() {
             @Override
@@ -36,6 +50,9 @@ public final class Menu extends JPanel {
         };
     }
 
+    /**
+     * The constructor
+     */
     public Menu() {
         setLayout(new BorderLayout());
 

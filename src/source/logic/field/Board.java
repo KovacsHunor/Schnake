@@ -10,6 +10,9 @@ import source.logic.util.MyPolygon;
 import source.logic.util.Utils;
 import source.logic.util.Vector;
 
+/**
+ * The boards in the field
+ */
 public class Board {
     private BufferedImage img;
     private Graphics2D g2d;
@@ -19,6 +22,9 @@ public class Board {
     private final GridTile[][] grid;
     private static final MyPolygon[] sidePolygons = new MyPolygon[2];
 
+    /**
+     * computes the vertexes of the polygons for the sides
+     */
     public static void setPolygons() {
         int tileNum = Field.getInstance().getTileNum();
         int tileSize = Field.getInstance().getTileSize();
@@ -41,6 +47,10 @@ public class Board {
         sidePolygons[1] = rectangle;
     }
 
+    /**
+     * The constructor
+     * @param pos   The boards position on the field
+     */
     public Board(Point pos) {
         int tileNum = Field.getInstance().getTileNum();
         int tileSize = Field.getInstance().getTileSize();
@@ -64,18 +74,37 @@ public class Board {
         this.pos = pos;
     }
 
+    /**
+     * returns the tile on the grid at a given position
+     * @param v the position of the tile
+     * @return  the tile
+     */
     public GridTile getTile(Vector v) {
         return grid[v.x][v.y];
     }
 
+    /**
+     * puts the GridObject on the tile at the given position
+     * @param v position of the tile
+     * @param go    the GridObject
+     */
     public void putOnTile(Vector v, GridObject go) {
         grid[v.x][v.y].put(go);
     }
 
+    /**
+     * returns the side of the board in a given direction
+     * @param d the direction of the side
+     * @return the side
+     */
     public Side getSide(Dir d) {
         return sides.get(d);
     }
 
+    /**
+     * returns the sides of the board
+     * @return  the sides of the board
+     */
     public Map<Dir, Side> getSides() {
         return sides;
     }
