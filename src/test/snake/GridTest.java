@@ -11,12 +11,12 @@ import java.awt.Color;
 
 import org.junit.Test;
 
-import logic.field.Field;
-import logic.field.FieldPos;
-import logic.field.GridObject;
-import logic.field.GridTile;
-import logic.snake.Node;
-import logic.snake.Snake;
+import source.logic.field.Field;
+import source.logic.field.FieldPos;
+import source.logic.field.GridObject;
+import source.logic.field.GridTile;
+import source.logic.snake.Node;
+import source.logic.snake.Snake;
 
 public class GridTest {
     Snake snake;

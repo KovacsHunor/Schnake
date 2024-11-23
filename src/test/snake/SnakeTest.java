@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Test;
 
-import logic.field.Field;
-import logic.snake.Snake;
-import logic.util.Vector;
+import source.logic.field.Field;
+import source.logic.snake.Snake;
+import source.logic.util.Vector;
 
 public class SnakeTest {
     Snake snake;

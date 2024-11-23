@@ -6,13 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Test;
 
-import logic.field.Field;
-import logic.field.FieldPos;
-import logic.fruit.NormalFruit;
-import logic.fruit.TeleportFruit;
-import logic.snake.Node;
-import logic.snake.Snake;
-import logic.util.Vector;
+import source.logic.field.Field;
+import source.logic.field.FieldPos;
+import source.logic.fruit.NormalFruit;
+import source.logic.fruit.TeleportFruit;
+import source.logic.snake.Node;
+import source.logic.snake.Snake;
+import source.logic.util.Vector;
 
 public class FruitTest {
     Snake snake;

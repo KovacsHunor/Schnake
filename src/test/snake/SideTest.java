@@ -10,13 +10,13 @@ import java.awt.Color;
 
 import org.junit.Test;
 
-import logic.field.Board;
-import logic.field.Field;
-import logic.field.FieldPos;
-import logic.field.Side;
-import logic.fruit.NormalFruit;
-import logic.snake.Snake;
-import logic.util.Dir;
+import source.logic.field.Board;
+import source.logic.field.Field;
+import source.logic.field.FieldPos;
+import source.logic.field.Side;
+import source.logic.fruit.NormalFruit;
+import source.logic.snake.Snake;
+import source.logic.util.Dir;
 
 public class SideTest {
     Snake snake;
