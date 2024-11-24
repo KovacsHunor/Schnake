@@ -27,7 +27,7 @@ public class GridTest {
     public void preTest1() {
         Field.newInstance(1, 4);
         field = Field.getInstance();
-        snake = field.getPlayer();
+        snake = field.getSnake();
         go = new TestGridObject(snake.getFieldPos(), new Color(0x000000));
         gt = go.getFieldPos().getBoard().getTile(go.getFieldPos().getPos());
     }

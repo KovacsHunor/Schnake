@@ -75,8 +75,8 @@ public class FieldGui extends JPanel {
         return new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!field.getPlayer().getOriginalDir().equals(dir.negated())) {
-                    field.getPlayer().setDir(new Vector(dir));
+                if (!field.getSnake().getOriginalDir().equals(dir.negated())) {
+                    field.getSnake().setDir(new Vector(dir));
                 }
             }
         };

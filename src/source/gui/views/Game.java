@@ -76,7 +76,7 @@ public final class Game extends JPanel implements ActionListener {
      * Updates the point display based on the players current points
      */
     public void updatePointLabel() {
-        pointLabel.setText("" + Field.getInstance().getPlayer().getPoint());
+        pointLabel.setText("" + Field.getInstance().getSnake().getPoint());
     }
 
     /**

@@ -18,7 +18,7 @@ public class NodeTest {
     public void preTest1(){
         Field.newInstance(1, 4);
         field = Field.getInstance();
-        snake = field.getPlayer();
+        snake = field.getSnake();
     }
 
     @Test

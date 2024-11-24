@@ -143,7 +143,7 @@ public class Main {
             user.setHighscore(point);
             menu.setPointLabel(point);
             leaderboard.sort();
-            HighscoreIO.saveHighscores(leaderboard.getData().getList());
+            HighscoreIO.saveHighscores(leaderboard.getData().getUsers());
         }
         deathScreen.setScoreLabel(point);
         deathScreen.setHighscoreNotification(isHighScore);
@@ -177,7 +177,7 @@ public class Main {
      * @param text  The name of the user
      */
     public static void setUser(String text) {
-        List<User> list = leaderboard.getData().getList();
+        List<User> list = leaderboard.getData().getUsers();
         for (User u : list) {
             if (u.getUsername().equals(text)) {
                 user = u;

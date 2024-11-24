@@ -109,7 +109,9 @@ public class Board {
         return sides;
     }
 
-    //  draw the teleporter sides
+    /**
+     * draws the sides
+     */
     public void drawSides() {
         int tileNum = Field.getInstance().getTileNum();
         int tileSize = Field.getInstance().getTileSize();
@@ -158,6 +160,10 @@ public class Board {
         }
     }
 
+    /**
+     * draws the entire board, sides included
+     * @param g the Graphics object the board is drawn on
+     */
     public void draw(Graphics g) {
         int tileNum = Field.getInstance().getTileNum();
         int tileSize = Field.getInstance().getTileSize();
@@ -192,6 +198,10 @@ public class Board {
                 (pos.y) * (tileNum * tileSize + 3 * tileSize), null);
     }
 
+    /**
+     * returns the position of the board on the field
+     * @return  the position of the board
+     */
     public Point getPos() {
         return pos;
     }

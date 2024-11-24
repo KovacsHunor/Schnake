@@ -4,7 +4,14 @@ import java.awt.Color;
 
 import source.logic.field.FieldPos;
 
+/**
+ * the standard snake fruit
+ */
 public class NormalFruit extends Fruit {
+    /**
+     * the constructor
+     * @param fp    the position of the fruit
+     */
     public NormalFruit(FieldPos fp) {
         super(fp);
     }

@@ -7,11 +7,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * handles the saving and reading of user data
+ */
 public class HighscoreIO {
+    /**
+     * private constructor for hiding the public one
+     */
     private HighscoreIO(){
         
     }
 
+    /**
+     * reads the highscores from their csc file
+     * @return  the list of the users
+     */
     public static List<User> readHighscores() {
         List<User> highscoreList = new ArrayList<>();
         BufferedReader reader;
@@ -34,6 +44,10 @@ public class HighscoreIO {
         return highscoreList;
     }
 
+    /**
+     * saves the highscores to their csv file
+     * @param highscoreList
+     */
     public static void saveHighscores(List<User> highscoreList) {
         try (FileWriter myWriter = new FileWriter("resources/highscores.csv")) {
             for (User user : highscoreList) {

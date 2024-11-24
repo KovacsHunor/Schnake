@@ -13,47 +13,76 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-// Based on Singleton design pattern
+/**
+ * the field, the class follows the singleton design pattern
+ */
 public final class Field {
     private final Random rnd = new Random();
     private Board[][] boards;
-
     private int boardNum = 2;
     private int tileNum = 6;
     private int tileSize = 50;
-
-    private Snake player;
+    private Snake snake;
 
     private static Field field;
 
+    /**
+     * returns n where n*n is the number of boards on the field
+     * @return  the sidelength of the field in boards
+     */
     public int getBoardNum() {
         return boardNum;
     }
 
+    /**
+     * returns n where n*n is the number of tiles on a board
+     * @return  the sidelength of a board in tiles
+     */
     public int getTileNum() {
         return tileNum;
     }
 
+    /**
+     * returns the size of the tiles
+     * @return  the size of the tiles
+     */
     public int getTileSize() {
         return tileSize;
     }
 
+    /**
+     * a private constructor to hide the default public one, essential for the class to be a singleton
+     */
     private Field() {
 
     }
 
-    public static Field newInstance(int b, int t) {
-        field = new Field(b, t);
+    /**
+     * creates a new field with the given parameters
+     * @param boardNum  the sidelingth of the field
+     * @param tileNum   the sidelength of the boards
+     * @return  the new field
+     */
+    public static Field newInstance(int boardNum, int tileNum) {
+        field = new Field(boardNum, tileNum);
         field.init();
         return field;
     }
 
+    /**
+     * creates a new field, same size as the last one
+     * @return  the new field
+     */
     public static Field newInstance() {
         field = new Field(field.boardNum, field.tileNum);
         field.init();
         return field;
     }
 
+    /**
+     * returns the only field instance if exists, if not throws an illegalArgumentException
+     * @return  the field
+     */
     public static Field getInstance() {
         if (field == null) {
             throw new IllegalArgumentException();
@@ -61,15 +90,28 @@ public final class Field {
         return field;
     }
 
-    private Field(int b, int t) {
-        boardNum = b;
-        tileNum = t;
+    /**
+     * Creates a field with the given parameters
+     * @param boardNum  the sidelength of the field
+     * @param tileNum   the sidelength of the boards
+     */
+    private Field(int boardNum, int tileNum) {
+        this.boardNum = boardNum;
+        this.tileNum = tileNum;
     }
 
-    public Snake getPlayer() {
-        return player;
+    /**
+     * returns the snake on the field
+     * @return  the snake
+     */
+    public Snake getSnake() {
+        return snake;
     }
 
+    /**
+     * randomly connects the sides of the boards with the only constraint being,
+     * that there must be a route from every board to any other
+     */
     public void shuffleSides() {
         List<Side> sideShuffle = new ArrayList<>();
         List<Board> boardShuffle = new ArrayList<>();
@@ -114,6 +156,9 @@ public final class Field {
         }
     }
 
+    /**
+     * initializes the field
+     */
     private void init() {
         tileSize = 1000 / (Math.max(boardNum, 2) * (tileNum + 3) - 1);
         boards = new Board[boardNum][boardNum];
@@ -124,28 +169,39 @@ public final class Field {
             }
         }
 
-        player = new Snake(boards[0][0], new Color(255, 89, 94));
+        snake = new Snake(boards[0][0], new Color(255, 89, 94));
 
         shuffleSides();
         Fruit.newFruit();
         Board.setPolygons();
     }
 
-    //function for colors distinct to the human eye
-    private float distinctColorFunction(float x) {
-        return (float) (6.2016 * (0.0911254 * Math.pow(x, 5) - 0.107401 * Math.pow(x, 4) - 0.281072 * Math.pow(x, 3)
-                + 0.408596 * Math.pow(x, 2) + 0.15 * x));
+    /**
+     * function for creating colors more distinguishable to the human eye
+     * (created with the help of desmos and wolphramalpha)
+     * @param hue the original hue value 
+     * @return the new hue value
+     */
+    private float distinctColorFunction(float hue) {
+        hue = hue - (int)hue;
+        return (float) (6.2016 * (0.0911254 * Math.pow(hue, 5) - 0.107401 * Math.pow(hue, 4) - 0.281072 * Math.pow(hue, 3)
+                + 0.408596 * Math.pow(hue, 2) + 0.15 * hue));
     }
 
+    /**
+     * computes n colors distributed in a way that they are as distinguishable from eachother as possible
+     * while also keeping them pleasant to the eye
+     * @param n the number of colors needed
+     * @return  the List of colors
+     */
     private List<Color> distributedColors(int n) {
         List<Color> palette = new ArrayList<>();
-        float offset = 1.0f / (10 * n) * player.getPoint();
+        float offset = 1.0f / (10 * n) * snake.getPoint();
         float h;
         float s;
         float b;
         for (int i = 0; i < n; i++) {
-            float x = ((float) i / n + offset) - (int) ((float) i / n + offset);
-            h = distinctColorFunction(x);
+            h = distinctColorFunction((float)i / n + offset);
             s = 0.5f + (i % 3) * 0.25f;
             b = 1.0f - ((i + 2) % 3) * 0.25f;
 
@@ -155,21 +211,32 @@ public final class Field {
         return palette;
     }
 
+    /**
+     * returns the boards on the field
+     * @return  the boards
+     */
     public Board[][] getBoards() {
         return boards;
     }
 
+    /**
+     * the things to do in a tick
+     */
     public void tick() {
-        player.move();
+        snake.move();
 
-        GridTile gt = player.getFieldPos().getBoard().getTile((player.getFieldPos().getPos()));
-        gt.steppedOn(player);
+        GridTile gt = snake.getFieldPos().getBoard().getTile((snake.getFieldPos().getPos()));
+        gt.steppedOn(snake);
 
-        if (player.checkDeath()) {
-            Main.toDeathScreen(player.getPoint());
+        if (snake.checkDeath()) {
+            Main.toDeathScreen(snake.getPoint());
         }
     }
 
+    /**
+     * draws the contents of the field
+     * @param g the Graphics object to draw on
+     */
     public void draw(Graphics g) {
         for (Board[] row : boards) {
             for (Board board : row) {
