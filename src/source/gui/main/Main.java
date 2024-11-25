@@ -40,7 +40,6 @@ public class Main {
         }
 
         deck = new JPanel(new CardLayout());
-
         game = new Game();
         menu = new Menu();
         leaderboard = new Leaderboard();
@@ -128,7 +127,7 @@ public class Main {
      * the main function
      * @param args  The arguments of the program (not in use)
      */
-    public static void main(String... args) {
+    public static void main(String[] args) {
         init();
     }
 

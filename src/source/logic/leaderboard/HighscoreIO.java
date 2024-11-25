@@ -38,7 +38,8 @@ public class HighscoreIO {
             }
 
             reader.close();
-        } catch (IOException ex) {
+        } catch (Exception e) {
+            System.err.println("Could not properely load the highscore data");
         }
 
         return highscoreList;
@@ -53,7 +54,9 @@ public class HighscoreIO {
             for (User user : highscoreList) {
                 myWriter.write(user.getUsername() + "," + user.getHighscore() + "\n");
             }
-        }catch(IOException e){}
+        }catch (Exception e) {
+            System.err.println("Could not properely save the highscore data");
+        }
 
     }
 }
