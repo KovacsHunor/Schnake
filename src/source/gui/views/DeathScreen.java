@@ -75,7 +75,8 @@ public class DeathScreen extends JPanel {
      * Displayes a notification, if the score of the player is a personal highscore
      * @param isHighScore   Determines whether the player got a highscore or not
      */
-    public void setHighscoreNotification(boolean isHighScore) {
+    public void setHighscoreNotification(boolean isHighScore, boolean isGlobalHighScore) {
         newRecord.setVisible(isHighScore);
+        newRecord.setText("New " + (isGlobalHighScore?"Global":"Personal") + " Record!");
     }
 }

@@ -141,6 +141,14 @@ public class Main {
             leaderboard.getData().addUser(user);
         }
         boolean isHighScore = point > user.getHighscore();
+
+        boolean isGlobalHighScore = true;
+        for (User user : leaderboard.getData().getUsers()) {
+            if(user.getHighscore() >= point){
+                isGlobalHighScore = false;
+            }
+        }
+
         if (isHighScore) {
             user.setHighscore(point);
             menu.setPointLabel(point);
@@ -148,7 +156,7 @@ public class Main {
             HighscoreIO.saveHighscores(leaderboard.getData().getUsers());
         }
         deathScreen.setScoreLabel(point);
-        deathScreen.setHighscoreNotification(isHighScore);
+        deathScreen.setHighscoreNotification(isHighScore, isGlobalHighScore);
         switchTo("deathScreen");
     }
 
