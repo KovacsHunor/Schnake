@@ -75,7 +75,7 @@ public final class Menu extends JPanel {
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(ae -> System.exit(0));
 
-        Integer[] fieldSizes = new Integer[3];
+        Integer[] fieldSizes = new Integer[8];
         for (int i = 0; i < fieldSizes.length; i++) {
             fieldSizes[i] = i + 1;
         }

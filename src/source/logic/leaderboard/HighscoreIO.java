@@ -1,6 +1,7 @@
 package source.logic.leaderboard;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,8 +15,8 @@ public class HighscoreIO {
     /**
      * private constructor for hiding the public one
      */
-    private HighscoreIO(){
-        
+    private HighscoreIO() {
+
     }
 
     /**
@@ -27,7 +28,8 @@ public class HighscoreIO {
         BufferedReader reader;
 
         try {
-            reader = new BufferedReader(new FileReader("resources/highscores.csv"));
+            File file = new File("resources/highscores.csv");
+            reader = new BufferedReader(new FileReader(file));
             String line = reader.readLine();
 
             while (line != null) {
@@ -39,7 +41,7 @@ public class HighscoreIO {
 
             reader.close();
         } catch (Exception e) {
-            System.err.println("Could not properely load the highscore data");
+            // the file didn't exist, but no need to do anything with this fact
         }
 
         return highscoreList;
@@ -50,11 +52,15 @@ public class HighscoreIO {
      * @param highscoreList
      */
     public static void saveHighscores(List<User> highscoreList) {
-        try (FileWriter myWriter = new FileWriter("resources/highscores.csv")) {
+        try{
+            File file = new File("resources/highscores.csv");
+            file.getParentFile().mkdirs();
+            FileWriter myWriter = new FileWriter(file);
             for (User user : highscoreList) {
                 myWriter.write(user.getUsername() + "," + user.getHighscore() + "\n");
             }
-        }catch (Exception e) {
+            myWriter.close();
+        } catch (Exception e) {
             System.err.println("Could not properely save the highscore data");
         }
 
