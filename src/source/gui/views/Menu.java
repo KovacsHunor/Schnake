@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 /**
  * The menu view
@@ -50,6 +53,24 @@ public final class Menu extends JPanel {
         };
     }
 
+    class JTextFieldLimit extends PlainDocument {
+        private int limit;
+
+        JTextFieldLimit(int limit) {
+            super();
+            this.limit = limit;
+        }
+
+        @Override
+        public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+            if (str == null)
+                return;
+            if ((getLength() + str.length()) <= limit) {
+                super.insertString(offset, str, attr);
+            }
+        }
+    }
+
     /**
      * The constructor
      */
@@ -60,6 +81,7 @@ public final class Menu extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         inputField = new JTextField(20);
+        inputField.setDocument(new JTextFieldLimit(20));
         JLabel inputFieldLabel = new JLabel("Username:");
         JLabel fieldLabel = new JLabel("Field size: ");
 
@@ -88,20 +110,19 @@ public final class Menu extends JPanel {
         fieldBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
-            Field.newInstance((Integer)ie.getItem(), Field.getInstance().getTileNum());
+            Field.newInstance((Integer) ie.getItem(), Field.getInstance().getTileNum());
             gui.init();
         });
 
-        
         JLabel boardLabel = new JLabel("Board size: ");
         JComboBox<Integer> boardBox = new JComboBox<>(boardSizes);
         boardBox.addItemListener((ItemEvent ie) -> {
             Game game = Main.getGame();
             FieldGui gui = game.getFieldGui();
-            Field.newInstance(Field.getInstance().getBoardNum(), (Integer)ie.getItem());
+            Field.newInstance(Field.getInstance().getBoardNum(), (Integer) ie.getItem());
             gui.init();
         });
-        
+
         fieldBox.setSelectedItem(2);
         boardBox.setSelectedItem(6);
 
@@ -117,7 +138,7 @@ public final class Menu extends JPanel {
         info.add(usernameLabel);
         info.add(pointLabel);
 
-        input.setLayout(new GridLayout(3,1));
+        input.setLayout(new GridLayout(3, 1));
         input.add(inputFieldLabel);
         input.add(inputField);
 
