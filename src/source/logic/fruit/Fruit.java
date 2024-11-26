@@ -52,6 +52,7 @@ public abstract class Fruit extends GridObject {
             i++;
         } while (!(board.getTile(pos).isEmpty() &&
                 (field.getBoardNum() == 1 || board != field.getSnake().getFieldPos().getBoard()))
+                && !pos.equals(field.getSnake().getFieldPos().getPos().sum(field.getSnake().getDir()))
                 && i < 100);
         if (i < 100) {
             return new FieldPos(board, pos);
@@ -85,12 +86,12 @@ public abstract class Fruit extends GridObject {
         } else if (ran <= 0.66) {
             fruit = new TeleportFruit(fieldPos);
             fruit.place();
-            
+
             FieldPos pairFieldPos = newFruitPos();
-            if (pairFieldPos == null){
+            if (pairFieldPos == null) {
                 return;
             }
-            
+
             TeleportFruit pair = new TeleportFruit(pairFieldPos);
             pair.setPair((TeleportFruit) fruit);
             ((TeleportFruit) fruit).setPair(pair);
