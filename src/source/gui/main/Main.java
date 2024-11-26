@@ -137,6 +137,9 @@ public class Main {
      */
     public static void toDeathScreen(int point) {
         game.stopTimer();
+        if(!leaderboard.getData().getUsers().contains(user)){
+            leaderboard.getData().addUser(user);
+        }
         boolean isHighScore = point > user.getHighscore();
         if (isHighScore) {
             user.setHighscore(point);
@@ -185,8 +188,6 @@ public class Main {
             }
         } 
         user = new User(text);
-        list.add(user);
-        leaderboard.getData().fireTableRowsInserted(list.size() - 1, list.size() - 1);
         menu.setPointLabel(user.getHighscore());
     }
 
